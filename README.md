@@ -1,4 +1,4 @@
-## Welcome to Naemon Core ##
+## Welcome to Naemon ##
 
 Naemon is a host/service/network monitoring program written in C and
 released under the GNU General Public License. It works by scheduling
@@ -10,6 +10,7 @@ Naemon is a fork of the aforementioned project.
 
  * Naemon: Meta package for packaging reasons
  * Naemon-Core: Core scheduler, worker, etc...
+ * Thruk: Web Gui
 
 ### More info ###
 
