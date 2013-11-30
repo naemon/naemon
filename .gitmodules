@@ -1,0 +1,9 @@
+[submodule "naemon-core"]
+	path = naemon-core
+	url = https://github.com/naemon/naemon-core.git
+[submodule "thruk/gui"]
+	path = thruk/gui
+	url = https://github.com/sni/Thruk.git
+[submodule "thruk/libs"]
+	path = thruk/libs
+	url = https://github.com/sni/thruk_libs.git

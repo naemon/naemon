@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+cd naemon-core
+test -f ./configure || autoreconf -i
+./configure $*
+
+cd ../thruk/gui
+./configure $*
