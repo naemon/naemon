@@ -22,7 +22,6 @@ BuildRequires: gperf
 BuildRequires: perl
 BuildRequires: logrotate
 BuildRequires: gd
-BuildRequires: git-core
 BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: libtool
