@@ -46,7 +46,12 @@ dist:
 	cd thruk/gui   && git archive --format=tar HEAD | tar x -C "../../naemon-${VERSION}/thruk/gui/"
 	cd thruk/libs  && git archive --format=tar HEAD | tar x -C "../../naemon-${VERSION}/thruk/libs/"
 	cd naemon-${VERSION}/naemon-core && autoreconf -i -v
-	tar cf "naemon-${VERSION}.tar" --exclude=thruk.spec --exclude=naemon-core/naemon.spec "naemon-${VERSION}"
+	tar cf "naemon-${VERSION}.tar" \
+		--exclude=thruk.spec \
+		--exclude=naemon-core/naemon.spec \
+		--exclude=.gitmodules \
+		--exclude=.gitignore \
+		"naemon-${VERSION}"
 	gzip -9 "naemon-${VERSION}.tar"
 	rm -rf "naemon-${VERSION}"
 
