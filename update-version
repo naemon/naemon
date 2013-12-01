@@ -7,9 +7,9 @@ if [ "x$1" = "x" ]; then
   exit 1
 fi
 
-sed -i -e 's/^VERSION=.*$/VERSION='$1'/g'
-sed -i -e 's/^RELEASE=.*$/RELEASE='$DATE'/g'
+sed -i -e 's/^VERSION=.*$/VERSION='$1'/g'    Makefile
+sed -i -e 's/^RELEASE=.*$/RELEASE='$DATE'/g' Makefile
 
-sed -i -e 's/^Version:.*$/Version: '$1'/g'
+sed -i -e 's/^Version:.*$/Version: '$1'/g'   naemon.spec
 
 cd naemon-core && ./update-version "$1" "$DATE"
