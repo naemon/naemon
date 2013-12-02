@@ -1,5 +1,10 @@
 %define logmsg logger -t %{name}/rpm
 %define logdir %{_localstatedir}/log/naemon
+%if %{defined suse_version}
+%define apacheuser wwwrun
+%else
+%define apacheuser apache
+%endif
 
 Summary: Open Source host, service and network monitoring program
 Name: naemon
@@ -11,7 +16,7 @@ URL: http://www.naemon.org/
 Packager: Sven Nierlein <sven.nierlein@consol.de>
 Vendor: Naemon Core Development Team
 Source0: http://www.naemon.org/download/naemon/naemon-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}
 BuildRequires: gd-devel > 1.8
 BuildRequires: zlib-devel
 BuildRequires: libpng-devel
@@ -75,6 +80,7 @@ Summary:     thruk gui for %{name}
 Group:       Applications/System
 Requires:    %{name}-thruk-libs = %{version}-%{release}
 Requires:    perl
+Conflicts:   thruk
 AutoReqProv: no
 %if %{defined suse_version}
 Requires:    apache2 apache2-mod_fcgid cron
@@ -122,6 +128,7 @@ This package contains the thruk gui for %{name}
     --with-init-dir="%{_initrddir}" \
     --with-naemon-user="naemon" \
     --with-naemon-group="naemon"
+# TODO: remove -j 1
 %{__make} %{?_smp_mflags} -j 1 all
 
 %install
@@ -135,6 +142,11 @@ This package contains the thruk gui for %{name}
 mkdir -p %{buildroot}/%{_sysconfdir}/naemon/conf.d
 mkdir -p %{buildroot}/var/naemon/spool/checkresult
 touch %{buildroot}/%{_sysconfdir}/naemon/naemon.cfg
+
+%clean
+%{__rm} -rf %{buildroot}
+
+
 
 %pre core
 set -x
@@ -155,7 +167,7 @@ if /usr/bin/id apache &>/dev/null; then
         /usr/sbin/usermod -a -G naemon,naemon apache &>/dev/null
     fi
 else
-    %logmsg "User \"apache\" does not exist and is not added to group \"naemon\". Sending commands to naemon from the command CGI is not possible."
+    %logmsg "User \"apache\" does not exist and is not added to group \"naemon\". Sending commands to naemon from the CGIs is not possible."
 fi
 
 %preun core
@@ -167,8 +179,95 @@ fi
 %postun core
 /sbin/service naemon condrestart &>/dev/null || :
 
-%clean
-%{__rm} -rf %{buildroot}
+
+
+%pre thruk
+# save themes, plugins and ssi so we don't reenable them on every update
+rm -rf /tmp/thruk_update
+if [ -d /etc/naemon/themes/themes-enabled/. ]; then
+  mkdir -p /tmp/thruk_update/themes
+  cp -rp /etc/naemon/themes/themes-enabled/* /tmp/thruk_update/themes/
+fi
+if [ -d /etc/naemon/plugins/plugins-enabled/. ]; then
+  mkdir -p /tmp/thruk_update/plugins
+  cp -rp /etc/naemon/plugins/plugins-enabled/* /tmp/thruk_update/plugins/
+fi
+if [ -d /etc/naemon/ssi/. ]; then
+  mkdir -p /tmp/thruk_update/ssi
+  cp -rp /etc/naemon/ssi/* /tmp/thruk_update/ssi/
+fi
+exit 0
+
+%post thruk
+chkconfig --add thruk
+mkdir -p /var/lib/naemon /var/cache/naemon/reports /var/log/naemon /etc/naemon/bp
+chown -R %{apacheuser}: /var/lib/naemon /var/cache/naemon /var/log/naemon /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp
+/usr/bin/crontab -l -u %{apacheuser} 2>/dev/null | /usr/bin/crontab -u %{apacheuser} -
+%if %{defined suse_version}
+a2enmod alias
+a2enmod fcgid
+a2enmod auth_basic
+a2enmod rewrite
+/etc/init.d/apache2 restart || /etc/init.d/apache2 start
+%else
+/etc/init.d/httpd restart || /etc/init.d/httpd start
+if [ "$(getenforce 2>/dev/null)" = "Enforcing" ]; then
+  echo "******************************************";
+  echo "Thruk will not work when SELinux is enabled";
+  echo "SELinux: "$(getenforce);
+  echo "******************************************";
+fi
+%endif
+/usr/bin/thruk -a clearcache,installcron --local > /dev/null
+echo "Thruk has been configured for http://$(hostname)/thruk/. User and password is 'thrukadmin'."
+exit 0
+
+%posttrans thruk
+# restore themes and plugins
+if [ -d /tmp/thruk_update/themes/. ]; then
+  rm -f /etc/naemon/themes/themes-enabled/*
+  cp -rp /tmp/thruk_update/themes/* /etc/naemon/themes/themes-enabled/
+fi
+if [ -d /tmp/thruk_update/plugins/. ]; then
+  rm -f /etc/naemon/plugins/plugins-enabled/*
+  cp -rp /tmp/thruk_update/plugins/* /etc/naemon/plugins/plugins-enabled/
+fi
+echo "plugins enabled:" $(ls /etc/naemon/plugins/plugins-enabled/)
+if [ -d /tmp/thruk_update/ssi/. ]; then
+  rm -f /etc/naemon/ssi/*
+  cp -rp /tmp/thruk_update/ssi/* /etc/naemon/ssi/
+fi
+rm -rf /tmp/thruk_update
+
+%preun thruk
+if [ $1 = 0 ]; then
+    # last version will be deinstalled
+    /usr/bin/thruk -a uninstallcron --local
+fi
+/etc/init.d/thruk stop
+chkconfig --del thruk >/dev/null 2>&1
+exit 0
+
+%postun thruk
+case "$*" in
+  0)
+    # POSTUN
+    rm -rf %{_localstatedir}/cache/naemon
+    rm -rf %{_datadir}/naemon/root/thruk/plugins
+    %{insserv_cleanup}
+    ;;
+  1)
+    # POSTUPDATE
+    rm -rf %{_localstatedir}/cache/naemon/*
+    mkdir -p /var/cache/naemon/reports
+    chown -R %{apacheuser}: /var/cache/naemon
+    ;;
+  *) echo case "$*" not handled in postun
+esac
+exit 0
+
+
+
 
 %files
 
