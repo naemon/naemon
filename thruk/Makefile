@@ -1,7 +1,7 @@
 
 all:
 	cd libs && make
-	cd gui && yes n | PERL5LIB=$(shell pwd)/libs/local-lib/dest/lib/perl5 perl Makefile.PL
+	cd gui && yes n | PERL5LIB=$$P5DIR/dest/lib/perl5/:$(shell pwd)/libs/local-lib/dest/lib/perl5 perl Makefile.PL
 
 install:
 	cd gui && make install naemon-patch

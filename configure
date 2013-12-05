@@ -6,5 +6,9 @@ cd naemon-core
 test -f ./configure || autoreconf -i
 ./configure $*
 
+cd ../naemon-livestatus
+test -f ./configure || autoreconf -i
+./configure $*
+
 cd ../thruk/gui
 ./configure $*

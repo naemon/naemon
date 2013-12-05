@@ -41,8 +41,9 @@ BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: libtool
 Requires(pre): shadow-utils
-Requires: %{name}-core  = %{version}-%{release}
-Requires: %{name}-thruk = %{version}-%{release}
+Requires: %{name}-core       = %{version}-%{release}
+Requires: %{name}-livestatus = %{version}-%{release}
+Requires: %{name}-thruk      = %{version}-%{release}
 # https://fedoraproject.org/wiki/Packaging:DistTag
 # http://stackoverflow.com/questions/5135502/rpmbuild-dist-not-defined-on-centos-5-5
 
@@ -73,6 +74,13 @@ Group: Applications/System
 %description core
 contains the %{name} core
 
+
+%package livestatus
+Summary: %{name} livestatus eventbroker module
+Group: Applications/System
+
+%description livestatus
+contains the %{name} livestatus eventbroker module
 
 
 %package     thruk-libs
@@ -306,6 +314,9 @@ exit 0
 
 #%files devel
 #%attr(0755,root,root) %{_includedir}/naemon/
+
+%files livestatus
+%{_libdir}/naemon/mk-livestatus/livestatus.o
 
 %files thruk
 %defattr(-, root, root, 0755)
