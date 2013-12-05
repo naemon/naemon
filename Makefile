@@ -35,7 +35,7 @@ clean:
 	rm -rf naemon-${VERSION} naemon-${VERSION}.tar.gz
 
 install:
-	cd naemon-core && make install
+	cd naemon-core && make install install-sample-config install-rc
 	cd thruk && make install
 
 dist:
@@ -46,6 +46,9 @@ dist:
 	cd thruk/gui   && git archive --format=tar HEAD | tar x -C "../../naemon-${VERSION}/thruk/gui/"
 	cd thruk/libs  && git archive --format=tar HEAD | tar x -C "../../naemon-${VERSION}/thruk/libs/"
 	cd naemon-${VERSION}/naemon-core && autoreconf -i -v
+	cp -p thruk/gui/Makefile naemon-${VERSION}/thruk/gui
+	cd naemon-${VERSION}/thruk/gui && ./script/thruk_patch_makefile.pl
+	cd naemon-${VERSION}/thruk/gui && make staticfiles
 	tar cf "naemon-${VERSION}.tar" \
 		--exclude=thruk.spec \
 		--exclude=naemon-core/naemon.spec \

@@ -2,8 +2,18 @@
 %define logdir %{_localstatedir}/log/naemon
 %if %{defined suse_version}
 %define apacheuser wwwrun
+%define apachegroup www
+%define apachedir apache2
 %else
 %define apacheuser apache
+%define apachegroup apache
+%define apachedir httpd
+%endif
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=894903
+# sharedstatedir set to /usr/com
+%if "%{_sharedstatedir}" == "/usr/com"
+%define _sharedstatedir /var/lib
 %endif
 
 Summary: Open Source host, service and network monitoring program
@@ -79,6 +89,8 @@ This package contains the library files for the thruk gui
 Summary:     thruk gui for %{name}
 Group:       Applications/System
 Requires:    %{name}-thruk-libs = %{version}-%{release}
+Requires(preun): %{name}-thruk-libs = %{version}-%{release}
+Requires(post): %{name}-thruk-libs = %{version}-%{release}
 Requires:    perl
 Conflicts:   thruk
 AutoReqProv: no
@@ -114,20 +126,24 @@ This package contains the thruk gui for %{name}
     --libexecdir="%{_libdir}/naemon/plugins" \
     --libdir="%{_libdir}/naemon" \
     --localstatedir="%{_localstatedir}/naemon" \
+    --sharedstatedir="%{_sharedstatedir}/naemon" \
+    --with-temp-dir="/var/cache/naemon/" \
     --with-checkresult-dir="%{_localstatedir}/naemon/spool/checkresults" \
     --sysconfdir="%{_sysconfdir}/naemon" \
     --mandir="%{_mandir}" \
-    --with-thruk-user="apache" \
-    --with-thruk-group="apache" \
-    --with-thruk-libs="%{_datadir}/naemon/perl5" \
-    --with-temp-dir="/var/cache/naemon/" \
-    --with-logrotate-dir="%{_sysconfdir}/logrotate.d/" \
-    --with-log-dir="%{logdir}/" \
-    --with-httpd-conf="%{_sysconfdir}/httpd/conf.d/" \
-    --with-htmlurl="/naemon" \
     --with-init-dir="%{_initrddir}" \
+    --with-log-dir="%{logdir}/" \
+    --with-logrotate-dir="%{_sysconfdir}/logrotate.d/" \
     --with-naemon-user="naemon" \
-    --with-naemon-group="naemon"
+    --with-naemon-group="naemon" \
+    --with-lockfile="%{_localstatedir}/naemon/naemon.pid" \
+    --with-thruk-user="%{apacheuser}" \
+    --with-thruk-group="%{apachegroup}" \
+    --with-thruk-libs="%{_datadir}/naemon/perl5" \
+    --with-thruk-temp-dir="/var/cache/naemon/thruk" \
+    --with-thruk-var-dir="%{_sharedstatedir}/naemon/thruk" \
+    --with-httpd-conf="%{_sysconfdir}/%{apachedir}/conf.d/" \
+    --with-htmlurl="/naemon"
 # TODO: remove -j 1
 %{__make} %{?_smp_mflags} -j 1 all
 
@@ -138,10 +154,7 @@ This package contains the thruk gui for %{name}
     INSTALL_OPTS="" \
     COMMAND_OPTS="" \
     INIT_OPTS=""
-# TODO: fixme
-mkdir -p %{buildroot}/%{_sysconfdir}/naemon/conf.d
-mkdir -p %{buildroot}/var/naemon/spool/checkresult
-touch %{buildroot}/%{_sysconfdir}/naemon/naemon.cfg
+mkdir -p %{buildroot}%{_localstatedir}/naemon/spool/checkresults
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -149,7 +162,6 @@ touch %{buildroot}/%{_sysconfdir}/naemon/naemon.cfg
 
 
 %pre core
-set -x
 if ! /usr/bin/id naemon &>/dev/null; then
     /usr/sbin/useradd -r -d %{logdir} -s /bin/sh -c "naemon" naemon || \
         %logmsg "Unexpected error adding user \"naemon\". Aborting installation."
@@ -162,12 +174,16 @@ fi
 %post core
 /sbin/chkconfig --add naemon
 
-if /usr/bin/id apache &>/dev/null; then
-    if ! /usr/bin/id -Gn apache 2>/dev/null | grep -q naemon ; then
-        /usr/sbin/usermod -a -G naemon,naemon apache &>/dev/null
+if /usr/bin/id %{apacheuser} &>/dev/null; then
+    if ! /usr/bin/id -Gn %{apacheuser} 2>/dev/null | grep -q naemon ; then
+%if %{defined suse_version}
+        /usr/sbin/groupmod -A %{apacheuser} naemon >/dev/null
+%else
+        /usr/sbin/usermod -a -G naemon %{apacheuser} >/dev/null
+%endif
     fi
 else
-    %logmsg "User \"apache\" does not exist and is not added to group \"naemon\". Sending commands to naemon from the CGIs is not possible."
+    %logmsg "User \"%{apacheuser}\" does not exist and is not added to group \"naemon\". Sending commands to naemon from the CGIs is not possible."
 fi
 
 %preun core
@@ -175,6 +191,7 @@ if [ $1 -eq 0 ]; then
     /sbin/service naemon stop &>/dev/null || :
     /sbin/chkconfig --del naemon
 fi
+exit 0
 
 %postun core
 /sbin/service naemon condrestart &>/dev/null || :
@@ -200,8 +217,9 @@ exit 0
 
 %post thruk
 chkconfig --add thruk
-mkdir -p /var/lib/naemon /var/cache/naemon/reports /var/log/naemon /etc/naemon/bp
-chown -R %{apacheuser}: /var/lib/naemon /var/cache/naemon /var/log/naemon /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp
+mkdir -p /var/cache/naemon/thruk/reports %{logdir} /etc/naemon/bp /var/lib/naemon/thruk
+touch %{logdir}/thruk.log
+chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk %{logdir}/thruk.log /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk
 /usr/bin/crontab -l -u %{apacheuser} 2>/dev/null | /usr/bin/crontab -u %{apacheuser} -
 %if %{defined suse_version}
 a2enmod alias
@@ -219,7 +237,7 @@ if [ "$(getenforce 2>/dev/null)" = "Enforcing" ]; then
 fi
 %endif
 /usr/bin/thruk -a clearcache,installcron --local > /dev/null
-echo "Thruk has been configured for http://$(hostname)/thruk/. User and password is 'thrukadmin'."
+echo "Thruk has been configured for http://$(hostname)/naemon/. User and password is 'thrukadmin'."
 exit 0
 
 %posttrans thruk
@@ -252,15 +270,15 @@ exit 0
 case "$*" in
   0)
     # POSTUN
-    rm -rf %{_localstatedir}/cache/naemon
+    rm -rf /var/cache/naemon/thruk
     rm -rf %{_datadir}/naemon/root/thruk/plugins
     %{insserv_cleanup}
     ;;
   1)
     # POSTUPDATE
-    rm -rf %{_localstatedir}/cache/naemon/*
-    mkdir -p /var/cache/naemon/reports
-    chown -R %{apacheuser}: /var/cache/naemon
+    rm -rf /var/cache/naemon/thruk/*
+    mkdir -p /var/cache/naemon/thruk/reports
+    chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk
     ;;
   *) echo case "$*" not handled in postun
 esac
@@ -274,13 +292,16 @@ exit 0
 %files core
 %defattr(-, root, root, 0755)
 %attr(755,root,root) %{_bindir}/naemon
+%attr(0755,root,root) %{_initrddir}/naemon
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/conf.d
 %attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/naemon.cfg
-%attr(0755,naemon,naemon) %dir %{_localstatedir}/naemon/spool/checkresult
-#%attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/*.cfg
-#%attr(0755,naemon,naemon) %dir %{_localstatedir}/naemon/
-#%attr(0755,naemon,naemon) %{_localstatedir}/naemon/
+%attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/resource.cfg
+%attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/conf.d/*.cfg
+%attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/conf.d/templates/*.cfg
+%attr(0755,naemon,naemon) %dir %{_localstatedir}/naemon/spool/checkresults
+%attr(0755,naemon,naemon) %dir %{_localstatedir}/naemon/
+%attr(0755,naemon,naemon) %dir /var/cache/naemon
 %attr(0755,naemon,naemon) %{logdir}
 
 #%files devel
@@ -292,30 +313,34 @@ exit 0
 %{_bindir}/naglint
 %{_bindir}/nagexp
 %{_initrddir}/thruk
-%{_datadir}/naemon/script/thruk_auth
-%{_datadir}/naemon/script/thruk_fastcgi.pl
-%attr(0755,apache,apache) %{_sysconfdir}/naemon/ssi
+%attr(0755,%{apacheuser},%{apachegroup}) %{_sysconfdir}/naemon/ssi
 %config %{_sysconfdir}/naemon/thruk.conf
-%attr(0644,apache,apache) %config(noreplace) %{_sysconfdir}/naemon/thruk_local.conf
-%attr(0644,apache,apache) %config(noreplace) %{_sysconfdir}/naemon/cgi.cfg
-%attr(0644,apache,apache) %config(noreplace) %{_sysconfdir}/naemon/htpasswd
+%attr(0644,%{apacheuser},%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/thruk_local.conf
+%attr(0644,%{apacheuser},%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/cgi.cfg
+%attr(0644,%{apacheuser},%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/htpasswd
 %config(noreplace) %{_sysconfdir}/naemon/naglint.conf
 %config(noreplace) %{_sysconfdir}/naemon/log4perl.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/thruk
-%config(noreplace) %{_sysconfdir}/httpd/conf.d/thruk
+%config(noreplace) %{_sysconfdir}/%{apachedir}/conf.d/thruk.conf
 %config(noreplace) %{_sysconfdir}/naemon/plugins
 %config(noreplace) %{_sysconfdir}/naemon/themes
+%config(noreplace) %{_sysconfdir}/naemon/menu_local.conf
+%{_datadir}/naemon/script/thruk_auth
+%{_datadir}/naemon/script/thruk_fastcgi.pl
 %{_datadir}/naemon/root
 %{_datadir}/naemon/templates
 %{_datadir}/naemon/themes
 %{_datadir}/naemon/plugins
 %{_datadir}/naemon/lib
+%{_datadir}/naemon/Changes
+%{_datadir}/naemon/LICENSE
+%{_datadir}/naemon/menu.conf
+%{_datadir}/naemon/dist.ini
+%attr(0755,root,root) %{_datadir}/naemon/fcgid_env.sh
 %doc %{_mandir}/man3/nagexp.3
 %doc %{_mandir}/man3/naglint.3
 %doc %{_mandir}/man3/thruk.3
 %doc %{_mandir}/man8/thruk.8
-%{_datadir}/naemon/Changes
-%{_datadir}/naemon/LICENSE
 %attr(0755,naemon,naemon) %{logdir}
 
 %files thruk-libs

@@ -4,12 +4,15 @@ all:
 	cd gui && yes n | PERL5LIB=$(shell pwd)/libs/local-lib/dest/lib/perl5 perl Makefile.PL
 
 install:
-	cd gui && make install
+	cd gui && make install naemon-patch
 	mkdir -p ${DESTDIR}/usr/share/naemon/
 	cp -rp libs/local-lib/dest/lib/perl5 ${DESTDIR}/usr/share/naemon/
 	# clean up some old files
+	rm -rf ${DESTDIR}/etc/naemon/themes/themes-available/{Wakizashi,Neat}
+	rm -rf ${DESTDIR}/etc/naemon/themes/themes-enabled/{Wakizashi,Neat}
 	rm -rf ${DESTDIR}/usr/share/naemon/themes/themes-available/{Wakizashi,Neat}
 	rm -rf ${DESTDIR}/usr/share/naemon/plugins/plugins-available/reports
+	rm -rf ${DESTDIR}/etc/naemon/plugins/plugins-available/reports
 
 update: update-git
 	# this can later be changed to release version
@@ -28,3 +31,4 @@ update-git:
 clean:
 	-cd libs && make clean
 	-cd gui && make clean
+	rm -f thruk_local.conf
