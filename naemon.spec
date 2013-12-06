@@ -316,7 +316,8 @@ exit 0
 #%attr(0755,root,root) %{_includedir}/naemon/
 
 %files livestatus
-%{_libdir}/naemon/mk-livestatus/livestatus.o
+%attr(0755,root,root) %{_bindir}/unixcat
+%attr(0644,root,root) %{_libdir}/naemon/mk-livestatus/livestatus.o
 
 %files thruk
 %defattr(-, root, root, 0755)
