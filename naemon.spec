@@ -127,12 +127,12 @@ This package contains the thruk gui for %{name}
     --libexecdir="%{_libdir}/naemon/plugins" \
     --libdir="%{_libdir}/naemon" \
     --localstatedir="%{_localstatedir}/lib/naemon" \
-    --with-temp-dir="%{_localstatedir}/cache/naemon/" \
+    --with-temp-dir="%{_localstatedir}/cache/naemon" \
     --with-checkresult-dir="%{_localstatedir}/cache/naemon/checkresults" \
     --sysconfdir="%{_sysconfdir}/naemon" \
     --mandir="%{_mandir}" \
     --with-init-dir="%{_initrddir}" \
-    --with-logrotate-dir="%{_sysconfdir}/logrotate.d/" \
+    --with-logrotate-dir="%{_sysconfdir}/logrotate.d" \
     --with-naemon-user="naemon" \
     --with-naemon-group="naemon" \
     --with-lockfile="%{_localstatedir}/cache/naemon/naemon.pid" \
@@ -141,7 +141,7 @@ This package contains the thruk gui for %{name}
     --with-thruk-libs="%{_datadir}/naemon/perl5" \
     --with-thruk-temp-dir="%{_localstatedir}/cache/naemon/thruk" \
     --with-thruk-var-dir="%{_localstatedir}/lib/naemon/thruk" \
-    --with-httpd-conf="%{_sysconfdir}/%{apachedir}/conf.d/" \
+    --with-httpd-conf="%{_sysconfdir}/%{apachedir}/conf.d" \
     --with-htmlurl="/naemon"
 # TODO: remove -j 1
 %{__make} %{?_smp_mflags} -j 1 all
