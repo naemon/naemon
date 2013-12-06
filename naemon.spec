@@ -1,5 +1,4 @@
 %define logmsg logger -t %{name}/rpm
-%define logdir %{_localstatedir}/log/naemon
 %if %{defined suse_version}
 %define apacheuser wwwrun
 %define apachegroup www
@@ -8,12 +7,6 @@
 %define apacheuser apache
 %define apachegroup apache
 %define apachedir httpd
-%endif
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=894903
-# sharedstatedir set to /usr/com
-%if "%{_sharedstatedir}" == "/usr/com"
-%define _sharedstatedir /var/lib
 %endif
 
 Summary: Open Source host, service and network monitoring program
@@ -133,23 +126,21 @@ This package contains the thruk gui for %{name}
     --datadir="%{_datadir}/naemon" \
     --libexecdir="%{_libdir}/naemon/plugins" \
     --libdir="%{_libdir}/naemon" \
-    --localstatedir="%{_localstatedir}/naemon" \
-    --sharedstatedir="%{_sharedstatedir}/naemon" \
-    --with-temp-dir="/var/cache/naemon/" \
-    --with-checkresult-dir="%{_localstatedir}/naemon/spool/checkresults" \
+    --localstatedir="%{_localstatedir}/lib/naemon" \
+    --with-temp-dir="%{_localstatedir}/cache/naemon/" \
+    --with-checkresult-dir="%{_localstatedir}/cache/naemon/checkresults" \
     --sysconfdir="%{_sysconfdir}/naemon" \
     --mandir="%{_mandir}" \
     --with-init-dir="%{_initrddir}" \
-    --with-log-dir="%{logdir}/" \
     --with-logrotate-dir="%{_sysconfdir}/logrotate.d/" \
     --with-naemon-user="naemon" \
     --with-naemon-group="naemon" \
-    --with-lockfile="%{_localstatedir}/naemon/naemon.pid" \
+    --with-lockfile="%{_localstatedir}/cache/naemon/naemon.pid" \
     --with-thruk-user="%{apacheuser}" \
     --with-thruk-group="%{apachegroup}" \
     --with-thruk-libs="%{_datadir}/naemon/perl5" \
-    --with-thruk-temp-dir="/var/cache/naemon/thruk" \
-    --with-thruk-var-dir="%{_sharedstatedir}/naemon/thruk" \
+    --with-thruk-temp-dir="%{_localstatedir}/cache/naemon/thruk" \
+    --with-thruk-var-dir="%{_localstatedir}/lib/naemon/thruk" \
     --with-httpd-conf="%{_sysconfdir}/%{apachedir}/conf.d/" \
     --with-htmlurl="/naemon"
 # TODO: remove -j 1
@@ -162,7 +153,8 @@ This package contains the thruk gui for %{name}
     INSTALL_OPTS="" \
     COMMAND_OPTS="" \
     INIT_OPTS=""
-mkdir -p %{buildroot}%{_localstatedir}/naemon/spool/checkresults
+mkdir -p %{buildroot}%{_localstatedir}/cache/naemon/checkresults
+mkdir -p %{buildroot}%{_localstatedir}/lib/naemon
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -171,7 +163,7 @@ mkdir -p %{buildroot}%{_localstatedir}/naemon/spool/checkresults
 
 %pre core
 if ! /usr/bin/id naemon &>/dev/null; then
-    /usr/sbin/useradd -r -d %{logdir} -s /bin/sh -c "naemon" naemon || \
+    /usr/sbin/useradd -r -d %{_localstatedir}/lib/naemon -s /bin/sh -c "naemon" naemon || \
         %logmsg "Unexpected error adding user \"naemon\". Aborting installation."
 fi
 if ! /usr/bin/getent group naemon &>/dev/null; then
@@ -205,9 +197,21 @@ exit 0
 /sbin/service naemon condrestart &>/dev/null || :
 
 
+%post livestatus
+if [ -e /etc/naemon/naemon.cfg ]; then
+  sed -i /etc/naemon/naemon.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/naemon/mk-livestatus/livestatus.o.*\)~\1~'
+fi
+exit 0
+
+%postun livestatus
+if [ -e /etc/naemon/naemon.cfg ]; then
+  sed -i /etc/naemon/naemon.cfg -e 's~\(broker_module=/usr/lib[0-9]*/naemon/mk-livestatus/livestatus.o.*\)~#\1~'
+fi
+exit 0
+
 
 %pre thruk
-# save themes, plugins and ssi so we don't reenable them on every update
+# save themes, plugins so we don't reenable them on every update
 rm -rf /tmp/thruk_update
 if [ -d /etc/naemon/themes/themes-enabled/. ]; then
   mkdir -p /tmp/thruk_update/themes
@@ -217,17 +221,13 @@ if [ -d /etc/naemon/plugins/plugins-enabled/. ]; then
   mkdir -p /tmp/thruk_update/plugins
   cp -rp /etc/naemon/plugins/plugins-enabled/* /tmp/thruk_update/plugins/
 fi
-if [ -d /etc/naemon/ssi/. ]; then
-  mkdir -p /tmp/thruk_update/ssi
-  cp -rp /etc/naemon/ssi/* /tmp/thruk_update/ssi/
-fi
 exit 0
 
 %post thruk
 chkconfig --add thruk
-mkdir -p /var/cache/naemon/thruk/reports %{logdir} /etc/naemon/bp /var/lib/naemon/thruk
-touch %{logdir}/thruk.log
-chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk %{logdir}/thruk.log /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk
+mkdir -p /var/cache/naemon/thruk/reports /var/log/thruk /etc/naemon/bp /var/lib/naemon/thruk
+touch /var/log/thruk/thruk.log
+chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk /var/log/thruk/thruk.log /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk
 /usr/bin/crontab -l -u %{apacheuser} 2>/dev/null | /usr/bin/crontab -u %{apacheuser} -
 %if %{defined suse_version}
 a2enmod alias
@@ -259,10 +259,6 @@ if [ -d /tmp/thruk_update/plugins/. ]; then
   cp -rp /tmp/thruk_update/plugins/* /etc/naemon/plugins/plugins-enabled/
 fi
 echo "plugins enabled:" $(ls /etc/naemon/plugins/plugins-enabled/)
-if [ -d /tmp/thruk_update/ssi/. ]; then
-  rm -f /etc/naemon/ssi/*
-  cp -rp /tmp/thruk_update/ssi/* /etc/naemon/ssi/
-fi
 rm -rf /tmp/thruk_update
 
 %preun thruk
@@ -298,19 +294,17 @@ exit 0
 %files
 
 %files core
-%defattr(-, root, root, 0755)
 %attr(755,root,root) %{_bindir}/naemon
 %attr(0755,root,root) %{_initrddir}/naemon
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/conf.d
-%attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/naemon.cfg
-%attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/resource.cfg
-%attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/conf.d/*.cfg
-%attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/conf.d/templates/*.cfg
-%attr(0755,naemon,naemon) %dir %{_localstatedir}/naemon/spool/checkresults
-%attr(0755,naemon,naemon) %dir %{_localstatedir}/naemon/
-%attr(0755,naemon,naemon) %dir /var/cache/naemon
-%attr(0755,naemon,naemon) %{logdir}
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/naemon.cfg
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/resource.cfg
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/conf.d/*.cfg
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/conf.d/templates/*.cfg
+%attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon/checkresults
+%attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon
+%attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/naemon
 
 #%files devel
 #%attr(0755,root,root) %{_includedir}/naemon/
@@ -320,16 +314,16 @@ exit 0
 %attr(0644,root,root) %{_libdir}/naemon/mk-livestatus/livestatus.o
 
 %files thruk
-%defattr(-, root, root, 0755)
-%{_bindir}/thruk
-%{_bindir}/naglint
-%{_bindir}/nagexp
-%{_initrddir}/thruk
-%attr(0755,%{apacheuser},%{apachegroup}) %{_sysconfdir}/naemon/ssi
+%attr(0755,root, root) %{_bindir}/thruk
+%attr(0755,root, root) %{_bindir}/naglint
+%attr(0755,root, root) %{_bindir}/nagexp
+%attr(0755,root, root) %{_initrddir}/thruk
+%config %{_sysconfdir}/naemon/ssi
 %config %{_sysconfdir}/naemon/thruk.conf
 %attr(0644,%{apacheuser},%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/thruk_local.conf
 %attr(0644,%{apacheuser},%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/cgi.cfg
 %attr(0644,%{apacheuser},%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/htpasswd
+%attr(0755,%{apacheuser},%{apachegroup}) %dir /var/log/thruk/
 %config(noreplace) %{_sysconfdir}/naemon/naglint.conf
 %config(noreplace) %{_sysconfdir}/naemon/log4perl.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/thruk
@@ -337,8 +331,8 @@ exit 0
 %config(noreplace) %{_sysconfdir}/naemon/plugins
 %config(noreplace) %{_sysconfdir}/naemon/themes
 %config(noreplace) %{_sysconfdir}/naemon/menu_local.conf
-%{_datadir}/naemon/script/thruk_auth
-%{_datadir}/naemon/script/thruk_fastcgi.pl
+%attr(0755,root, root) %{_datadir}/naemon/script/thruk_auth
+%attr(0755,root, root) %{_datadir}/naemon/script/thruk_fastcgi.pl
 %{_datadir}/naemon/root
 %{_datadir}/naemon/templates
 %{_datadir}/naemon/themes
@@ -353,7 +347,6 @@ exit 0
 %doc %{_mandir}/man3/naglint.3
 %doc %{_mandir}/man3/thruk.3
 %doc %{_mandir}/man8/thruk.8
-%attr(0755,naemon,naemon) %{logdir}
 
 %files thruk-libs
 %attr(0755,root,root) %{_datadir}/naemon/perl5
