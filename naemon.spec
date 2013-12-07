@@ -145,8 +145,7 @@ This package contains the thruk gui for %{name}
     --with-thruk-var-dir="%{_localstatedir}/lib/naemon/thruk" \
     --with-httpd-conf="%{_sysconfdir}/%{apachedir}/conf.d" \
     --with-htmlurl="/naemon"
-# TODO: remove -j 1
-%{__make} %{?_smp_mflags} -j 1 all
+%{__make} %{?_smp_mflags} all
 
 %install
 %{__rm} -rf %{buildroot}
@@ -249,7 +248,9 @@ if [ "$(getenforce 2>/dev/null)" = "Enforcing" ]; then
   echo "******************************************";
 fi
 %endif
-/usr/bin/thruk -a clearcache,installcron --local > /dev/null
+if [ -d %{_datadir}/naemon/perl5 ]; then
+  /usr/bin/thruk -a clearcache,installcron --local > /dev/null
+fi
 echo "Thruk has been configured for http://$(hostname)/naemon/. User and password is 'thrukadmin'."
 exit 0
 
@@ -268,8 +269,10 @@ rm -rf /tmp/thruk_update
 
 %preun thruk
 if [ $1 = 0 ]; then
-    # last version will be deinstalled
+  # last version will be deinstalled
+  if [ -d %{_datadir}/naemon/perl5 ]; then
     /usr/bin/thruk -a uninstallcron --local
+  fi
 fi
 /etc/init.d/thruk stop
 chkconfig --del thruk >/dev/null 2>&1
@@ -296,6 +299,20 @@ esac
 exit 0
 
 
+%preun thruk-libs
+if [ $1 = 0 ]; then
+  # last version will be deinstalled
+  if [ -e /usr/bin/thruk ]; then
+    /usr/bin/thruk -a uninstallcron --local
+  fi
+fi
+exit 0
+
+%post thruk-libs
+if [ -e /usr/bin/thruk ]; then
+  /usr/bin/thruk -a clearcache,installcron --local > /dev/null
+fi
+exit 0
 
 
 %files
