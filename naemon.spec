@@ -71,6 +71,8 @@ contains the %{name} core
 %package livestatus
 Summary: %{name} livestatus eventbroker module
 Group: Applications/System
+Requires: %{name}-core       = %{version}-%{release}
+Requires(post): %{name}-core = %{version}-%{release}
 
 %description livestatus
 contains the %{name} livestatus eventbroker module
@@ -191,6 +193,9 @@ if [ $1 -eq 0 ]; then
     /sbin/service naemon stop &>/dev/null || :
     /sbin/chkconfig --del naemon
 fi
+rmdir /etc/naemon/conf.d/templates 2>/dev/null
+rmdir /etc/naemon/conf.d 2>/dev/null
+rmdir /etc/naemon 2>/dev/null
 exit 0
 
 %postun core
@@ -199,13 +204,13 @@ exit 0
 
 %post livestatus
 if [ -e /etc/naemon/naemon.cfg ]; then
-  sed -i /etc/naemon/naemon.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/naemon/mk-livestatus/livestatus.o.*\)~\1~'
+  sed -i /etc/naemon/naemon.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/naemon/livestatus.o.*\)~\1~'
 fi
 exit 0
 
 %postun livestatus
 if [ -e /etc/naemon/naemon.cfg ]; then
-  sed -i /etc/naemon/naemon.cfg -e 's~\(broker_module=/usr/lib[0-9]*/naemon/mk-livestatus/livestatus.o.*\)~#\1~'
+  sed -i /etc/naemon/naemon.cfg -e 's~\(broker_module=/usr/lib[0-9]*/naemon/livestatus.o.*\)~#\1~'
 fi
 exit 0
 
@@ -268,6 +273,8 @@ if [ $1 = 0 ]; then
 fi
 /etc/init.d/thruk stop
 chkconfig --del thruk >/dev/null 2>&1
+rmdir /etc/naemon/bp 2>/dev/null
+rmdir /etc/naemon 2>/dev/null
 exit 0
 
 %postun thruk
@@ -311,7 +318,7 @@ exit 0
 
 %files livestatus
 %attr(0755,root,root) %{_bindir}/unixcat
-%attr(0644,root,root) %{_libdir}/naemon/mk-livestatus/livestatus.o
+%attr(0644,root,root) %{_libdir}/naemon/livestatus.o
 
 %files thruk
 %attr(0755,root, root) %{_bindir}/thruk
