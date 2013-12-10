@@ -1,0 +1,44 @@
+#!/usr/bin/make -f
+# debian/rules makefile for naemon
+
+export DH_VERBOSE=1
+DESTDIR=$(CURDIR)/debian/tmp/
+PERLARCH=$(shell perl -e 'use Config; print $$Config{archname}')
+
+override_dh_auto_configure:
+	dh_auto_configure -- --prefix=/usr \
+				--bindir="/usr/bin" \
+				--datadir="/usr/share/naemon" \
+				--libexecdir="/usr/lib/naemon/plugins" \
+				--libdir="/usr/lib/naemon" \
+				--localstatedir="/var/lib/naemon" \
+				--with-temp-dir="/var/cache/naemon" \
+				--with-checkresult-dir="/var/cache/naemon/checkresults" \
+				--sysconfdir="/etc/naemon" \
+				--mandir="/usr/share/man" \
+				--enable-event-broker \
+				--with-init-dir="/etc/init.d" \
+				--with-logrotate-dir="/etc/logrotate.d" \
+				--with-naemon-user="naemon" \
+				--with-naemon-group="naemon" \
+				--with-lockfile="/var/run/naemon/naemon.pid" \
+				--with-thruk-user="www-data" \
+				--with-thruk-group="www-data" \
+				--with-thruk-libs="/usr/lib/naemon/perl5" \
+				--with-thruk-temp-dir="/var/cache/naemon/thruk" \
+				--with-thruk-var-dir="/var/lib/naemon/thruk" \
+				--with-httpd-conf="/etc/apache2/conf.d" \
+				--with-htmlurl="/naemon"
+	echo "thruk: embedded-library usr/lib/thruk/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so: zlib" >> debian/naemon-thruk-libs.lintian-overrides
+	echo "thruk: embedded-zlib ./usr/lib/thruk/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so"        >> debian/naemon-thruk-libs.lintian-overrides
+
+override_dh_auto_install:
+	dh_auto_install
+	# because we globally disabled binary striping, we have to do this manually for some files
+	strip debian/tmp/usr/bin/naemon
+	strip debian/tmp/usr/bin/unixcat
+
+
+%:
+	dh $@
+

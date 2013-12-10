@@ -1,3 +1,4 @@
+include gui/script/append.make.options
 
 all:
 	cd libs && make
@@ -5,8 +6,8 @@ all:
 
 install:
 	cd gui && make install naemon-patch
-	mkdir -p ${DESTDIR}/usr/share/naemon/
-	cp -rp libs/local-lib/dest/lib/perl5 ${DESTDIR}/usr/share/naemon/
+	mkdir -p ${DESTDIR}${THRUKLIBS}
+	cp -rp libs/local-lib/dest/lib/perl5/* ${DESTDIR}${THRUKLIBS}/
 	# clean up some old files
 	rm -rf ${DESTDIR}/etc/naemon/themes/themes-available/{Wakizashi,Neat}
 	rm -rf ${DESTDIR}/etc/naemon/themes/themes-enabled/{Wakizashi,Neat}

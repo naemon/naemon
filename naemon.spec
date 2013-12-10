@@ -9,11 +9,11 @@
 %define apachedir httpd
 %endif
 
-Summary: Open Source host, service and network monitoring program
+Summary: Open Source Host, Service And Network Monitoring Program
 Name: naemon
 Version: 0.0.1
 Release: 1%{?dist}
-License: GPL
+License: GPLv2
 Group: Applications/System
 URL: http://www.naemon.org/
 Packager: Sven Nierlein <sven.nierlein@consol.de>
@@ -61,25 +61,25 @@ Naemon ships the Thruk gui with extended reporting and dashboard features.
 
 
 %package core
-Summary: %{name} core
-Group: Applications/System
+Summary:   Naemon Monitoring Core
+Group:     Applications/System
 
 %description core
 contains the %{name} core
 
 
 %package livestatus
-Summary: %{name} livestatus eventbroker module
-Group: Applications/System
-Requires: %{name}-core       = %{version}-%{release}
+Summary:        Naemon Livestatus Eventbroker Module
+Group:          Applications/System
+Requires:       %{name}-core = %{version}-%{release}
 Requires(post): %{name}-core = %{version}-%{release}
 
 %description livestatus
 contains the %{name} livestatus eventbroker module
 
 
-%package     thruk-libs
-Summary:     perl librarys for naemons thruk gui
+%package thruk-libs
+Summary:     Perl Librarys For Naemons Thruk Gui
 Group:       Applications/System
 AutoReqProv: no
 Requires:    %{name}-thruk = %{version}-%{release}
@@ -88,13 +88,13 @@ Requires:    %{name}-thruk = %{version}-%{release}
 This package contains the library files for the thruk gui
 
 
-%package     thruk
-Summary:     thruk gui for %{name}
+%package thruk
+Summary:     Thruk Gui For Naemon
 Group:       Applications/System
 Requires:    %{name}-thruk-libs = %{version}-%{release}
 Requires(preun): %{name}-thruk-libs = %{version}-%{release}
 Requires(post): %{name}-thruk-libs = %{version}-%{release}
-Requires:    perl
+Requires:    perl logrotate gd wget
 Conflicts:   thruk
 AutoReqProv: no
 %if %{defined suse_version}
@@ -108,7 +108,7 @@ This package contains the thruk gui for %{name}
 
 
 #%package devel
-#Summary: development files for %{name}
+#Summary: Development Files For Naemon
 #Group: Development/Libraries
 #Requires: %{name} = %{version}-%{release}
 #
@@ -133,6 +133,7 @@ This package contains the thruk gui for %{name}
     --with-checkresult-dir="%{_localstatedir}/cache/naemon/checkresults" \
     --sysconfdir="%{_sysconfdir}/naemon" \
     --mandir="%{_mandir}" \
+    --enable-event-broker \
     --with-init-dir="%{_initrddir}" \
     --with-logrotate-dir="%{_sysconfdir}/logrotate.d" \
     --with-naemon-user="naemon" \
@@ -140,7 +141,7 @@ This package contains the thruk gui for %{name}
     --with-lockfile="%{_localstatedir}/cache/naemon/naemon.pid" \
     --with-thruk-user="%{apacheuser}" \
     --with-thruk-group="%{apachegroup}" \
-    --with-thruk-libs="%{_datadir}/naemon/perl5" \
+    --with-thruk-libs="%{_libdir}/naemon/perl5" \
     --with-thruk-temp-dir="%{_localstatedir}/cache/naemon/thruk" \
     --with-thruk-var-dir="%{_localstatedir}/lib/naemon/thruk" \
     --with-httpd-conf="%{_sysconfdir}/%{apachedir}/conf.d" \
@@ -154,8 +155,10 @@ This package contains the thruk gui for %{name}
     INSTALL_OPTS="" \
     COMMAND_OPTS="" \
     INIT_OPTS=""
-mkdir -p %{buildroot}%{_localstatedir}/cache/naemon/checkresults
-mkdir -p %{buildroot}%{_localstatedir}/lib/naemon
+# because we globally disabled binary striping, we have to do this manually for some files
+strip %{buildroot}%{_bindir}/naemon
+strip %{buildroot}%{_bindir}/unixcat
+mv %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/naemon-thruk
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -188,17 +191,18 @@ else
 fi
 
 %preun core
-if [ $1 -eq 0 ]; then
-    /sbin/service naemon stop &>/dev/null || :
-    /sbin/chkconfig --del naemon
-fi
-rmdir /etc/naemon/conf.d/templates 2>/dev/null
-rmdir /etc/naemon/conf.d 2>/dev/null
-rmdir /etc/naemon 2>/dev/null
+case "$*" in
+  0)
+    # POSTUN
+    chkconfig --del naemon >/dev/null 2>&1
+    %{insserv_cleanup}
+    ;;
+  1)
+    # POSTUPDATE
+    ;;
+  *) echo case "$*" not handled in postun
+esac
 exit 0
-
-%postun core
-/sbin/service naemon condrestart &>/dev/null || :
 
 
 %post livestatus
@@ -229,7 +233,7 @@ exit 0
 
 %post thruk
 chkconfig --add thruk
-mkdir -p /var/cache/naemon/thruk/reports /var/log/thruk /etc/naemon/bp /var/lib/naemon/thruk
+mkdir -p /var/lib/naemon/thruk /var/cache/naemon/thruk /etc/naemon/bp /var/log/thruk
 touch /var/log/thruk/thruk.log
 chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk /var/log/thruk/thruk.log /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk
 /usr/bin/crontab -l -u %{apacheuser} 2>/dev/null | /usr/bin/crontab -u %{apacheuser} -
@@ -248,9 +252,22 @@ if [ "$(getenforce 2>/dev/null)" = "Enforcing" ]; then
   echo "******************************************";
 fi
 %endif
-if [ -d %{_datadir}/naemon/perl5 ]; then
+if [ -d %{_libdir}/naemon/perl5 ]; then
   /usr/bin/thruk -a clearcache,installcron --local > /dev/null
 fi
+if /usr/bin/id %{apacheuser} &>/dev/null; then
+    if ! /usr/bin/id -Gn %{apacheuser} 2>/dev/null | grep -q naemon ; then
+%if %{defined suse_version}
+        /usr/sbin/groupmod -A %{apacheuser} naemon >/dev/null
+%else
+        /usr/sbin/usermod -a -G naemon %{apacheuser} >/dev/null
+%endif
+    fi
+else
+    %logmsg "User \"%{apacheuser}\" does not exist and is not added to group \"naemon\". Sending commands to naemon from the CGIs is not possible."
+fi
+
+
 echo "Thruk has been configured for http://$(hostname)/naemon/. User and password is 'thrukadmin'."
 exit 0
 
@@ -270,7 +287,7 @@ rm -rf /tmp/thruk_update
 %preun thruk
 if [ $1 = 0 ]; then
   # last version will be deinstalled
-  if [ -d %{_datadir}/naemon/perl5 ]; then
+  if [ -d %{_libdir}/naemon/perl5 ]; then
     /usr/bin/thruk -a uninstallcron --local
   fi
 fi
@@ -347,16 +364,18 @@ exit 0
 %attr(0644,%{apacheuser},%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/thruk_local.conf
 %attr(0644,%{apacheuser},%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/cgi.cfg
 %attr(0644,%{apacheuser},%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/htpasswd
+%attr(0755,%{apacheuser},%{apachegroup}) %dir %{_sysconfdir}/naemon/bp
 %attr(0755,%{apacheuser},%{apachegroup}) %dir /var/log/thruk/
 %config(noreplace) %{_sysconfdir}/naemon/naglint.conf
 %config(noreplace) %{_sysconfdir}/naemon/log4perl.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/thruk
+%config(noreplace) %{_sysconfdir}/logrotate.d/naemon-thruk
 %config(noreplace) %{_sysconfdir}/%{apachedir}/conf.d/thruk.conf
 %config(noreplace) %{_sysconfdir}/naemon/plugins
 %config(noreplace) %{_sysconfdir}/naemon/themes
 %config(noreplace) %{_sysconfdir}/naemon/menu_local.conf
 %attr(0755,root, root) %{_datadir}/naemon/script/thruk_auth
 %attr(0755,root, root) %{_datadir}/naemon/script/thruk_fastcgi.pl
+%attr(0755,%{apacheuser},%{apachegroup}) %dir %{_localstatedir}/cache/naemon/thruk
 %{_datadir}/naemon/root
 %{_datadir}/naemon/templates
 %{_datadir}/naemon/themes
@@ -373,7 +392,7 @@ exit 0
 %doc %{_mandir}/man8/thruk.8
 
 %files thruk-libs
-%attr(0755,root,root) %{_datadir}/naemon/perl5
+%attr(-,root,root) %{_libdir}/naemon/perl5
 
 %changelog
 * Tue Nov 26 2013 Sven Nierlein <sven.nierlein@consol.de> 0.0.1-1

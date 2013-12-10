@@ -72,3 +72,6 @@ naemon-${VERSION}.tar.gz: dist
 
 rpm: naemon-${VERSION}.tar.gz
 	rpmbuild -tb naemon-${VERSION}.tar.gz
+
+deb:
+	debuild -i -us -uc -b

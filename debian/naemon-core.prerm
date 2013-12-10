@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+if [ -x "/etc/init.d/naemon" ]; then
+    if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
+        invoke-rc.d naemon stop || true
+    else
+        /etc/init.d/naemon stop || true
+    fi
+fi
+
+#DEBHELPER#

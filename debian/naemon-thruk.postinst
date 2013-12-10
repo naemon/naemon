@@ -1,0 +1,76 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+    configure)
+        # restore themes and plugins
+        if [ -d /tmp/thruk_update/themes/. ]; then
+          rm -f /etc/naemon/themes/themes-enabled/*
+          cp -rp /tmp/thruk_update/themes/* /etc/naemon/themes/themes-enabled/
+        fi
+        if [ -d /tmp/thruk_update/plugins/. ]; then
+          rm -f /etc/naemon/plugins/plugins-enabled/*
+          cp -rp /tmp/thruk_update/plugins/* /etc/naemon/plugins/plugins-enabled/
+        fi
+        echo "plugins enabled:" $(ls /etc/naemon/plugins/plugins-enabled/)
+        rm -rf /tmp/thruk_update
+
+        # enable modules we need
+        a2enmod alias
+        a2enmod fcgid
+        a2enmod auth_basic
+        a2enmod rewrite
+
+        # enable thruk itself
+        if [ -x '/usr/sbin/a2enconf' ]; then
+            [ -f /etc/apache2/conf-enabled/thruk.conf ] || /usr/sbin/a2enconf thruk
+        fi
+
+        # set permissions
+        mkdir -p /var/lib/naemon/thruk /var/log/thruk /var/cache/naemon/thruk/reports /etc/naemon/bp
+        chown -R www-data: /var/lib/naemon/thruk \
+                           /var/cache/naemon/thruk \
+                           /var/log/thruk \
+                           /etc/naemon/plugins/plugins-enabled \
+                           /etc/naemon/thruk_local.conf \
+                           /etc/naemon/bp
+        chown 755 /usr/share/naemon/fcgid_env.sh
+        chown 755 /usr/bin/thruk
+
+        # reload new apache config
+        if which invoke-rc.d >/dev/null 2>&1; then
+            invoke-rc.d apache2 reload || true
+        else
+            /etc/init.d/apache2 reload || true
+        fi
+
+        # create empty crontab
+        /usr/bin/crontab -l -u www-data 2>/dev/null | /usr/bin/crontab -u www-data -
+
+        # update cron entries
+        /usr/bin/thruk -a clearcache,installcron --local > /dev/null
+
+        # add apache user to group naemon
+        if /usr/bin/id www-data &>/dev/null; then
+            if ! /usr/bin/id -Gn www-data 2>/dev/null | grep -q naemon ; then
+                /usr/bin/gpasswd -a www-data naemon >/dev/null
+            fi
+        fi
+
+        echo "Thruk has been configured for http://$(hostname)/thruk/. User and password is 'thrukadmin'."
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+
+#DEBHELPER#
+
+exit 0

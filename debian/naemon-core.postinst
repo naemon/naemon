@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+#if we stop naemon in prerm we should also start it here..
+if [ -x "/etc/init.d/naemon" ]; then
+    if ! /etc/init.d/naemon status >/dev/null; then
+
+        if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
+            invoke-rc.d naemon start || true
+        else
+            /etc/init.d/naemon start || true
+        fi
+    fi
+fi
+
+#DEBHELPER#

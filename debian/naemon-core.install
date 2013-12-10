@@ -1,0 +1,8 @@
+/usr/bin/naemon
+/etc/init.d/naemon
+/etc/naemon/conf.d
+/etc/naemon/naemon.cfg
+/etc/naemon/resource.cfg
+/etc/naemon/conf.d/*.cfg
+/etc/naemon/conf.d/templates/*.cfg
+/var/cache/naemon/checkresults
