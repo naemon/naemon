@@ -29,8 +29,8 @@ override_dh_auto_configure:
 				--with-thruk-var-dir="/var/lib/naemon/thruk" \
 				--with-httpd-conf="/etc/apache2/conf.d" \
 				--with-htmlurl="/naemon"
-	echo "thruk: embedded-library usr/lib/thruk/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so: zlib" >> debian/naemon-thruk-libs.lintian-overrides
-	echo "thruk: embedded-zlib ./usr/lib/thruk/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so"        >> debian/naemon-thruk-libs.lintian-overrides
+	echo "naemon-thruk-libs: embedded-library usr/lib/naemon/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so: zlib" >> debian/naemon-thruk-libs.lintian-overrides
+	echo "naemon-thruk-libs: embedded-zlib ./usr/lib/naemon/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so"        >> debian/naemon-thruk-libs.lintian-overrides
 
 override_dh_auto_install:
 	dh_auto_install
