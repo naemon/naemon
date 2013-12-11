@@ -5,6 +5,8 @@ export DH_VERBOSE=1
 DESTDIR=$(CURDIR)/debian/tmp/
 PERLARCH=$(shell perl -e 'use Config; print $$Config{archname}')
 
+HTTPDCONF=$(shell if [ -d "/etc/apache2/conf-available" ]; then echo "/etc/apache2/conf-available"; else echo "/etc/apache2/conf.d"; fi )
+
 override_dh_auto_configure:
 	dh_auto_configure -- --prefix=/usr \
 				--bindir="/usr/bin" \
@@ -27,10 +29,11 @@ override_dh_auto_configure:
 				--with-thruk-libs="/usr/lib/naemon/perl5" \
 				--with-thruk-temp-dir="/var/cache/naemon/thruk" \
 				--with-thruk-var-dir="/var/lib/naemon/thruk" \
-				--with-httpd-conf="/etc/apache2/conf.d" \
+				--with-httpd-conf="$(HTTPDCONF)" \
 				--with-htmlurl="/naemon"
 	echo "naemon-thruk-libs: embedded-library usr/lib/naemon/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so: zlib" >> debian/naemon-thruk-libs.lintian-overrides
 	echo "naemon-thruk-libs: embedded-zlib ./usr/lib/naemon/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so"        >> debian/naemon-thruk-libs.lintian-overrides
+	echo $(HTTPDCONF)/thruk.conf >> debian/naemon-thruk.install
 
 override_dh_auto_install:
 	dh_auto_install

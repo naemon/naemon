@@ -10,7 +10,6 @@
 /etc/naemon/naglint.conf
 /etc/naemon/log4perl.conf
 /etc/logrotate.d/thruk
-/etc/apache2/conf.d/thruk.conf
 /etc/naemon/plugins
 /etc/naemon/themes
 /etc/naemon/menu_local.conf
