@@ -13,7 +13,7 @@ Upstream Author:
     Dan Wittenberg <dwittenberg2008@gmail.com>
     Sven Nierlein <sven@nierlein.de>
 
-Copyright:
+Original Author:
 
     Copyright (c) 1999-2008 Ethan Galstad (nagios@nagios.org)
 
@@ -36,7 +36,7 @@ Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
 
 The Debian packaging is:
 
-    Copyright (C) 2013 Sven Nierlein <sven.nierlein@consol.de>
+    Copyright (C) 2013 Naemon Core Development Team <naemon-devel@monitoring-lists.org>
 
 you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

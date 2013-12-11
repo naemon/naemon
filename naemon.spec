@@ -16,7 +16,7 @@ Release: 1%{?dist}
 License: GPLv2
 Group: Applications/System
 URL: http://www.naemon.org/
-Packager: Sven Nierlein <sven.nierlein@consol.de>
+Packager: Naemon Core Development Team <naemon-devel@monitoring-lists.org>
 Vendor: Naemon Core Development Team
 Source0: http://www.naemon.org/download/naemon/naemon-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}

@@ -1,7 +1,7 @@
 Source: naemon
 Section: net
 Priority: optional
-Maintainer: Sven Nierlein <sven.nierlein@consol.de>
+Maintainer: Naemon Core Development Team <naemon-devel@monitoring-lists.org>
 Build-Depends: debhelper (>= 7)
 Standards-Version: 3.7.3
 Homepage: http://www.naemon.org
