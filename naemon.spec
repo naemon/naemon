@@ -126,7 +126,7 @@ This package contains the thruk gui for %{name}
 %configure \
     --bindir="%{_bindir}" \
     --datadir="%{_datadir}/naemon" \
-    --libexecdir="%{_libdir}/naemon/plugins" \
+    --libexecdir="%{_libdir}/nagios/plugins" \
     --libdir="%{_libdir}/naemon" \
     --localstatedir="%{_localstatedir}/lib/naemon" \
     --with-temp-dir="%{_localstatedir}/cache/naemon" \
