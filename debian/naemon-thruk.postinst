@@ -58,7 +58,7 @@ case "$1" in
             fi
         fi
 
-        echo "Thruk has been configured for http://$(hostname)/thruk/. User and password is 'thrukadmin'."
+        echo "Thruk has been configured for http://$(hostname)/naemon/. User and password is 'thrukadmin'."
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
