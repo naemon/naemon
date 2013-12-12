@@ -9,4 +9,4 @@
 	url = https://github.com/sni/thruk_libs.git
 [submodule "naemon-livestatus"]
 	path = naemon-livestatus
-	url = git@github.com:naemon/naemon-livestatus.git
+	url = https://github.com/naemon/naemon-livestatus.git
