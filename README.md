@@ -8,9 +8,22 @@ Naemon is a fork of the aforementioned project.
 
 ## Contents
 
- * Naemon: Meta package for packaging reasons
+ * Naemon: Meta package for packaging
  * Naemon-Core: Core scheduler, worker, etc...
+ * Naemon-Livestatus: Livestatus API
  * Thruk: Web Gui
+
+### Installation ###
+
+Before installing from source, consider using prebuild native
+packages which make things a log easier and cleaner.
+Daily update packages are here: http://labs.consol.de/naemon/testing/
+
+For a fresh source installation, clone this repository and run:
+
+ ./configure
+ make
+ make [rpm|deb|install]
 
 ### More info ###
 
