@@ -2,6 +2,38 @@
 
 set -e
 
+# initialize submodules unless they exist already
+test -f naemon-core/configure.ac || git submodule init
+test -f naemon-core/configure.ac || {
+    git submodule update naemon-core
+    cd naemon-core
+    git checkout master
+    git submodule update
+    cd ..
+}
+test -f naemon-livestatus/configure.ac || {
+    git submodule update naemon-livestatus
+    cd naemon-livestatus
+    git checkout master
+    git submodule update
+    cd ..
+}
+test -f thruk/gui/configure || {
+    git submodule update thruk/gui
+    cd thruk/gui
+    git checkout integration
+    git submodule update
+    cd ../..
+}
+test -d thruk/libs/src || {
+    git submodule update thruk/libs
+    cd thruk/libs
+    git checkout master
+    git submodule update
+    cd ../..
+}
+
+# now just run the real configure scripts
 cd naemon-core
 test -f ./configure || autoreconf -i
 ./configure $*
