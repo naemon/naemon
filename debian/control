@@ -60,7 +60,7 @@ Description: contains the Naemon livestatus eventbroker module
 
 Package: naemon-thruk
 Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends},
          naemon-thruk-libs (= ${source:Version}),
          apache2, libapache2-mod-fcgid, cron, logrotate, xvfb
 Description: This package contains the thruk gui for Naemon
