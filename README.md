@@ -1,10 +1,11 @@
 ## Welcome to Naemon ##
 
-Naemon is a host/service/network monitoring program written in C and
-released under the GNU General Public License. It works by scheduling
-checks of the configured objects and then invoking plugins to do the
-actual checking. The plugin interface is 100% Nagios compatible, since
-Naemon is a fork of the aforementioned project.
+Naemon is a host/service/network monitoring program with a very fast C
+core and a Perl web interface. It is released under the GNU General
+Public License. It works by scheduling checks of the configured
+objects and then invoking plugins to do the actual checking. The
+plugin interface is 100% Nagios compatible, since Naemon is a fork of
+the aforementioned project.
 
 ## Contents
 
@@ -16,15 +17,21 @@ Naemon is a fork of the aforementioned project.
 ### Installation ###
 
 Before installing from source, consider using prebuild native
-packages which make things a log easier and cleaner.
-Daily update packages are here: http://labs.consol.de/naemon/testing/
+packages which make things a lot easier and cleaner.
+Daily updated packages for common linux systems can be found at
+http://labs.consol.de/naemon/testing/
 
-For a fresh source installation, clone this repository and run:
+For a fresh source installation, follow these steps. You will need
+a standard build environment with gcc, automake, autoconf, etc... and
+gperf and doxygen.
 
- ./configure
- make
- make [rpm|deb|install]
+    git clone --recursive https://github.com/naemon/naemon.git
+    cd naemon
+    ./configure
+    make
+    make [rpm|deb|install]
 
 ### More info ###
 
 Visit the Naemon homepage at http://www.naemon.org
+
