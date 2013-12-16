@@ -45,6 +45,8 @@ install:
 	cd naemon-core && make install install-sample-config install-rc
 	cd naemon-livestatus && make install
 	cd thruk && make install
+	# some corrections to avoid conflicts
+	mv ${DESTDIR}/usr/bin/unixcat ${DESTDIR}/usr/bin/naemon-unixcat
 
 dist:
 	rm -rf naemon-${VERSION} naemon-${VERSION}.tar.gz

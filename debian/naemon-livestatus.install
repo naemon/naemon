@@ -1,2 +1,2 @@
-/usr/bin/unixcat
+/usr/bin/naemon-unixcat
 /usr/lib/naemon/livestatus.o

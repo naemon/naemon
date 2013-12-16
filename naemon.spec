@@ -372,7 +372,7 @@ exit 0
 #%attr(0755,root,root) %{_includedir}/naemon/
 
 %files livestatus
-%attr(0755,root,root) %{_bindir}/unixcat
+%attr(0755,root,root) %{_bindir}/naemon-unixcat
 %attr(0644,root,root) %{_libdir}/naemon/livestatus.o
 
 %files thruk
