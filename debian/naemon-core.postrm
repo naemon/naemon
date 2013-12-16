@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for thruk
+# postrm script for naemon
 #
 # see: dh_installdeb(1)
 
@@ -21,27 +21,27 @@ set -e
 
 case "$1" in
     remove)
-        rm -rf /etc/apache2/conf-enabled/thruk.conf
-        rm -rf /var/cache/naemon/thruk/*
-        rmdir /etc/naemon/thruk/bp >/dev/null 2>&1 || true
+        rm -rf /var/cache/naemon/naemon.configtest \
+               /var/lib/naemon/objects.cache \
+               /var/lib/naemon/naemon.log \
+               /var/lib/naemon/archives \
+               /var/lib/naemon/objects.precache \
+               /var/lib/naemon/retention.dat \
+               /var/lib/naemon/naemon.cmd
     ;;
     upgrade)
-        rm -rf /var/cache/naemon/thruk/*
-        mkdir -p /var/cache/naemon/thruk/reports
-        chown -R www-data: /var/cache/naemon/thruk
     ;;
     purge)
-        rm -rf /etc/naemon/bp \
-               /etc/naemon/thruk.conf \
-               /etc/naemon/ssi \
-               /etc/naemon/htpasswd \
-               /etc/naemon/cgi.cfg \
-               /etc/naemon/log4perl.conf
-        rm -rf /etc/apache2/conf-enabled/thruk.conf
-        rm -rf /var/lib/naemon/thruk
+        rm -rf /var/cache/naemon/naemon.configtest \
+               /var/lib/naemon/objects.cache \
+               /var/lib/naemon/naemon.log \
+               /var/lib/naemon/archives \
+               /var/lib/naemon/objects.precache \
+               /var/lib/naemon/retention.dat \
+               /var/lib/naemon/naemon.cmd
+        rm -rf /etc/naemon/conf.d
+        rmdir /var/cache/naemon 2>/dev/null || :
         rmdir /var/lib/naemon 2>/dev/null || :
-        rm -rf /var/cache/naemon/thruk
-        rmdir /var/cache/naemon 2>/dev/null || :
     ;;
 
     failed-upgrade|abort-install|abort-upgrade|disappear)

@@ -120,7 +120,7 @@ This package contains the thruk gui for %{name}
 
 
 %prep
-%setup
+%setup -q
 
 %build
 %configure \
@@ -195,6 +195,13 @@ case "$*" in
   0)
     # POSTUN
     chkconfig --del naemon >/dev/null 2>&1
+    rm -f /var/cache/naemon/naemon.configtest \
+          /var/lib/naemon/objects.cache \
+          /var/lib/naemon/objects.precache \
+          /var/lib/naemon/retention.dat \
+          /var/lib/naemon/naemon.log \
+          /var/lib/naemon/archives \
+          /var/lib/naemon/naemon.cmd
     %{insserv_cleanup}
     ;;
   1)
@@ -209,6 +216,19 @@ exit 0
 if [ -e /etc/naemon/naemon.cfg ]; then
   sed -i /etc/naemon/naemon.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/naemon/livestatus.o.*\)~\1~'
 fi
+exit 0
+
+%preun livestatus
+case "$*" in
+  0)
+    # POSTUN
+    rm -f /var/lib/naemon/livestatus.log
+    ;;
+  1)
+    # POSTUPDATE
+    ;;
+  *) echo case "$*" not handled in postun
+esac
 exit 0
 
 %postun livestatus
@@ -301,8 +321,9 @@ exit 0
 case "$*" in
   0)
     # POSTUN
-    rm -rf /var/cache/naemon/thruk
-    rm -rf %{_datadir}/naemon/root/thruk/plugins
+    rm -rf /var/cache/naemon/thruk \
+           %{_datadir}/naemon/root/thruk/plugins \
+           /var/lib/naemon/thruk
     %{insserv_cleanup}
     ;;
   1)

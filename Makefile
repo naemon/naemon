@@ -60,7 +60,8 @@ dist:
 	cd naemon-${VERSION}/thruk/gui && ./script/thruk_patch_makefile.pl
 	cd naemon-${VERSION}/thruk/gui && make staticfiles
 	tar cf "naemon-${VERSION}.tar" \
-		--exclude=thruk.spec \
+		--exclude=thruk/gui/support/thruk.spec \
+		--exclude=thruk/gui/debian \
 		--exclude=naemon-core/naemon.spec \
 		--exclude=.gitmodules \
 		--exclude=.gitignore \

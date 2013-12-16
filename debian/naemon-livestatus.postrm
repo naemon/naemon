@@ -18,15 +18,14 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
+
 case "$1" in
     remove)
-        if [ -e /etc/naemon/naemon.cfg ]; then
-          sed -i /etc/naemon/naemon.cfg -e 's~\(broker_module=/usr/lib[0-9]*/naemon/livestatus.o.*\)~#\1~'
-        fi
     ;;
     upgrade)
     ;;
     purge)
+        rm -rf /var/lib/naemon/livestatus.log
     ;;
 
     failed-upgrade|abort-install|abort-upgrade|disappear)
