@@ -157,7 +157,7 @@ This package contains the thruk gui for %{name}
     INIT_OPTS=""
 # because we globally disabled binary striping, we have to do this manually for some files
 strip %{buildroot}%{_bindir}/naemon
-strip %{buildroot}%{_bindir}/unixcat
+strip %{buildroot}%{_bindir}/naemon-unixcat
 mv %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/naemon-thruk
 
 %clean

@@ -39,7 +39,7 @@ override_dh_auto_install:
 	dh_auto_install
 	# because we globally disabled binary striping, we have to do this manually for some files
 	strip debian/tmp/usr/bin/naemon
-	strip debian/tmp/usr/bin/unixcat
+	strip debian/tmp/usr/bin/naemon-unixcat
 
 
 %:
