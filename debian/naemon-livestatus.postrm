@@ -25,7 +25,7 @@ case "$1" in
     upgrade)
     ;;
     purge)
-        rm -rf /var/lib/naemon/livestatus.log
+        rm -rf /var/log/naemon/livestatus.log
     ;;
 
     failed-upgrade|abort-install|abort-upgrade|disappear)

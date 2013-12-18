@@ -133,6 +133,7 @@ This package contains the thruk gui for %{name}
     --with-checkresult-dir="%{_localstatedir}/cache/naemon/checkresults" \
     --sysconfdir="%{_sysconfdir}/naemon" \
     --mandir="%{_mandir}" \
+    --with-logdir="%{_localstatedir}/log/naemon" \
     --enable-event-broker \
     --with-init-dir="%{_initrddir}" \
     --with-logrotate-dir="%{_sysconfdir}/logrotate.d" \
@@ -199,7 +200,7 @@ case "$*" in
           /var/lib/naemon/objects.cache \
           /var/lib/naemon/objects.precache \
           /var/lib/naemon/retention.dat \
-          /var/lib/naemon/naemon.log \
+          /var/log/naemon/naemon.log \
           /var/lib/naemon/archives \
           /var/lib/naemon/naemon.cmd
     %{insserv_cleanup}
@@ -222,7 +223,7 @@ exit 0
 case "$*" in
   0)
     # POSTUN
-    rm -f /var/lib/naemon/livestatus.log
+    rm -f /var/log/naemon/livestatus.log
     ;;
   1)
     # POSTUPDATE
@@ -367,6 +368,7 @@ exit 0
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon/checkresults
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/naemon
+%attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon
 
 #%files devel
 #%attr(0755,root,root) %{_includedir}/naemon/
@@ -374,6 +376,7 @@ exit 0
 %files livestatus
 %attr(0755,root,root) %{_bindir}/naemon-unixcat
 %attr(0644,root,root) %{_libdir}/naemon/livestatus.o
+%attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon
 
 %files thruk
 %attr(0755,root, root) %{_bindir}/thruk

@@ -41,7 +41,7 @@ if /usr/bin/id www-data &>/dev/null; then
     fi
 fi
 
-mkdir -p /var/cache/naemon/checkresults /var/run/naemon /var/lib/naemon/archives
-chown $USER:$GROUP /var/cache/naemon /var/cache/naemon/checkresults /var/run/naemon /var/lib/naemon/archives
+mkdir -p /var/cache/naemon/checkresults /var/run/naemon /var/log/naemon/archives
+chown $USER:$GROUP /var/cache/naemon /var/cache/naemon/checkresults /var/run/naemon /var/log/naemon /var/log/naemon/archives
 
 #DEBHELPER#

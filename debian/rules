@@ -18,6 +18,7 @@ override_dh_auto_configure:
 				--with-checkresult-dir="/var/cache/naemon/checkresults" \
 				--sysconfdir="/etc/naemon" \
 				--mandir="/usr/share/man" \
+				--with-logdir="/var/log/naemon" \
 				--enable-event-broker \
 				--with-init-dir="/etc/init.d" \
 				--with-logrotate-dir="/etc/logrotate.d" \

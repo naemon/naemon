@@ -23,8 +23,8 @@ case "$1" in
     remove)
         rm -rf /var/cache/naemon/naemon.configtest \
                /var/lib/naemon/objects.cache \
-               /var/lib/naemon/naemon.log \
-               /var/lib/naemon/archives \
+               /var/log/naemon/naemon.log \
+               /var/log/naemon/archives \
                /var/lib/naemon/objects.precache \
                /var/lib/naemon/retention.dat \
                /var/lib/naemon/naemon.cmd
@@ -34,8 +34,8 @@ case "$1" in
     purge)
         rm -rf /var/cache/naemon/naemon.configtest \
                /var/lib/naemon/objects.cache \
-               /var/lib/naemon/naemon.log \
-               /var/lib/naemon/archives \
+               /var/log/naemon/naemon.log \
+               /var/log/naemon/archives \
                /var/lib/naemon/objects.precache \
                /var/lib/naemon/retention.dat \
                /var/lib/naemon/naemon.cmd
