@@ -25,3 +25,4 @@
 /usr/share/naemon/menu.conf
 /usr/share/naemon/dist.ini
 /usr/share/naemon/fcgid_env.sh
+/var/cache/naemon/thruk
