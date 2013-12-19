@@ -12,8 +12,8 @@ install:
 	rm -rf ${DESTDIR}/etc/naemon/themes/themes-available/{Wakizashi,Neat}
 	rm -rf ${DESTDIR}/etc/naemon/themes/themes-enabled/{Wakizashi,Neat}
 	rm -rf ${DESTDIR}/usr/share/naemon/themes/themes-available/{Wakizashi,Neat}
-	rm -rf ${DESTDIR}/usr/share/naemon/plugins/plugins-available/reports
-	rm -rf ${DESTDIR}/etc/naemon/plugins/plugins-available/reports
+	rm -rf ${DESTDIR}/usr/share/naemon/plugins/plugins-enabled/shinken_features
+	rm -rf ${DESTDIR}/etc/naemon/plugins/plugins-enabled/shinken_features
 
 update: update-git
 	# this can later be changed to release version
