@@ -7,3 +7,4 @@
 /etc/naemon/conf.d/templates/*.cfg
 /var/cache/naemon/checkresults
 /var/log/naemon
+/usr/lib/naemon/libnaemon.so*

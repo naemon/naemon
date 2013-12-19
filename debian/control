@@ -75,3 +75,12 @@ Description: This package contains the thruk gui for Naemon
  Naemon is a monitoring and management system for hosts, services and
  networks.
 
+
+Package: naemon-dev
+Architecture: any
+Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
+Description: This package contains the header files, static libraries and development
+ documentation for Naemon. If you are a NEB-module author or wish to
+ write addons for Naemon using Naemons own APIs, you should install
+ this package.
+
