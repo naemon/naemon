@@ -6,7 +6,8 @@ Build-Depends: debhelper (>= 7)
 Standards-Version: 3.7.3
 Homepage: http://www.naemon.org
 Bugs: https://github.com/naemon/naemon/issues
-Vcs-Git: github.com:naemon/naemon.git
+Vcs-Browser: https://github.com/naemon
+Vcs-Git: git://github.com:naemon/naemon.git
 
 Package: naemon
 Architecture: any
