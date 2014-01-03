@@ -14,7 +14,6 @@ Architecture: any
 Depends: adduser,
          bsd-mailx | mailx,
          coreutils (>= 4.5.3),
-         gperf,
          lsb-base (>= 3.0-6),
          naemon-core (= ${binary:Version}),
          naemon-livestatus (= ${binary:Version}),
