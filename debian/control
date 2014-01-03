@@ -11,15 +11,17 @@ Vcs-Git: git://github.com:naemon/naemon.git
 
 Package: naemon
 Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends},
-         adduser,
+Depends: adduser,
          bsd-mailx | mailx,
          coreutils (>= 4.5.3),
-         lsb-base (>= 3.0-6),
          gperf,
+         lsb-base (>= 3.0-6),
          naemon-core (= ${binary:Version}),
          naemon-livestatus (= ${binary:Version}),
-         naemon-thruk (= ${binary:Version})
+         naemon-thruk (= ${binary:Version}),
+         ${misc:Depends},
+         ${perl:Depends},
+         ${shlibs:Depends}
 Recommends: nagios-plugins
 Description: A host/service/network monitoring and management system
  Naemon is a monitoring and management system for hosts, services and
@@ -41,7 +43,6 @@ Description: A host/service/network monitoring and management system
  .
  Upstream URL: http://www.naemon.org/
 
-
 Package: naemon-core
 Architecture: any
 Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
@@ -49,25 +50,27 @@ Description: contains the Naemon core
  Naemon is a monitoring and management system for hosts, services and
  networks.
 
-
 Package: naemon-livestatus
 Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends},
-         naemon-core
+Depends: naemon-core, ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
 Description: contains the Naemon livestatus eventbroker module
  Naemon is a monitoring and management system for hosts, services and
  networks.
 
-
 Package: naemon-thruk
 Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends},
+Depends: apache2,
+         cron,
+         libapache2-mod-fcgid,
+         logrotate,
          naemon-thruk-libs (= ${source:Version}),
-         apache2, libapache2-mod-fcgid, cron, logrotate, xvfb
+         xvfb,
+         ${misc:Depends},
+         ${perl:Depends},
+         ${shlibs:Depends}
 Description: This package contains the thruk gui for Naemon
  Naemon is a monitoring and management system for hosts, services and
  networks.
-
 
 Package: naemon-thruk-libs
 Architecture: any
@@ -76,7 +79,6 @@ Description: This package contains the thruk gui for Naemon
  Naemon is a monitoring and management system for hosts, services and
  networks.
 
-
 Package: naemon-dev
 Architecture: any
 Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
@@ -84,4 +86,3 @@ Description: This package contains the header files, static libraries and develo
  documentation for Naemon. If you are a NEB-module author or wish to
  write addons for Naemon using Naemons own APIs, you should install
  this package.
-
