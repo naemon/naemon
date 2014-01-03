@@ -2,7 +2,7 @@ Source: naemon
 Section: net
 Priority: optional
 Maintainer: Naemon Core Development Team <naemon-devel@monitoring-lists.org>
-Build-Depends: debhelper (>= 7)
+Build-Depends: debhelper (>= 7), gperf, libgd-dev, libmysqlclient-dev, rsync
 Standards-Version: 3.7.3
 Homepage: http://www.naemon.org
 Bugs: https://github.com/naemon/naemon/issues
