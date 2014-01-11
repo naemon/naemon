@@ -24,10 +24,10 @@ update: update-naemon-core update-naemon-livestatus update-thruk
 	fi
 
 update-naemon-core: submoduleinit
-	cd naemon-core && git pull
+	cd naemon-core && git checkout master && git pull
 
 update-naemon-livestatus: submoduleinit
-	cd naemon-livestatus && git pull
+	cd naemon-livestatus && git checkout master &&  git pull
 
 update-thruk: submoduleinit
 	cd thruk && make update

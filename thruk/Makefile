@@ -26,8 +26,8 @@ update-release:
 		cd libs && git clean -uxd && git pull && git reset --hard $$version;
 
 update-git:
-	cd gui && git pull
-	cd libs && git pull
+	cd gui && git checkout master && git pull
+	cd libs && git checkout master && git pull
 
 clean:
 	-cd libs && make clean
