@@ -37,7 +37,7 @@ gperf and doxygen. For specific instructions for different distros, please see b
     # repository. We needs to download a lot of components and build from source.
     ## Build Naemon
     # Install dependencies for Naemon
-    yum install install svn httpd-devel rpm-build doxygen wget httpd mod_fcgid perl-YAML git autoconf automake libtool rpmlint gperf mysql-devel gcc-c++ perl-Module-Install perl-CPAN gd-devel expat-devel dos2unix patch patchutils
+    yum install svn httpd-devel rpm-build doxygen wget httpd mod_fcgid perl-YAML git autoconf automake libtool rpmlint gperf mysql-devel gcc-c++ perl-Module-Install perl-CPAN gd-devel expat-devel dos2unix patch patchutils
     # Install some perl modules that are required for Naemon
     PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Config::Any'
     PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install JSON::XS'
