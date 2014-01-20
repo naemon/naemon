@@ -141,7 +141,7 @@ this package.
     --with-naemon-group="naemon" \
     --with-lockfile="%{_localstatedir}/cache/naemon/naemon.pid" \
     --with-thruk-user="%{apacheuser}" \
-    --with-thruk-group="%{apachegroup}" \
+    --with-thruk-group="naemon" \
     --with-thruk-libs="%{_libdir}/naemon/perl5" \
     --with-thruk-temp-dir="%{_localstatedir}/cache/naemon/thruk" \
     --with-thruk-var-dir="%{_localstatedir}/lib/naemon/thruk" \

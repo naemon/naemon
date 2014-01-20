@@ -26,7 +26,7 @@ override_dh_auto_configure:
 				--with-naemon-group="naemon" \
 				--with-lockfile="/var/run/naemon/naemon.pid" \
 				--with-thruk-user="www-data" \
-				--with-thruk-group="www-data" \
+				--with-thruk-group="naemon" \
 				--with-thruk-libs="/usr/lib/naemon/perl5" \
 				--with-thruk-temp-dir="/var/cache/naemon/thruk" \
 				--with-thruk-var-dir="/var/lib/naemon/thruk" \
