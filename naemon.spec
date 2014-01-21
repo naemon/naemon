@@ -412,6 +412,7 @@ exit 0
 %{_datadir}/naemon/LICENSE
 %{_datadir}/naemon/menu.conf
 %{_datadir}/naemon/dist.ini
+%{_datadir}/naemon/naemon-version
 %attr(0755,root,root) %{_datadir}/naemon/fcgid_env.sh
 %doc %{_mandir}/man3/nagexp.3
 %doc %{_mandir}/man3/naglint.3

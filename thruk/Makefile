@@ -14,6 +14,7 @@ install:
 	rm -rf ${DESTDIR}/usr/share/naemon/themes/themes-available/{Wakizashi,Neat}
 	rm -rf ${DESTDIR}/usr/share/naemon/plugins/plugins-enabled/shinken_features
 	rm -rf ${DESTDIR}/etc/naemon/plugins/plugins-enabled/shinken_features
+	grep ^VERSION ../Makefile | awk -F= {' print $$2 '} > ${DESTDIR}/${DATADIR}/naemon-version
 
 update: update-git
 	# this can later be changed to release version
