@@ -192,10 +192,13 @@ else
 fi
 
 %preun core
+/etc/init.d/naemon stop
+chkconfig --del naemon >/dev/null 2>&1
+
+%postun core
 case "$*" in
   0)
     # POSTUN
-    chkconfig --del naemon >/dev/null 2>&1
     rm -f /var/cache/naemon/naemon.configtest \
           /var/lib/naemon/objects.cache \
           /var/lib/naemon/objects.precache \
@@ -241,14 +244,14 @@ exit 0
 
 %pre thruk
 # save themes, plugins so we don't reenable them on every update
-rm -rf /tmp/thruk_update
+rm -rf /var/cache/naemon/thruk_update
 if [ -d /etc/naemon/themes/themes-enabled/. ]; then
-  mkdir -p /tmp/thruk_update/themes
-  cp -rp /etc/naemon/themes/themes-enabled/* /tmp/thruk_update/themes/
+  mkdir -p /var/cache/naemon/thruk_update/themes
+  cp -rp /etc/naemon/themes/themes-enabled/* /var/cache/naemon/thruk_update/themes/
 fi
 if [ -d /etc/naemon/plugins/plugins-enabled/. ]; then
-  mkdir -p /tmp/thruk_update/plugins
-  cp -rp /etc/naemon/plugins/plugins-enabled/* /tmp/thruk_update/plugins/
+  mkdir -p /var/cache/naemon/thruk_update/plugins
+  cp -rp /etc/naemon/plugins/plugins-enabled/* /var/cache/naemon/thruk_update/plugins/
 fi
 exit 0
 
@@ -256,7 +259,7 @@ exit 0
 chkconfig --add thruk
 mkdir -p /var/lib/naemon/thruk /var/cache/naemon/thruk /etc/naemon/bp /var/log/thruk
 touch /var/log/thruk/thruk.log
-chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk /var/log/thruk/thruk.log /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk
+chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk /var/log/thruk/thruk.log /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk /etc/naemon/conf.d/thruk_bp_generated.cfg
 /usr/bin/crontab -l -u %{apacheuser} 2>/dev/null | /usr/bin/crontab -u %{apacheuser} -
 %if %{defined suse_version}
 a2enmod alias
@@ -294,16 +297,16 @@ exit 0
 
 %posttrans thruk
 # restore themes and plugins
-if [ -d /tmp/thruk_update/themes/. ]; then
+if [ -d /var/cache/naemon/thruk_update/themes/. ]; then
   rm -f /etc/naemon/themes/themes-enabled/*
-  cp -rp /tmp/thruk_update/themes/* /etc/naemon/themes/themes-enabled/
+  cp -rp /var/cache/naemon/thruk_update/themes/* /etc/naemon/themes/themes-enabled/
 fi
-if [ -d /tmp/thruk_update/plugins/. ]; then
+if [ -d /var/cache/naemon/thruk_update/plugins/. ]; then
   rm -f /etc/naemon/plugins/plugins-enabled/*
-  cp -rp /tmp/thruk_update/plugins/* /etc/naemon/plugins/plugins-enabled/
+  cp -rp /var/cache/naemon/thruk_update/plugins/* /etc/naemon/plugins/plugins-enabled/
 fi
 echo "plugins enabled:" $(ls /etc/naemon/plugins/plugins-enabled/)
-rm -rf /tmp/thruk_update
+rm -rf /var/cache/naemon/thruk_update
 
 %preun thruk
 if [ $1 = 0 ]; then
@@ -357,7 +360,7 @@ exit 0
 %files
 
 %files core
-%attr(755,root,root) %{_bindir}/naemon
+%attr(0755,root,root) %{_bindir}/naemon
 %attr(0755,root,root) %{_initrddir}/naemon
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/conf.d
@@ -365,7 +368,7 @@ exit 0
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/resource.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/conf.d/*.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/conf.d/templates/*.cfg
-%attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon/checkresults
+%attr(0775,naemon,%{apachegroup}) %dir %{_localstatedir}/cache/naemon/checkresults
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon

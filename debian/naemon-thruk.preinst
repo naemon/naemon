@@ -4,14 +4,14 @@ set -u
 set -e
 
 # save themes and plugins so we don't reenable them on every update
-rm -rf /tmp/thruk_update
+rm -rf /var/cache/naemon/thruk_update
 if [ -d /etc/naemon/themes/themes-enabled/. ]; then
-  mkdir -p /tmp/thruk_update/themes
-  cp -rp /etc/naemon/themes/themes-enabled/* /tmp/thruk_update/themes/
+  mkdir -p /var/cache/naemon/thruk_update/themes
+  cp -rp /etc/naemon/themes/themes-enabled/* /var/cache/naemon/thruk_update/themes/
 fi
 if [ -d /etc/naemon/plugins/plugins-enabled/. ]; then
-  mkdir -p /tmp/thruk_update/plugins
-  cp -rp /etc/naemon/plugins/plugins-enabled/* /tmp/thruk_update/plugins/
+  mkdir -p /var/cache/naemon/thruk_update/plugins
+  cp -rp /etc/naemon/plugins/plugins-enabled/* /var/cache/naemon/thruk_update/plugins/
 fi
 
 exit
