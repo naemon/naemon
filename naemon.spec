@@ -203,7 +203,7 @@ fi
 %post core
 case "$*" in
   2)
-    # Upgrading so try and restart if alread running
+    # Upgrading so try and restart if already running
     /etc/init.d/naemon condrestart &>/dev/null || :
   ;;
   1)
@@ -260,9 +260,19 @@ exit 0
 
 
 %post livestatus
-if [ -e /etc/naemon/naemon.cfg ]; then
-  sed -i /etc/naemon/naemon.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/naemon/livestatus.o.*\)~\1~'
-fi
+case "$*" in
+  2)
+    if [ -e /etc/naemon/naemon.cfg ]; then
+      sed -i /etc/naemon/naemon.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/naemon/livestatus.o.*\)~\1~'
+    fi
+    # Upgrading so try and restart if already running
+    /etc/init.d/naemon condrestart &>/dev/null || :
+  ;;
+  1)
+    # New install, don't do anything
+  ;;
+  *) echo case "$*" not handled in postun
+esac
 exit 0
 
 %preun livestatus
