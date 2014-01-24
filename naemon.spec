@@ -279,14 +279,14 @@ exit 0
 %post livestatus
 case "$*" in
   2)
-    if [ -e /etc/naemon/naemon.cfg ]; then
-      sed -i /etc/naemon/naemon.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/naemon/livestatus.o.*\)~\1~'
-    fi
     # Upgrading so try and restart if already running
     /etc/init.d/naemon condrestart &>/dev/null || :
   ;;
   1)
-    # New install, don't do anything
+    # New install, enable module
+    if [ -e /etc/naemon/naemon.cfg ]; then
+      sed -i /etc/naemon/naemon.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/naemon/livestatus.o.*\)~\1~'
+    fi
   ;;
   *) echo case "$*" not handled in postun
 esac
