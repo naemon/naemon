@@ -190,8 +190,11 @@ cd naemon-core
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/naemon %{buildroot}%{_sysconfdir}/logrotate.d/naemon-core
 
 ### Install documentation
-%{__mkdir_p} %{buildroot}%{_datadir}/naemon/documentation/search
+%{__mkdir_p} -m 0755 %{buildroot}%{_datadir}/naemon/documentation/search
 %{__cp} -a naemon-core/Documentation/html/* %{buildroot}%{_datadir}/naemon/documentation
+%{__chmod} 0644 %{buildroot}%{_datadir}/naemon/documentation/*
+%{__chmod} 0755 %{buildroot}%{_datadir}/naemon/documentation/search
+%{__rm} -f %{buildroot}%{_datadir}/naemon/documentation/installdox
 
 # Put the new RC script in place
 %{__install} -d -m 0755 %{buildroot}/%{_sysconfdir}/sysconfig/
@@ -442,13 +445,7 @@ exit 0
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon/archives
-%attr(0755,root,root) %dir %{_datadir}/naemon/documentation
-%attr(0644,root,root) %{_datadir}/naemon/documentation/*.html
-%attr(0644,root,root) %{_datadir}/naemon/documentation/*.css
-%attr(0644,root,root) %{_datadir}/naemon/documentation/*.png
-%attr(0644,root,root) %{_datadir}/naemon/documentation/installdox
-%attr(0644,root,root) %{_datadir}/naemon/documentation/*.gif
-%attr(0644,root,root) %{_datadir}/naemon/documentation/search/*
+%attr(-,root,root) %{_datadir}/naemon/documentation
 
 %files devel
 %attr(-,root,root) %{_includedir}/naemon/
