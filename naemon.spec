@@ -41,9 +41,19 @@ BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: libtool
 BuildRequires: gcc-c++
-BuildRequires: expat-devel
-BuildRequires: perl-CPAN
 BuildRequires: dos2unix
+# sles / rhel specific requirements
+%if %{defined suse_version}
+BuildRequires: libexpat-devel
+%else
+BuildRequires: expat-devel
+%endif
+# rhel6 specific requirements
+%if 0%{?el6}
+BuildRequires: perl-CPAN
+%endif
+
+
 Requires(pre): shadow-utils
 Requires: %{name}-core       = %{version}-%{release}
 Requires: %{name}-livestatus = %{version}-%{release}
