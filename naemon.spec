@@ -33,6 +33,10 @@ BuildRequires: gd
 BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: libtool
+BuildRequires: gcc-c++
+BuildRequires: expat-devel
+BuildRequires: perl-CPAN
+BuildRequires: dos2unix
 Requires(pre): shadow-utils
 Requires: %{name}-core       = %{version}-%{release}
 Requires: %{name}-livestatus = %{version}-%{release}
@@ -51,7 +55,7 @@ intermittently running checks on various services that you specify.
 
 The actual service checks are performed by separate "plugin" programs
 which return the status of the checks to Naemon. The plugins are
-compatible with Nagios, and can be found in the nagios-plugins package.
+compatible with Nagios, and can be found in the monitoring-plugins package.
 
 Naemon ships the Thruk gui with extended reporting and dashboard features.
 
@@ -124,9 +128,10 @@ this package.
 
 %build
 %configure \
+    --prefix="%{_prefix}" \
     --bindir="%{_bindir}" \
     --datadir="%{_datadir}/naemon" \
-    --libexecdir="%{_libdir}/nagios/plugins" \
+    --libexecdir="%{_libdir}/naemon/plugins" \
     --libdir="%{_libdir}/naemon" \
     --localstatedir="%{_localstatedir}/lib/naemon" \
     --with-temp-dir="%{_localstatedir}/cache/naemon" \
@@ -266,9 +271,9 @@ a2enmod alias
 a2enmod fcgid
 a2enmod auth_basic
 a2enmod rewrite
-/etc/init.d/apache2 restart || /etc/init.d/apache2 start
+/etc/init.d/apache2 condrestart
 %else
-/etc/init.d/httpd restart || /etc/init.d/httpd start
+/etc/init.d/httpd condrestart
 if [ "$(getenforce 2>/dev/null)" = "Enforcing" ]; then
   echo "******************************************";
   echo "Thruk will not work when SELinux is enabled";
@@ -412,7 +417,9 @@ exit 0
 %{_datadir}/naemon/plugins
 %{_datadir}/naemon/lib
 %{_datadir}/naemon/Changes
+%{_datadir}/naemon/docs/FAQ.html
 %{_datadir}/naemon/LICENSE
+%{_datadir}/naemon/THRUK_MANUAL.html
 %{_datadir}/naemon/menu.conf
 %{_datadir}/naemon/dist.ini
 %{_datadir}/naemon/naemon-version
