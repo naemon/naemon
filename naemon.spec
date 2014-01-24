@@ -247,6 +247,7 @@ case "$*" in
     chkconfig --del naemon >/dev/null 2>&1
   *) echo case "$*" not handled in preun
 esac
+exit 0
 
 %postun core
 case "$*" in
