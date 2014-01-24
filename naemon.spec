@@ -162,6 +162,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__make} %{?_smp_mflags} all
 
 ### Build our documentaiton
+cd naemon-core
 %{__make} dox
 
 %install
@@ -177,12 +178,12 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/naemon-thruk
 
 ### Install documentation
-%{__mkdir_p} %{buildroot}%{_datadir}/documentation
-%{__cp} -a Documentation/html/* %{buildroot}%{_datadir}/documentation
+%{__mkdir_p} %{buildroot}%{_datadir}/naemon/documentation/search
+%{__cp} -a naemon-core/Documentation/html/* %{buildroot}%{_datadir}/naemon/documentation
 
 # Put the new RC script in place
 %{__install} -d -m 0755 %{buildroot}/%{_sysconfdir}/sysconfig/
-%{__install} -m 0644 sample-config/naemon.sysconfig %{buildroot}/%{_sysconfdir}/sysconfig/naemon
+%{__install} -m 0644 naemon-core/sample-config/naemon.sysconfig %{buildroot}/%{_sysconfdir}/sysconfig/naemon
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -415,6 +416,14 @@ exit 0
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon
+%attr(0755,root,root) %dir %{_datadir}/naemon/documentation
+%attr(0755,root,root) %dir %{_datadir}/naemon/s/documentationearch
+%attr(0644,root,root) %{_datadir}/naemon/documentation/*.html
+%attr(0644,root,root) %{_datadir}/naemon/documentation/*.css
+%attr(0644,root,root) %{_datadir}/naemon/documentation/*.png
+%attr(0644,root,root) %{_datadir}/naemon/documentation/installdox
+%attr(0644,root,root) %{_datadir}/naemon/documentation/*.gif
+%attr(0644,root,root) %{_datadir}/naemon/documentation/search/*
 
 %files devel
 %attr(-,root,root) %{_includedir}/naemon/
