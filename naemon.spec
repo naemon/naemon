@@ -134,7 +134,7 @@ this package.
 %setup -q
 
 %build
-CFLAGS="%{mycflags} %{myXcflags}" LDFLAGS="$CFLAGS" %configure \
+CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
     --prefix="%{_prefix}" \
     --bindir="%{_bindir}" \
     --datadir="%{_datadir}/naemon" \
