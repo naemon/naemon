@@ -9,6 +9,13 @@
 %define apachedir httpd
 %endif
 
+# Setup some debugging options in case we build with --with debug
+%if %{defined _with_debug}
+  %define mycflags -O0 -pg -ggdb3
+%else
+  %define mycflags %{nil}
+%endif
+
 Summary: Open Source Host, Service And Network Monitoring Program
 Name: naemon
 Version: 0.0.1
@@ -127,7 +134,7 @@ this package.
 %setup -q
 
 %build
-%configure \
+CFLAGS="%{mycflags} %{myXcflags}" LDFLAGS="$CFLAGS" %configure \
     --prefix="%{_prefix}" \
     --bindir="%{_bindir}" \
     --datadir="%{_datadir}/naemon" \
@@ -154,6 +161,9 @@ this package.
     --with-htmlurl="/naemon"
 %{__make} %{?_smp_mflags} all
 
+### Build our documentaiton
+%{__make} dox
+
 %install
 %{__rm} -rf %{buildroot}
 %{__make} install \
@@ -162,9 +172,17 @@ this package.
     COMMAND_OPTS="" \
     INIT_OPTS=""
 # because we globally disabled binary striping, we have to do this manually for some files
-strip %{buildroot}%{_bindir}/naemon
-strip %{buildroot}%{_bindir}/naemon-unixcat
-mv %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/naemon-thruk
+%{__strip} %{buildroot}%{_bindir}/naemon
+%{__strip} %{buildroot}%{_bindir}/naemon-unixcat
+%{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/naemon-thruk
+
+### Install documentation
+%{__mkdir_p} %{buildroot}%{_datadir}/documentation
+%{__cp} -a Documentation/html/* %{buildroot}%{_datadir}/documentation
+
+# Put the new RC script in place
+%{__install} -d -m 0755 %{buildroot}/%{_sysconfdir}/sysconfig/
+%{__install} -m 0644 sample-config/naemon.sysconfig %{buildroot}/%{_sysconfdir}/sysconfig/naemon
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -182,6 +200,17 @@ if ! /usr/bin/getent group naemon &>/dev/null; then
 fi
 
 %post core
+case "$*" in
+  2)
+    # Upgrading so try and restart if alread running
+    /etc/init.d/naemon condrestart &>/dev/null || :
+  ;;
+  1)
+    # New install, don't do anything
+  ;;
+  *) echo case "$*" not handled in postun
+esac
+
 /sbin/chkconfig --add naemon
 
 if /usr/bin/id %{apacheuser} &>/dev/null; then
@@ -197,8 +226,16 @@ else
 fi
 
 %preun core
-/etc/init.d/naemon stop
-chkconfig --del naemon >/dev/null 2>&1
+case "$*" in
+  1)
+    # Upgrade, don't do anything
+  ;;
+  0)
+    # Uninstall, go ahead and stop before removing
+    /etc/init.d/naemon stop
+    chkconfig --del naemon >/dev/null 2>&1
+  *) echo case "$*" not handled in preun
+esac
 
 %postun core
 case "$*" in
@@ -373,6 +410,7 @@ exit 0
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/resource.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/conf.d/*.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/conf.d/templates/*.cfg
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/naemon
 %attr(0775,naemon,%{apachegroup}) %dir %{_localstatedir}/cache/naemon/checkresults
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/naemon
