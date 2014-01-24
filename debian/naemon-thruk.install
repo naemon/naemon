@@ -1,5 +1,5 @@
 /etc/init.d/thruk
-/etc/logrotate.d/thruk
+/etc/logrotate.d/naemon-thruk
 /etc/naemon/cgi.cfg
 /etc/naemon/htpasswd
 /etc/naemon/log4perl.conf

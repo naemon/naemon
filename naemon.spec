@@ -84,6 +84,7 @@ Naemon ships the Thruk gui with extended reporting and dashboard features.
 %package core
 Summary:   Naemon Monitoring Core
 Group:     Applications/System
+Requires:  logrotate
 
 %description core
 contains the %{name} core
@@ -186,6 +187,7 @@ cd naemon-core
 %{__strip} %{buildroot}%{_bindir}/naemon
 %{__strip} %{buildroot}%{_bindir}/naemon-unixcat
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/naemon-thruk
+%{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/naemon %{buildroot}%{_sysconfdir}/logrotate.d/naemon-core
 
 ### Install documentation
 %{__mkdir_p} %{buildroot}%{_datadir}/naemon/documentation/search
@@ -258,7 +260,7 @@ case "$*" in
           /var/lib/naemon/objects.precache \
           /var/lib/naemon/retention.dat \
           /var/log/naemon/naemon.log \
-          /var/lib/naemon/archives \
+          /var/log/naemon/archives \
           /var/lib/naemon/naemon.cmd
     %{insserv_cleanup}
     ;;
@@ -426,6 +428,7 @@ exit 0
 %files core
 %attr(0755,root,root) %{_bindir}/naemon
 %attr(0755,root,root) %{_initrddir}/naemon
+%config(noreplace) %{_sysconfdir}/logrotate.d/naemon-core
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/conf.d
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/naemon.cfg
@@ -437,6 +440,7 @@ exit 0
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon
+%attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon/archives
 %attr(0755,root,root) %dir %{_datadir}/naemon/documentation
 %attr(0644,root,root) %{_datadir}/naemon/documentation/*.html
 %attr(0644,root,root) %{_datadir}/naemon/documentation/*.css

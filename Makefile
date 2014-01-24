@@ -42,7 +42,7 @@ clean:
 	rm -rf naemon-${VERSION} naemon-${VERSION}.tar.gz
 
 install:
-	cd naemon-core && make install install-sample-config install-rc
+	cd naemon-core && make install install-sample-config install-rc install-logrotate
 	cd naemon-livestatus && make install
 	cd thruk && make install
 	# some corrections to avoid conflicts
