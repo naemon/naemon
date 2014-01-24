@@ -36,11 +36,11 @@ test -d thruk/libs/src || {
 # now just run the real configure scripts
 cd naemon-core
 test -f ./configure || autoreconf -i
-./configure $*
+./configure $* 2>&1 | grep -v 'WARNING: unrecognized options'
 
 cd ../naemon-livestatus
 test -f ./configure || autoreconf -i
-./configure $*
+./configure $* 2>&1 | grep -v 'WARNING: unrecognized options'
 
 cd ../thruk/gui
 ./configure $*
