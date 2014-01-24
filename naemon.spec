@@ -473,11 +473,11 @@ exit 0
 %{_datadir}/naemon/plugins
 %{_datadir}/naemon/lib
 %{_datadir}/naemon/Changes
-%{_datadir}/naemon/docs/FAQ.html
 %{_datadir}/naemon/LICENSE
-%{_datadir}/naemon/THRUK_MANUAL.html
 %{_datadir}/naemon/menu.conf
 %{_datadir}/naemon/dist.ini
+%{_datadir}/naemon/docs/THRUK_MANUAL.html
+%{_datadir}/naemon/docs/FAQ.html
 %{_datadir}/naemon/naemon-version
 %attr(0755,root,root) %{_datadir}/naemon/fcgid_env.sh
 %doc %{_mandir}/man3/nagexp.3

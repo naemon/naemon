@@ -26,4 +26,6 @@
 /usr/share/naemon/script/thruk_fastcgi.pl
 /usr/share/naemon/templates
 /usr/share/naemon/themes
+/usr/share/naemon/docs/THRUK_MANUAL.html
+/usr/share/naemon/docs/FAQ.html
 /var/cache/naemon/thruk
