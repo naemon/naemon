@@ -417,7 +417,6 @@ exit 0
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon
 %attr(0755,root,root) %dir %{_datadir}/naemon/documentation
-%attr(0755,root,root) %dir %{_datadir}/naemon/s/documentationearch
 %attr(0644,root,root) %{_datadir}/naemon/documentation/*.html
 %attr(0644,root,root) %{_datadir}/naemon/documentation/*.css
 %attr(0644,root,root) %{_datadir}/naemon/documentation/*.png
