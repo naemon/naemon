@@ -247,6 +247,7 @@ case "$*" in
     # Uninstall, go ahead and stop before removing
     /etc/init.d/naemon stop
     chkconfig --del naemon >/dev/null 2>&1
+  ;;
   *) echo case "$*" not handled in preun
 esac
 exit 0
