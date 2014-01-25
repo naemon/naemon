@@ -336,7 +336,7 @@ a2enmod alias
 a2enmod fcgid
 a2enmod auth_basic
 a2enmod rewrite
-/etc/init.d/apache2 condrestart
+/etc/init.d/apache2 try-restart
 %else
 /etc/init.d/httpd condrestart
 if [ "$(getenforce 2>/dev/null)" = "Enforcing" ]; then
