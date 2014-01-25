@@ -478,7 +478,7 @@ exit 0
 %config(noreplace) %{_sysconfdir}/naemon/plugins
 %config(noreplace) %{_sysconfdir}/naemon/themes
 %config(noreplace) %{_sysconfdir}/naemon/menu_local.conf
-%attr(0755,root, root) %{_datadir}/naemon/script/thruk_auth
+%attr(0755,root, root) %{_datadir}/naemon/thruk_auth
 %attr(0755,root, root) %{_datadir}/naemon/script/thruk_fastcgi.pl
 %attr(0755,%{apacheuser},%{apachegroup}) %dir %{_localstatedir}/cache/naemon/thruk
 %{_datadir}/naemon/root

@@ -22,7 +22,7 @@
 /usr/share/naemon/menu.conf
 /usr/share/naemon/plugins
 /usr/share/naemon/root
-/usr/share/naemon/script/thruk_auth
+/usr/share/naemon/thruk_auth
 /usr/share/naemon/script/thruk_fastcgi.pl
 /usr/share/naemon/templates
 /usr/share/naemon/themes
