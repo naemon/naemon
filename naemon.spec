@@ -105,6 +105,7 @@ Summary:     Perl Librarys For Naemons Thruk Gui
 Group:       Applications/System
 AutoReqProv: no
 Requires:    %{name}-thruk = %{version}-%{release}
+Conflicts:   thruk
 
 %description thruk-libs
 This package contains the library files for the thruk gui

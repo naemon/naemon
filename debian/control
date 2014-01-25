@@ -67,6 +67,8 @@ Depends: apache2,
          ${misc:Depends},
          ${perl:Depends},
          ${shlibs:Depends}
+Conflicts: thruk
+Provides: thruk
 Description: This package contains the thruk gui for Naemon
  Naemon is a monitoring and management system for hosts, services and
  networks.
