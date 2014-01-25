@@ -169,7 +169,8 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
     --with-thruk-temp-dir="%{_localstatedir}/cache/naemon/thruk" \
     --with-thruk-var-dir="%{_localstatedir}/lib/naemon/thruk" \
     --with-httpd-conf="%{_sysconfdir}/%{apachedir}/conf.d" \
-    --with-htmlurl="/naemon"
+    --with-htmlurl="/naemon" \
+    --without-tests
 %{__make} %{?_smp_mflags} all
 
 ### Build our documentaiton
