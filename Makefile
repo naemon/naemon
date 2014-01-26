@@ -5,7 +5,7 @@ RELEASE=2013-12-11
 
 all: naemon-core naemon-livestatus thruk
 	@echo "***************************************"
-	@echo "Naemon build"
+	@echo "Naemon build complete"
 	@echo ""
 	@echo "continue with"
 	@echo "make [rpm|deb|install]"
