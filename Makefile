@@ -4,6 +4,13 @@ RELEASE=2013-12-11
 .PHONY: naemon-core naemon-livestatus thruk
 
 all: naemon-core naemon-livestatus thruk
+	@echo "***************************************"
+	@echo "Naemon build"
+	@echo ""
+	@echo "continue with"
+	@echo "make [rpm|deb|install]"
+	@echo ""
+
 
 thruk:
 	cd thruk && make
