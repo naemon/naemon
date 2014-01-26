@@ -377,7 +377,7 @@ if [ -d /var/cache/naemon/thruk_update/plugins/. ]; then
   rm -f /etc/naemon/plugins/plugins-enabled/*
   cp -rp /var/cache/naemon/thruk_update/plugins/* /etc/naemon/plugins/plugins-enabled/
 fi
-echo "plugins enabled:" $(ls /etc/naemon/plugins/plugins-enabled/)
+echo "thruk plugins enabled:" $(ls /etc/naemon/plugins/plugins-enabled/)
 rm -rf /var/cache/naemon/thruk_update
 
 %preun thruk
