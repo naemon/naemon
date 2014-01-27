@@ -35,7 +35,6 @@ BuildRequires: mysql-devel
 BuildRequires: doxygen
 BuildRequires: gperf
 BuildRequires: perl
-BuildRequires: perl-ExtUtils-MakeMaker
 BuildRequires: logrotate
 BuildRequires: gd
 BuildRequires: autoconf
@@ -48,6 +47,10 @@ BuildRequires: dos2unix
 BuildRequires: libexpat-devel
 %else
 BuildRequires: expat-devel
+%endif
+# rhel6 specific requirements
+%if 0%{?el6}
+BuildRequires: perl-ExtUtils-MakeMaker
 %endif
 
 Requires(pre): shadow-utils
