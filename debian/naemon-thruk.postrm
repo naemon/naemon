@@ -21,7 +21,8 @@ set -e
 
 case "$1" in
     remove)
-        rm -rf /etc/apache2/conf-enabled/thruk.conf
+        rm -f /etc/apache2/conf-enabled/thruk.conf
+        rm -f /etc/apache2/conf-enabled/thruk_cookie_auth_vhost.conf
         rm -rf /var/cache/naemon/thruk/*
         rmdir /etc/naemon/thruk/bp >/dev/null 2>&1 || true
     ;;
@@ -37,7 +38,8 @@ case "$1" in
                /etc/naemon/htpasswd \
                /etc/naemon/cgi.cfg \
                /etc/naemon/log4perl.conf
-        rm -rf /etc/apache2/conf-enabled/thruk.conf
+        rm -f /etc/apache2/conf-enabled/thruk.conf
+        rm -f /etc/apache2/conf-enabled/thruk_cookie_auth_vhost.conf
         rm -rf /var/lib/naemon/thruk
         rmdir /var/lib/naemon 2>/dev/null || :
         rm -rf /var/cache/naemon/thruk
