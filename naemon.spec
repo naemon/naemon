@@ -475,6 +475,7 @@ exit 0
 %config(noreplace) %{_sysconfdir}/naemon/log4perl.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/naemon-thruk
 %config(noreplace) %{_sysconfdir}/%{apachedir}/conf.d/thruk.conf
+%config(noreplace) %{_sysconfdir}/%{apachedir}/conf.d/thruk_cookie_auth_vhost.conf
 %config(noreplace) %{_sysconfdir}/naemon/plugins
 %config(noreplace) %{_sysconfdir}/naemon/themes
 %config(noreplace) %{_sysconfdir}/naemon/menu_local.conf
@@ -490,6 +491,7 @@ exit 0
 %{_datadir}/naemon/LICENSE
 %{_datadir}/naemon/menu.conf
 %{_datadir}/naemon/dist.ini
+%{_datadir}/naemon/thruk_cookie_auth.include
 %{_datadir}/naemon/docs/THRUK_MANUAL.html
 %{_datadir}/naemon/docs/FAQ.html
 %{_datadir}/naemon/naemon-version

@@ -16,6 +16,7 @@
 /usr/share/naemon/Changes
 /usr/share/naemon/LICENSE
 /usr/share/naemon/dist.ini
+/usr/share/naemon/thruk_cookie_auth.include
 /usr/share/naemon/naemon-version
 /usr/share/naemon/fcgid_env.sh
 /usr/share/naemon/lib
