@@ -24,7 +24,8 @@ case "$1" in
 
         # enable thruk itself
         if [ -x '/usr/sbin/a2enconf' ]; then
-            [ -f /etc/apache2/conf-enabled/thruk.conf ] || /usr/sbin/a2enconf thruk
+            [ -f /etc/apache2/conf-enabled/thruk.conf ]              || /usr/sbin/a2enconf thruk
+            [ -f /etc/apache2/conf-enabled/thruk_cookie_auth_vhost ] || /usr/sbin/a2enconf thruk_cookie_auth_vhost
         fi
 
         # set permissions
