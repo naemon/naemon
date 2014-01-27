@@ -314,6 +314,16 @@ exit 0
 
 
 %pre thruk
+if ! /usr/bin/id naemon &>/dev/null; then
+    /usr/sbin/useradd -r -d %{_localstatedir}/lib/naemon -s /bin/sh -c "naemon" naemon || \
+        %logmsg "Unexpected error adding user \"naemon\". Aborting installation."
+fi
+if ! /usr/bin/getent group naemon &>/dev/null; then
+    /usr/sbin/groupadd naemon &>/dev/null || \
+        %logmsg "Unexpected error adding group \"naemon\". Aborting installation."
+fi
+
+
 # save themes, plugins so we don't reenable them on every update
 rm -rf /var/cache/naemon/thruk_update
 if [ -d /etc/naemon/themes/themes-enabled/. ]; then
@@ -328,7 +338,7 @@ exit 0
 
 %post thruk
 chkconfig --add thruk
-mkdir -p /var/lib/naemon/thruk /var/cache/naemon/thruk /etc/naemon/bp /var/log/thruk
+mkdir -p /var/lib/naemon/thruk /var/cache/naemon/thruk /etc/naemon/bp /var/log/thruk /etc/naemon/conf.d
 touch /var/log/thruk/thruk.log
 chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk /var/log/thruk/thruk.log /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk /etc/naemon/conf.d/thruk_bp_generated.cfg
 /usr/bin/crontab -l -u %{apacheuser} 2>/dev/null | /usr/bin/crontab -u %{apacheuser} -

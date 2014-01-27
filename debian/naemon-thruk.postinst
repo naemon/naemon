@@ -28,7 +28,7 @@ case "$1" in
         fi
 
         # set permissions
-        mkdir -p /var/lib/naemon/thruk /var/log/thruk /var/cache/naemon/thruk/reports /etc/naemon/bp
+        mkdir -p /var/lib/naemon/thruk /var/log/thruk /var/cache/naemon/thruk/reports /etc/naemon/bp /etc/naemon/conf.d
         chown -R www-data: /var/lib/naemon/thruk \
                            /var/cache/naemon/thruk \
                            /var/log/thruk \
