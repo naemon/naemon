@@ -52,6 +52,9 @@ BuildRequires: expat-devel
 %if 0%{?el6}
 BuildRequires: perl-ExtUtils-MakeMaker
 %endif
+%if 0%{?el7}
+BuildRequires: perl-autodie
+%endif
 
 Requires(pre): shadow-utils
 Requires: %{name}-core       = %{version}-%{release}
