@@ -12,4 +12,6 @@ if [ -x "/etc/init.d/naemon" ]; then
     fi
 fi
 
+chown -R www-data: /etc/naemon/conf.d/thruk_bp_generated.cfg
+
 #DEBHELPER#

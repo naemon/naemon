@@ -35,8 +35,7 @@ case "$1" in
                            /var/log/thruk \
                            /etc/naemon/plugins/plugins-enabled \
                            /etc/naemon/thruk_local.conf \
-                           /etc/naemon/bp \
-                           /etc/naemon/conf.d/thruk_bp_generated.cfg
+                           /etc/naemon/bp
         chown 755 /usr/share/naemon/fcgid_env.sh
         chown 755 /usr/bin/thruk
 
