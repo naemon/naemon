@@ -11,7 +11,7 @@ override_dh_auto_configure:
 	dh_auto_configure -- --prefix=/usr \
 				--bindir="/usr/bin" \
 				--datadir="/usr/share/naemon" \
-				--libexecdir="/usr/lib/nagios/plugins" \
+				--pluginsdir="/usr/lib/naemon/plugins" \
 				--libdir="/usr/lib/naemon" \
 				--localstatedir="/var/lib/naemon" \
 				--with-temp-dir="/var/cache/naemon" \

@@ -152,7 +152,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
     --prefix="%{_prefix}" \
     --bindir="%{_bindir}" \
     --datadir="%{_datadir}/naemon" \
-    --libexecdir="%{_libdir}/naemon/plugins" \
+    --pluginsdir="%{_libdir}/naemon/plugins" \
     --libdir="%{_libdir}/naemon" \
     --localstatedir="%{_localstatedir}/lib/naemon" \
     --with-temp-dir="%{_localstatedir}/cache/naemon" \
