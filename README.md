@@ -42,6 +42,8 @@ gperf and doxygen. For specific instructions for different distros, please see b
     PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Config::Any'
     PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install JSON::XS'
     PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Config::General'
+    PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install File::Slurp'
+
     # Add users
     useradd thruk
     useradd naemon
