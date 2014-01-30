@@ -42,8 +42,9 @@ gperf and doxygen. For specific instructions for different distros, please see b
     PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Config::Any'
     PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install JSON::XS'
     PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Config::General'
-    # Add user thruk
+    # Add users
     useradd thruk
+    useradd naemon
     cd /usr/local/src/
     # Get latest version of Naemon
     git clone --recursive https://github.com/naemon/naemon.git
@@ -122,7 +123,7 @@ gperf and doxygen. For specific instructions for different distros, please see b
     PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SNMP'
     # Build and install nagios-plugins
     cd /usr/local/src/nagios-plugins-1.5
-    ./configure --with-nagios-user=naemon --with-nagios-group=naemon --libexec=/usr/lib64/nagios/plugins/
+    ./configure --with-nagios-user=naemon --with-nagios-group=naemon --libexec=/usr/lib64/nagios/plugins/ --without-tests
     make
     make install
     # Almost done, reboot to make sure everything starts as expected
@@ -135,14 +136,15 @@ gperf and doxygen. For specific instructions for different distros, please see b
     sudo su -
     # Install dependencies 
     apt-get install bsd-mailx apache2 libapache2-mod-fcgid xvfb nagios-plugins git devscripts debhelper libmysqld-dev build-essential autoconf automake libtool dos2unix patch patchutils libmodule-install-perl gperf libgd2-xpm-dev yui-compressor
-    # Add user thruk
+    # Add users
     useradd thruk
+    useradd naemon    
     # Get latest version of Naemon
     cd /usr/local/src/
     git clone --recursive https://github.com/naemon/naemon.git
     # Build Naemon
     cd naemon
-    ./configure
+    ./configure --libexec=/usr/lib/nagios/plugins/ --without-tests
     # Create DEB, can't "make install" right now due to bugs
     make deb
     # Install Naemon
