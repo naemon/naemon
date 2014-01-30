@@ -31,8 +31,8 @@ gperf and doxygen. For specific instructions for different distros, please see b
     make
     make [rpm|deb|install]
 
-
-#### CentOS 6.5 minimal ####
+#### Build and install via packages ####
+##### CentOS 6.5 minimal #####
     # CentOS are a bit of tricky since a lot of packages are not available from standard
     # repository. We needs to download a lot of components and build from source.
     ## Build Naemon
@@ -53,7 +53,7 @@ gperf and doxygen. For specific instructions for different distros, please see b
     export THRUK_SKIP_COMPRESS=1
     # Create compiler configuration
     ./configure
-    # Create RPM, can't "make install" right now due to bugs
+    # Create RPM
     make rpm
     cd /usr/local/src/
     # Install mod_fcgid, required by Thruk
@@ -79,9 +79,9 @@ gperf and doxygen. For specific instructions for different distros, please see b
     chkconfig httpd on
     chkconfig iptables off #This is just for test, please adjust your IP-tables accordingly
     
-    ## Build nagios-plugins
+    ## Build monitoring-plugins (formerly known as nagios-plugins)
     cd ~/
-    # Get monitoring-plugins (formerly nagios-plugins) source
+    # Get monitoring-plugins source
     wget https://www.monitoring-plugins.org/download/nagios-plugins-1.5.tar.gz
     tar -xzvf nagios-plugins-1.5.tar.gz -C /usr/local/src/
     rm -rf nagios-plugins-1.5.tar.gz
@@ -145,7 +145,7 @@ gperf and doxygen. For specific instructions for different distros, please see b
     # Build Naemon
     cd naemon
     ./configure --libexec=/usr/lib/nagios/plugins/ --without-tests
-    # Create DEB, can't "make install" right now due to bugs
+    # Create DEB
     make deb
     # Install Naemon
     cd ..
