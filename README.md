@@ -52,7 +52,7 @@ gperf and doxygen. For specific instructions for different distros, please see b
     # Ignore yui-compressor, are not available as a package
     export THRUK_SKIP_COMPRESS=1
     # Create compiler configuration
-    ./configure
+    ./configure --without-tests
     # Create RPM
     make rpm
     cd /usr/local/src/
@@ -123,7 +123,7 @@ gperf and doxygen. For specific instructions for different distros, please see b
     PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SNMP'
     # Build and install nagios-plugins
     cd /usr/local/src/nagios-plugins-1.5
-    ./configure --with-nagios-user=naemon --with-nagios-group=naemon --libexec=/usr/lib64/nagios/plugins/ --without-tests
+    ./configure --with-nagios-user=naemon --with-nagios-group=naemon --libexec=/usr/lib64/nagios/plugins/
     make
     make install
     # Almost done, reboot to make sure everything starts as expected
@@ -144,7 +144,7 @@ gperf and doxygen. For specific instructions for different distros, please see b
     git clone --recursive https://github.com/naemon/naemon.git
     # Build Naemon
     cd naemon
-    ./configure --libexec=/usr/lib/nagios/plugins/ --without-tests
+    ./configure --without-tests
     # Create DEB
     make deb
     # Install Naemon
