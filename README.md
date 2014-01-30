@@ -81,8 +81,8 @@ gperf and doxygen. For specific instructions for different distros, please see b
     
     ## Build nagios-plugins
     cd ~/
-    # Get nagios-plugins source
-    wget https://www.nagios-plugins.org/download/nagios-plugins-1.5.tar.gz
+    # Get monitoring-plugins (formerly nagios-plugins) source
+    wget https://www.monitoring-plugins.org/download/nagios-plugins-1.5.tar.gz
     tar -xzvf nagios-plugins-1.5.tar.gz -C /usr/local/src/
     rm -rf nagios-plugins-1.5.tar.gz
     # Get qstat precompiled package, can't find source code to build from source
