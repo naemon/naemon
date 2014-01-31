@@ -152,28 +152,28 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
     --prefix="%{_prefix}" \
     --bindir="%{_bindir}" \
     --datadir="%{_datadir}/naemon" \
-    --with-pluginsdir="%{_libdir}/naemon/plugins" \
     --libdir="%{_libdir}/naemon" \
     --localstatedir="%{_localstatedir}/lib/naemon" \
-    --with-temp-dir="%{_localstatedir}/cache/naemon" \
-    --with-checkresult-dir="%{_localstatedir}/cache/naemon/checkresults" \
     --sysconfdir="%{_sysconfdir}/naemon" \
     --mandir="%{_mandir}" \
-    --with-logdir="%{_localstatedir}/log/naemon" \
     --enable-event-broker \
-    --with-init-dir="%{_initrddir}" \
-    --with-logrotate-dir="%{_sysconfdir}/logrotate.d" \
+    --without-tests \
+    --with-pluginsdir="%{_libdir}/naemon/plugins" \
+    --with-tempdir="%{_localstatedir}/cache/naemon" \
+    --with-checkresultdir="%{_localstatedir}/cache/naemon/checkresults" \
+    --with-logdir="%{_localstatedir}/log/naemon" \
+    --with-initdir="%{_initrddir}" \
+    --with-logrotatedir="%{_sysconfdir}/logrotate.d" \
     --with-naemon-user="naemon" \
     --with-naemon-group="naemon" \
     --with-lockfile="%{_localstatedir}/cache/naemon/naemon.pid" \
     --with-thruk-user="%{apacheuser}" \
     --with-thruk-group="naemon" \
     --with-thruk-libs="%{_libdir}/naemon/perl5" \
-    --with-thruk-temp-dir="%{_localstatedir}/cache/naemon/thruk" \
-    --with-thruk-var-dir="%{_localstatedir}/lib/naemon/thruk" \
+    --with-thruk-tempdir="%{_localstatedir}/cache/naemon/thruk" \
+    --with-thruk-vardir="%{_localstatedir}/lib/naemon/thruk" \
     --with-httpd-conf="%{_sysconfdir}/%{apachedir}/conf.d" \
-    --with-htmlurl="/naemon" \
-    --without-tests
+    --with-htmlurl="/naemon"
 %{__make} %{?_smp_mflags} all
 
 ### Build our documentaiton
@@ -344,7 +344,7 @@ exit 0
 chkconfig --add thruk
 mkdir -p /var/lib/naemon/thruk /var/cache/naemon/thruk /etc/naemon/bp /var/log/thruk /etc/naemon/conf.d
 touch /var/log/thruk/thruk.log
-chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk /var/log/thruk/thruk.log /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk
+chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk /var/log/thruk /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk
 /usr/bin/crontab -l -u %{apacheuser} 2>/dev/null | /usr/bin/crontab -u %{apacheuser} -
 %if %{defined suse_version}
 a2enmod alias
@@ -485,7 +485,6 @@ exit 0
 %attr(0644,%{apacheuser},%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/cgi.cfg
 %attr(0644,%{apacheuser},%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/htpasswd
 %attr(0755,%{apacheuser},%{apachegroup}) %dir %{_sysconfdir}/naemon/bp
-%attr(0755,%{apacheuser},%{apachegroup}) %dir /var/log/thruk/
 %config(noreplace) %{_sysconfdir}/naemon/naglint.conf
 %config(noreplace) %{_sysconfdir}/naemon/log4perl.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/naemon-thruk

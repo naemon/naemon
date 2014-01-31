@@ -11,28 +11,28 @@ override_dh_auto_configure:
 	dh_auto_configure -- --prefix=/usr \
 				--bindir="/usr/bin" \
 				--datadir="/usr/share/naemon" \
-				--with-pluginsdir="/usr/lib/naemon/plugins" \
 				--libdir="/usr/lib/naemon" \
 				--localstatedir="/var/lib/naemon" \
-				--with-temp-dir="/var/cache/naemon" \
-				--with-checkresult-dir="/var/cache/naemon/checkresults" \
 				--sysconfdir="/etc/naemon" \
 				--mandir="/usr/share/man" \
-				--with-logdir="/var/log/naemon" \
 				--enable-event-broker \
-				--with-init-dir="/etc/init.d" \
-				--with-logrotate-dir="/etc/logrotate.d" \
+				--without-tests \
+				--with-pluginsdir="/usr/lib/naemon/plugins" \
+				--with-tempdir="/var/cache/naemon" \
+				--with-checkresultdir="/var/cache/naemon/checkresults" \
+				--with-logdir="/var/log/naemon" \
+				--with-initdir="/etc/init.d" \
+				--with-logrotatedir="/etc/logrotate.d" \
 				--with-naemon-user="naemon" \
 				--with-naemon-group="naemon" \
 				--with-lockfile="/var/run/naemon/naemon.pid" \
 				--with-thruk-user="www-data" \
 				--with-thruk-group="naemon" \
 				--with-thruk-libs="/usr/lib/naemon/perl5" \
-				--with-thruk-temp-dir="/var/cache/naemon/thruk" \
-				--with-thruk-var-dir="/var/lib/naemon/thruk" \
+				--with-thruk-tempdir="/var/cache/naemon/thruk" \
+				--with-thruk-vardir="/var/lib/naemon/thruk" \
 				--with-httpd-conf="$(HTTPDCONF)" \
-				--with-htmlurl="/naemon" \
-				--without-tests
+				--with-htmlurl="/naemon"
 	echo "naemon-thruk-libs: embedded-library usr/lib/naemon/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so: zlib" >> debian/naemon-thruk-libs.lintian-overrides
 	echo "naemon-thruk-libs: embedded-zlib ./usr/lib/naemon/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so"        >> debian/naemon-thruk-libs.lintian-overrides
 	echo $(HTTPDCONF)/thruk.conf                   >> debian/naemon-thruk.install
