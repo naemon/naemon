@@ -30,3 +30,4 @@
 /usr/share/naemon/docs/THRUK_MANUAL.html
 /usr/share/naemon/docs/FAQ.html
 /var/cache/naemon/thruk
+/var/log/naemon

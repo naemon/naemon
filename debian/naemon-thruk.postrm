@@ -40,6 +40,7 @@ case "$1" in
                /etc/naemon/log4perl.conf
         rm -f /etc/apache2/conf-enabled/thruk.conf
         rm -f /etc/apache2/conf-enabled/thruk_cookie_auth_vhost.conf
+        rm -f /var/log/naemon/thruk.log*
         rm -rf /var/lib/naemon/thruk
         rmdir /var/lib/naemon 2>/dev/null || :
         rm -rf /var/cache/naemon/thruk

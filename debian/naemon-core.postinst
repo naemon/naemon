@@ -14,7 +14,19 @@ if [ -x "/etc/init.d/naemon" ]; then
     fi
 fi
 
-chown naemon:naemon /etc/naemon/conf.d /etc/naemon/conf.d/*.cfg /etc/naemon/conf.d/templates /etc/naemon/conf.d/templates/*.cfg
+mkdir -p /var/cache/naemon/checkresults /var/run/naemon /var/log/naemon/archives
+chown naemon:naemon \
+        /etc/naemon/conf.d \
+        /etc/naemon/conf.d/*.cfg \
+        /etc/naemon/conf.d/templates \
+        /etc/naemon/conf.d/templates/*.cfg \
+        /var/cache/naemon \
+        /var/run/naemon \
+        /var/log/naemon \
+        /var/log/naemon/archives \
+        /var/cache/naemon/checkresults
 chmod 2775 /etc/naemon/conf.d /etc/naemon/conf.d/templates
+chmod 2775 /var/cache/naemon/checkresults
+
 
 #DEBHELPER#

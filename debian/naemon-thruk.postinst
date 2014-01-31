@@ -28,16 +28,20 @@ case "$1" in
             [ -f /etc/apache2/conf-enabled/thruk_cookie_auth_vhost ] || /usr/sbin/a2enconf thruk_cookie_auth_vhost
         fi
 
+
         # set permissions
-        mkdir -p /var/lib/naemon/thruk /var/log/thruk /var/cache/naemon/thruk/reports /etc/naemon/bp /etc/naemon/conf.d
+        mkdir -p /var/lib/naemon/thruk /var/log/thruk /var/cache/naemon/thruk/reports /etc/naemon/bp /etc/naemon/conf.d /var/cache/naemon/checkresults /var/run/naemon
+        touch /var/log/naemon/thruk.log
         chown -R www-data: /var/lib/naemon/thruk \
                            /var/cache/naemon/thruk \
-                           /var/log/thruk \
+                           /var/log/naemon/thruk.log \
                            /etc/naemon/plugins/plugins-enabled \
                            /etc/naemon/thruk_local.conf \
                            /etc/naemon/bp
+        chown naemon:naemon /var/cache/naemon /var/run/naemon /var/log/naemon /var/cache/naemon/checkresults
         chown 755 /usr/share/naemon/fcgid_env.sh
         chown 755 /usr/bin/thruk
+        chmod 2775 /var/cache/naemon/checkresults
 
         # reload new apache config
         if which invoke-rc.d >/dev/null 2>&1; then

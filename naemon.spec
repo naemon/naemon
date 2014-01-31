@@ -343,8 +343,8 @@ exit 0
 %post thruk
 chkconfig --add thruk
 mkdir -p /var/lib/naemon/thruk /var/cache/naemon/thruk /etc/naemon/bp /var/log/thruk /etc/naemon/conf.d
-touch /var/log/thruk/thruk.log
-chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk /var/log/thruk /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk
+touch /var/log/naemon/thruk.log
+chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk /var/log/naemon/thruk.log /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk
 /usr/bin/crontab -l -u %{apacheuser} 2>/dev/null | /usr/bin/crontab -u %{apacheuser} -
 %if %{defined suse_version}
 a2enmod alias
