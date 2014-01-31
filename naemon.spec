@@ -230,7 +230,6 @@ case "$*" in
   ;;
   *) echo case "$*" not handled in postun
 esac
-chown -R %{apacheuser}:%{apachegroup} /etc/naemon/conf.d/thruk_bp_generated.cfg
 
 /sbin/chkconfig --add naemon
 
@@ -450,13 +449,13 @@ exit 0
 %attr(0755,root,root) %{_initrddir}/naemon
 %config(noreplace) %{_sysconfdir}/logrotate.d/naemon-core
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/
-%attr(0755,naemon,%{apachegroup}) %dir %{_sysconfdir}/naemon/conf.d
+%attr(2775,naemon,naemon) %dir %{_sysconfdir}/naemon/conf.d
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/naemon.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/resource.cfg
-%attr(0644,naemon,%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/conf.d/*.cfg
-%attr(0644,naemon,%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/conf.d/templates/*.cfg
+%attr(0664,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/conf.d/*.cfg
+%attr(0664,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/conf.d/templates/*.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/naemon
-%attr(0775,naemon,%{apachegroup}) %dir %{_localstatedir}/cache/naemon/checkresults
+%attr(2775,naemon,%{apachegroup}) %dir %{_localstatedir}/cache/naemon/checkresults
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon

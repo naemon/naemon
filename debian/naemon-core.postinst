@@ -14,6 +14,7 @@ if [ -x "/etc/init.d/naemon" ]; then
     fi
 fi
 
-chown -R naemon:www-data /etc/naemon/conf.d/*.cfg /etc/naemon/conf.d/templates/*.cfg
+chown naemon:naemon /etc/naemon/conf.d /etc/naemon/conf.d/*.cfg /etc/naemon/conf.d/templates /etc/naemon/conf.d/templates/*.cfg
+chmod 2775 /etc/naemon/conf.d /etc/naemon/conf.d/templates
 
 #DEBHELPER#
