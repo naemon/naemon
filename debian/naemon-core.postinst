@@ -2,6 +2,8 @@
 
 #if we stop naemon in prerm we should also start it here..
 if [ -x "/etc/init.d/naemon" ]; then
+    # Update rc.d and start naemon with the system
+    update-rc.d naemon defaults
     if ! /etc/init.d/naemon status >/dev/null; then
 
         if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
