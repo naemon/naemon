@@ -450,11 +450,11 @@ exit 0
 %attr(0755,root,root) %{_initrddir}/naemon
 %config(noreplace) %{_sysconfdir}/logrotate.d/naemon-core
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/
-%attr(0755,root,root) %dir %{_sysconfdir}/naemon/conf.d
+%attr(0755,naemon,%{apachegroup}) %dir %{_sysconfdir}/naemon/conf.d
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/naemon.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/resource.cfg
-%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/conf.d/*.cfg
-%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/naemon/conf.d/templates/*.cfg
+%attr(0644,naemon,%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/conf.d/*.cfg
+%attr(0644,naemon,%{apachegroup}) %config(noreplace) %{_sysconfdir}/naemon/conf.d/templates/*.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/naemon
 %attr(0775,naemon,%{apachegroup}) %dir %{_localstatedir}/cache/naemon/checkresults
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon
