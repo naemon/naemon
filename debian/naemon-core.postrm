@@ -34,8 +34,6 @@ case "$1" in
     upgrade)
     ;;
     purge)
-        # Remove rc.d scripts after uninstalling
-        update-rc.d -f naemon remove
         rm -rf /var/cache/naemon/naemon.configtest \
                /var/lib/naemon/objects.cache \
                /var/log/naemon/naemon.log \
