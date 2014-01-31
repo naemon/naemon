@@ -189,6 +189,7 @@ cd naemon-core
     INIT_OPTS=""
 # because we globally disabled binary striping, we have to do this manually for some files
 %{__strip} %{buildroot}%{_bindir}/naemon
+%{__strip} %{buildroot}%{_bindir}/naemonstats
 %{__strip} %{buildroot}%{_bindir}/naemon-unixcat
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/naemon-thruk
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/naemon %{buildroot}%{_sysconfdir}/logrotate.d/naemon-core
