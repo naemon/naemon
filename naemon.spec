@@ -446,6 +446,7 @@ exit 0
 
 %files core
 %attr(0755,root,root) %{_bindir}/naemon
+%attr(0755,root,root) %{_bindir}/naemonstats
 %attr(0755,root,root) %{_initrddir}/naemon
 %config(noreplace) %{_sysconfdir}/logrotate.d/naemon-core
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/
