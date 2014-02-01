@@ -1,6 +1,7 @@
 #!/bin/sh -e
 
 # Create required folders and set correct permission before we start daemons
+touch /var/log/naemon/naemon.log
 mkdir -p /var/cache/naemon/checkresults /var/run/naemon /var/log/naemon/archives
 chown naemon:naemon \
         /etc/naemon/conf.d \
@@ -10,11 +11,14 @@ chown naemon:naemon \
         /var/cache/naemon \
         /var/run/naemon \
         /var/log/naemon \
+        /var/log/naemon/naemon.log \
         /var/log/naemon/archives \
         /var/cache/naemon/checkresults
 chmod 2775 /etc/naemon/conf.d /etc/naemon/conf.d/templates
+chmod 2775 /var/cache/naemon
 chmod 2775 /var/cache/naemon/checkresults
 chmod 0664 /etc/naemon/conf.d/*.cfg /etc/naemon/conf.d/templates/*.cfg
+chmod 0664 /var/log/naemon/naemon.log
 
 #if we stop naemon in prerm we should also start it here..
 if [ -x "/etc/init.d/naemon" ]; then

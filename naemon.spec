@@ -246,6 +246,9 @@ if /usr/bin/id %{apacheuser} &>/dev/null; then
 else
     %logmsg "User \"%{apacheuser}\" does not exist and is not added to group \"naemon\". Sending commands to naemon from the CGIs is not possible."
 fi
+touch /var/log/naemon/naemon.log
+chmod 0664 /var/log/naemon/naemon.log
+chown naemon:naemon /var/log/naemon/naemon.log
 
 %preun core
 case "$*" in
@@ -458,7 +461,7 @@ exit 0
 %attr(0664,naemon,naemon) %config(noreplace) %{_sysconfdir}/naemon/conf.d/templates/*.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/naemon
 %attr(2775,naemon,%{apachegroup}) %dir %{_localstatedir}/cache/naemon/checkresults
-%attr(0755,naemon,naemon) %dir %{_localstatedir}/cache/naemon
+%attr(2775,naemon,naemon) %dir %{_localstatedir}/cache/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon/archives
