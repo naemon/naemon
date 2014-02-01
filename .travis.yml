@@ -9,6 +9,8 @@ script:
   - make install DESTDIR=$(pwd)/_install || exit 1
   - make deb
 before_install:
+  - sudo apt-get update
+install:
   - sudo apt-get install autoconf
   - sudo apt-get install build-essential
   - sudo apt-get install gperf
