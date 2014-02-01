@@ -1,19 +1,6 @@
 #!/bin/sh -e
 
-#if we stop naemon in prerm we should also start it here..
-if [ -x "/etc/init.d/naemon" ]; then
-    # Update rc.d and start naemon with the system
-    update-rc.d naemon defaults
-    if ! /etc/init.d/naemon status >/dev/null; then
-
-        if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
-            invoke-rc.d naemon start || true
-        else
-            /etc/init.d/naemon start || true
-        fi
-    fi
-fi
-
+# Create requred folders and set correct permission before we start daemons
 mkdir -p /var/cache/naemon/checkresults /var/run/naemon /var/log/naemon/archives
 chown naemon:naemon \
         /etc/naemon/conf.d \
@@ -28,5 +15,18 @@ chown naemon:naemon \
 chmod 2775 /etc/naemon/conf.d /etc/naemon/conf.d/templates
 chmod 2775 /var/cache/naemon/checkresults
 
+#if we stop naemon in prerm we should also start it here..
+if [ -x "/etc/init.d/naemon" ]; then
+    # Update rc.d and start naemon with the system
+    update-rc.d naemon defaults
+    if ! /etc/init.d/naemon status >/dev/null; then
+
+        if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
+            invoke-rc.d naemon start || true
+        else
+            /etc/init.d/naemon start || true
+        fi
+    fi
+fi
 
 #DEBHELPER#
