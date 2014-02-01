@@ -6,6 +6,8 @@ if [ -x "/etc/init.d/naemon" ]; then
     else
         /etc/init.d/naemon stop || true
     fi
+    # Remove rc.d scripts before uninstalling
+    update-rc.d -f naemon remove
 fi
 
 #DEBHELPER#
