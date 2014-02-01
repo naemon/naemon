@@ -1,0 +1,15 @@
+language: c
+compiler:
+  - gcc
+# Change this to your needs
+script:
+  - ./configure
+  - make
+  - mkdir _install
+  - make install DESTDIR=$(pwd)/_install
+  - make deb
+before_install:
+  - sudo apt-get install autoconf
+  - sudo apt-get install build-essential
+  - sudo apt-get install gperf
+  - sudo apt-get install libgd2-xpm-dev
