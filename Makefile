@@ -1,6 +1,8 @@
 VERSION=0.0.1
 RELEASE=2013-12-11
 
+include thruk/gui/script/append.make.options
+
 .PHONY: naemon-core naemon-livestatus thruk
 
 all: naemon-core naemon-livestatus thruk
@@ -53,7 +55,7 @@ install:
 	cd naemon-livestatus && make install
 	cd thruk && make install
 	# some corrections to avoid conflicts
-	mv ${DESTDIR}/usr/bin/unixcat ${DESTDIR}/usr/bin/naemon-unixcat
+	mv ${DESTDIR}${BINDIR}/unixcat ${DESTDIR}${BINDIR}/naemon-unixcat
 
 dist:
 	rm -rf naemon-${VERSION} naemon-${VERSION}.tar.gz
