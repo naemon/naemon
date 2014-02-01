@@ -16,3 +16,11 @@ script:
   - mkdir _install || exit 1
   - make install DESTDIR=$(pwd)/_install || exit 1
   - make deb
+notification:
+  irc:
+    channels:
+      - "chat.freenode.net#naemon-devel"
+    on_success: change
+    on_failure: always
+  email:
+    - ozamosi@flukkost.nu
