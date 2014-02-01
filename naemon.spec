@@ -191,6 +191,7 @@ cd naemon-core
 %{__strip} %{buildroot}%{_bindir}/naemon
 %{__strip} %{buildroot}%{_bindir}/naemonstats
 %{__strip} %{buildroot}%{_bindir}/naemon-unixcat
+%{__strip} %{buildroot}%{_libdir}/naemon/libnaemon.so.0.0.0
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/naemon-thruk
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/naemon %{buildroot}%{_sysconfdir}/logrotate.d/naemon-core
 
