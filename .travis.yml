@@ -3,13 +3,15 @@ compiler:
   - gcc
 # Change this to your needs
 script:
-  - ./configure
-  - make
-  - mkdir _install
-  - make install DESTDIR=$(pwd)/_install
+  - ./configure    || exit 1
+  - make           || exit 1
+  - mkdir _install || exit 1
+  - make install DESTDIR=$(pwd)/_install || exit 1
   - make deb
 before_install:
   - sudo apt-get install autoconf
   - sudo apt-get install build-essential
   - sudo apt-get install gperf
   - sudo apt-get install libgd2-xpm-dev
+  - sudo apt-get install devscripts
+  - sudo apt-get install dh-make
