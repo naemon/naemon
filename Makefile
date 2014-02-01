@@ -1,8 +1,6 @@
 VERSION=0.0.1
 RELEASE=2013-12-11
 
-include thruk/gui/script/append.make.options
-
 .PHONY: naemon-core naemon-livestatus thruk
 
 all: naemon-core naemon-livestatus thruk
