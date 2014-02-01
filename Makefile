@@ -21,8 +21,7 @@ naemon-core:
 	cd naemon-core && make
 
 naemon-livestatus:
-	cd naemon-livestatus/src && ln -fs ../../naemon-core/naemon .
-	cd naemon-livestatus && make
+	cd naemon-livestatus && make CFLAGS="$$CFLAGS -I$$(pwd)/../naemon-core"
 
 update: update-naemon-core update-naemon-livestatus update-thruk
 	@if [ `git status 2>/dev/null | grep -c "Changed but not updated"` -eq 1 ]; then \
@@ -55,7 +54,6 @@ install:
 	cd naemon-livestatus && make install
 	cd thruk && make install
 	# some corrections to avoid conflicts
-	mv ${DESTDIR}${BINDIR}/unixcat ${DESTDIR}${BINDIR}/naemon-unixcat
 
 dist:
 	rm -rf naemon-${VERSION} naemon-${VERSION}.tar.gz
