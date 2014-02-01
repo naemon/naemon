@@ -346,7 +346,7 @@ exit 0
 
 %post thruk
 chkconfig --add thruk
-mkdir -p /var/lib/naemon/thruk /var/cache/naemon/thruk /etc/naemon/bp /var/log/thruk /etc/naemon/conf.d
+mkdir -p /var/lib/naemon/thruk /var/cache/naemon/thruk /etc/naemon/bp /var/log/naemon /etc/naemon/conf.d
 touch /var/log/naemon/thruk.log
 chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk /var/log/naemon/thruk.log /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk
 /usr/bin/crontab -l -u %{apacheuser} 2>/dev/null | /usr/bin/crontab -u %{apacheuser} -
@@ -379,7 +379,6 @@ if /usr/bin/id %{apacheuser} &>/dev/null; then
 else
     %logmsg "User \"%{apacheuser}\" does not exist and is not added to group \"naemon\". Sending commands to naemon from the CGIs is not possible."
 fi
-
 
 echo "Thruk has been configured for http://$(hostname)/naemon/. User and password is 'thrukadmin'."
 exit 0
