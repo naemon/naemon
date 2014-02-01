@@ -21,7 +21,7 @@ naemon-core:
 	cd naemon-core && make
 
 naemon-livestatus:
-	cd naemon-livestatus && make CFLAGS="$$CFLAGS -I$$(pwd)/../naemon-core"
+	cd naemon-livestatus && make CPPFLAGS="$$CPPFLAGS -I$$(pwd)/../naemon-core"
 
 update: update-naemon-core update-naemon-livestatus update-thruk
 	@if [ `git status 2>/dev/null | grep -c "Changed but not updated"` -eq 1 ]; then \
