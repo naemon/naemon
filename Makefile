@@ -1,6 +1,8 @@
 VERSION=0.0.1
 RELEASE=2013-12-11
 
+include thruk/gui/script/append.make.options
+
 .PHONY: naemon-core naemon-livestatus thruk
 
 all: naemon-core naemon-livestatus thruk
@@ -19,8 +21,7 @@ naemon-core:
 	cd naemon-core && make
 
 naemon-livestatus:
-	cd naemon-livestatus/src && ln -fs ../../naemon-core/naemon .
-	cd naemon-livestatus && make
+	cd naemon-livestatus && make CPPFLAGS="$$CPPFLAGS -I$$(pwd)/../naemon-core"
 
 update: update-naemon-core update-naemon-livestatus update-thruk
 	@if [ `git status 2>/dev/null | grep -c "Changed but not updated"` -eq 1 ]; then \
@@ -53,7 +54,6 @@ install:
 	cd naemon-livestatus && make install
 	cd thruk && make install
 	# some corrections to avoid conflicts
-	mv ${DESTDIR}/usr/bin/unixcat ${DESTDIR}/usr/bin/naemon-unixcat
 
 dist:
 	rm -rf naemon-${VERSION} naemon-${VERSION}.tar.gz
