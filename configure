@@ -44,7 +44,7 @@ test -f ./configure || autoreconf -i
 ./configure $* 2>&1 | grep -v 'WARNING: unrecognized options'
 
 cd ../thruk/gui
-./configure $*
+./configure --quiet $*
 
 echo "***************************************"
 echo "Naemon configured"
