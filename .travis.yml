@@ -12,8 +12,8 @@ install:
   - sudo apt-get install dh-make
   - sudo apt-get install libmodule-install-perl
 script:
-  - git config user.email "travis@localhost"
-  - git config user.name "Travis Testuser"
+  - git config --global user.email "travis@localhost"
+  - git config --global user.name "Travis Testuser"
   - make dailyversion
   - ./configure    || exit 1
   - make           || exit 1
