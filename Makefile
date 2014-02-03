@@ -3,6 +3,8 @@ RELEASE=2013-12-11
 
 .PHONY: naemon-core naemon-livestatus thruk
 
+P5DIR=$(shell pwd)/thruk/libs/.build
+
 all: naemon-core naemon-livestatus thruk
 	@echo "***************************************"
 	@echo "Naemon build complete"
@@ -13,7 +15,7 @@ all: naemon-core naemon-livestatus thruk
 
 
 thruk:
-	cd thruk && make
+	cd thruk && P5DIR=${P5DIR} make
 
 naemon-core:
 	cd naemon-core && make
@@ -79,7 +81,7 @@ dist:
 naemon-${VERSION}.tar.gz: dist
 
 rpm: naemon-${VERSION}.tar.gz
-	rpmbuild -tb naemon-${VERSION}.tar.gz
+	P5DIR=${P5DIR} rpmbuild -tb naemon-${VERSION}.tar.gz
 
 deb:
-	debuild -i -us -uc -b
+	P5DIR=${P5DIR} debuild -i -us -uc -b

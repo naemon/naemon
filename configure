@@ -45,12 +45,15 @@ test -f ./configure || autoreconf -i
 
 cd ../thruk/gui
 ./configure --quiet $*
+cd ../..
 
 echo "***************************************"
-echo "Naemon configured"
+echo "finished configuring Naemon:"
 echo ""
+grep -v '^#' thruk/gui/script/append.make.options
 echo "continue with"
-echo "make"
-echo "make [rpm|deb|install]"
 echo ""
+echo "make [rpm|deb]"
+echo "or"
+echo "make && make install"
 
