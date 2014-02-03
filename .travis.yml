@@ -11,6 +11,7 @@ install:
   - sudo apt-get install devscripts
   - sudo apt-get install dh-make
 script:
+  - make dailyversion
   - ./configure    || exit 1
   - make           || exit 1
   - mkdir _install || exit 1

@@ -85,3 +85,11 @@ rpm: naemon-${VERSION}.tar.gz
 
 deb:
 	P5DIR=${P5DIR} debuild -i -us -uc -b
+
+dailyversion:
+	DAILYVERSION=`./get_version` && \
+		./update-version $$DAILYVERSION && \
+		cd thruk/gui   && yes n | perl Makefile.PL; make newversion; git add .; git commit -a -m "automatic build commit: $$DAILYVERSION"; cd ../.. && \
+		cd naemon-core && git commit -a -m "automatic build commit: $$DAILYVERSION"; cd ..
+		cd naemon-livestatus && git commit -a -m "automatic build commit: $$DAILYVERSION"; cd ..
+		git commit -a -m "automatic build commit: $$DAILYVERSION"
