@@ -11,6 +11,8 @@ install:
   - sudo apt-get install devscripts
   - sudo apt-get install dh-make
 script:
+  - git config user.email "travis@localhost"
+  - git config user.name "Travis Testuser"
   - make dailyversion
   - ./configure    || exit 1
   - make           || exit 1
