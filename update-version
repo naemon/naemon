@@ -12,4 +12,5 @@ sed -i -e 's/^RELEASE=.*$/RELEASE='$DATE'/g' Makefile
 
 sed -i -e 's/^Version:.*$/Version: '$1'/g'   naemon.spec
 
-cd naemon-core && ./update-version "$1" "$DATE"
+cd naemon-core       && ./update-version "$1" "$DATE"
+cd naemon-livestatus && ./update-version "$1" "$DATE"
