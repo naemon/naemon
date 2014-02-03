@@ -89,7 +89,7 @@ deb:
 dailyversion:
 	@[ -e .git ] || { echo "dailyversion only works in git clones!"; exit 1; }
 	DAILYVERSION=`./get_version` && \
-		cd thruk/gui         && ./script/thruk_patch_makefile.pl && make NEWVERSION="`./get_version`" version; git add .; git commit -a -m "automatic build commit: $$DAILYVERSION"; cd ../.. && \
+		cd thruk/gui && yes 'n' | Makefile.PL >/dev/null 2>&1 && make newversion; git add .; git commit -a -m "automatic build commit: $$DAILYVERSION"; cd ../.. && \
 		./update-version $$DAILYVERSION && \
 		cd naemon-core       && git commit -a -m "automatic build commit: $$DAILYVERSION"; cd ..; \
 		cd naemon-livestatus && git commit -a -m "automatic build commit: $$DAILYVERSION"; cd ..; \
