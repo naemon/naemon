@@ -43,11 +43,11 @@ case "$1" in
         chown 755 /usr/bin/thruk
         chmod 2775 /var/cache/naemon/checkresults
 
-        # reload new apache config
+        # restart apache
         if which invoke-rc.d >/dev/null 2>&1; then
-            invoke-rc.d apache2 reload || true
+            invoke-rc.d apache2 restart || true
         else
-            /etc/init.d/apache2 reload || true
+            /etc/init.d/apache2 restart || true
         fi
 
         # create empty crontab
