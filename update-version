@@ -6,11 +6,23 @@ if [ "x$1" = "x" ]; then
   echo "Usage: $0 <version number>"
   exit 1
 fi
+VERSION=$1
 
-sed -i -e 's/^VERSION=.*$/VERSION='$1'/g'    Makefile
+sed -i -e 's/^VERSION=.*$/VERSION='$VERSION'/g'    Makefile
 sed -i -e 's/^RELEASE=.*$/RELEASE='$DATE'/g' Makefile
 
-sed -i -e 's/^Version:.*$/Version: '$1'/g'   naemon.spec
+sed -i -e 's/^Version:.*$/Version: '$VERSION'/g'   naemon.spec
 
-cd naemon-core       && ./update-version "$1" "$DATE" && cd ..
-cd naemon-livestatus && ./update-version "$1" "$DATE" && cd ..
+cd naemon-core       && ./update-version "$VERSION" "$DATE" && cd ..
+cd naemon-livestatus && ./update-version "$VERSION" "$DATE" && cd ..
+
+if [ "x$DEBEMAIL" = "x" ]; then
+    export DEBEMAIL="Naemon Development Team <naemon-dev@monitoring-lists.org>"
+fi
+if [ "x$DEBFULLNAME" = "x" ]; then
+    export DEBFULLNAME="Naemon Development Team"
+fi
+
+DEBVER=`echo "$VERSION" | sed -e 's/_20/-20/'`; # change this on 3000 millenium
+dch --newversion "$DEBVER" --package "naemon" -D "UNRELEASED" "new upstream release"
+exit $?

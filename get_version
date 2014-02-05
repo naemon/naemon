@@ -23,7 +23,7 @@ if [ $? -eq 0 ]; then
   minor2=`echo $version | cut -d . -f 3`
 
   # do we have a even minor version?
-  minor2=$((minor2+1))
+  minor1=$((minor1+1))
   version="$major.$minor1.$minor2"
 
   echo ${version}_${date} | tr -d 'v'
