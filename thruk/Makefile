@@ -1,3 +1,6 @@
+# make sure this file exists, "make update" would require a
+# configure run otherwise
+$(shell touch gui/script/append.make.options)
 include gui/script/append.make.options
 
 P5TMPDIST = $(shell pwd)/libs/.build

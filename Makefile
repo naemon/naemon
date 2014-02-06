@@ -24,7 +24,7 @@ naemon-livestatus:
 	cd naemon-livestatus && make CPPFLAGS="$$CPPFLAGS -I$$(pwd)/../naemon-core"
 
 update: update-naemon-core update-naemon-livestatus update-thruk
-	@if [ `git status 2>/dev/null | grep -c "Changed but not updated"` -eq 1 ]; then \
+	@if [ `git status 2>/dev/null | grep -c "new commits"` -gt 0 ]; then \
 		git commit -av -m 'automatic update';\
 		git log -1; \
 	else \
