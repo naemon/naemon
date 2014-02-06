@@ -63,7 +63,8 @@ case "$1" in
             fi
         fi
 
-        echo "Thruk has been configured for http://$(hostname)/naemon/. User and password is 'thrukadmin'."
+        echo "Naemon/Thruk have been configured for http://$(hostname)/naemon/."
+        echo "The default user is 'admin' with password 'admin'. You can usually change that by 'htpasswd /etc/naemon/htpasswd admin'. And you really should change that!"
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

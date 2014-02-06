@@ -380,7 +380,8 @@ else
     %logmsg "User \"%{apacheuser}\" does not exist and is not added to group \"naemon\". Sending commands to naemon from the CGIs is not possible."
 fi
 
-echo "Thruk has been configured for http://$(hostname)/naemon/. User and password is 'thrukadmin'."
+echo "Naemon/Thruk have been configured for http://$(hostname)/naemon/."
+echo "The default user is 'admin' with password 'admin'. You can usually change that by 'htpasswd /etc/naemon/htpasswd admin'. And you really should change that!"
 exit 0
 
 %posttrans thruk
