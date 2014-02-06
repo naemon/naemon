@@ -18,6 +18,7 @@ Depends: adduser,
          naemon-core (= ${binary:Version}),
          naemon-livestatus (= ${binary:Version}),
          naemon-thruk (= ${binary:Version}),
+         naemon-thruk-reporting (= ${binary:Version}),
          ${misc:Depends},
          ${perl:Depends},
          ${shlibs:Depends}
@@ -63,7 +64,6 @@ Depends: apache2,
          libapache2-mod-fcgid,
          logrotate,
          naemon-thruk-libs (= ${source:Version}),
-         xvfb,
          ${misc:Depends},
          ${perl:Depends},
          ${shlibs:Depends}
@@ -79,6 +79,14 @@ Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
 Description: This package contains the thruk gui for Naemon
  Naemon is a monitoring and management system for hosts, services and
  networks.
+
+Package: naemon-thruk-reporting
+Architecture: any
+Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends},
+         xvfb,
+         naemon-thruk (= ${source:Version})
+Description: This package contains the reporting addon for naemons thruk gui useful for sla
+ and event reporting.
 
 Package: naemon-dev
 Architecture: any

@@ -57,9 +57,10 @@ BuildRequires: perl-autodie
 %endif
 
 Requires(pre): shadow-utils
-Requires: %{name}-core       = %{version}-%{release}
-Requires: %{name}-livestatus = %{version}-%{release}
-Requires: %{name}-thruk      = %{version}-%{release}
+Requires: %{name}-core            = %{version}-%{release}
+Requires: %{name}-livestatus      = %{version}-%{release}
+Requires: %{name}-thruk           = %{version}-%{release}
+Requires: %{name}-thruk-reporting = %{version}-%{release}
 # https://fedoraproject.org/wiki/Packaging:DistTag
 # http://stackoverflow.com/questions/5135502/rpmbuild-dist-not-defined-on-centos-5-5
 
@@ -102,17 +103,6 @@ Requires(post): %{name}-core = %{version}-%{release}
 contains the %{name} livestatus eventbroker module
 
 
-%package thruk-libs
-Summary:     Perl Librarys For Naemons Thruk Gui
-Group:       Applications/System
-AutoReqProv: no
-Requires:    %{name}-thruk = %{version}-%{release}
-Conflicts:   thruk
-
-%description thruk-libs
-This package contains the library files for the thruk gui
-
-
 %package thruk
 Summary:     Thruk Gui For Naemon
 Group:       Applications/System
@@ -130,6 +120,34 @@ Requires:    httpd mod_fcgid
 
 %description thruk
 This package contains the thruk gui for %{name}
+
+
+%package thruk-libs
+Summary:     Perl Librarys For Naemons Thruk Gui
+Group:       Applications/System
+AutoReqProv: no
+Requires:    %{name}-thruk = %{version}-%{release}
+Conflicts:   thruk
+
+%description thruk-libs
+This package contains the library files for the thruk gui
+
+
+%package thruk-reporting
+Summary:     Thruk Gui For Naemon Reporting Addon
+Group:       Applications/System
+Requires:    %{name}-thruk = %{version}-%{release}
+%if %{defined suse_version}
+Requires: xorg-x11-server-extra
+%else
+Requires: xorg-x11-server-Xvfb libXext dejavu-fonts-common
+%endif
+AutoReqProv: no
+
+%description thruk-reporting
+This package contains the reporting addon for naemons thruk gui useful for sla
+and event reporting.
+
 
 
 %package devel
@@ -445,6 +463,18 @@ if [ -e /usr/bin/thruk ]; then
 fi
 exit 0
 
+%post thruk-reporting
+rm -f /etc/naemon/plugins/plugins-enabled/reports2
+ln -s ../plugins-available/reports2 /etc/naemon/plugins/plugins-enabled/reports2
+/etc/init.d/thruk condrestart &>/dev/null || :
+exit 0
+
+%preun thruk-reporting
+rm -f /etc/naemon/plugins/plugins-enabled/reports2
+/etc/init.d/thruk condrestart &>/dev/null || :
+exit 0
+
+
 
 %files
 
@@ -503,7 +533,21 @@ exit 0
 %{_datadir}/naemon/root
 %{_datadir}/naemon/templates
 %{_datadir}/naemon/themes
-%{_datadir}/naemon/plugins
+%{_datadir}/naemon/plugins/plugins-available/business_process
+%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/business_process
+%{_datadir}/naemon/plugins/plugins-available/conf
+%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/conf
+%{_datadir}/naemon/plugins/plugins-available/dashboard
+%{_datadir}/naemon/plugins/plugins-available/minemap
+%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/minemap
+%{_datadir}/naemon/plugins/plugins-available/mobile
+%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/mobile
+%{_datadir}/naemon/plugins/plugins-available/panorama
+%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/panorama
+%{_datadir}/naemon/plugins/plugins-available/shinken_features
+%{_datadir}/naemon/plugins/plugins-available/statusmap
+%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/statusmap
+%{_datadir}/naemon/plugins/plugins-available/wml
 %{_datadir}/naemon/lib
 %{_datadir}/naemon/Changes
 %{_datadir}/naemon/LICENSE
@@ -522,6 +566,12 @@ exit 0
 %files thruk-libs
 %attr(-,root,root) %{_libdir}/naemon/perl5
 
+%files thruk-reporting
+%{_datadir}/naemon/plugins/plugins-available/reports2
+
 %changelog
+* Tue Feb 06 2014 Sven Nierlein <sven.nierlein@consol.de> 0.1.0-1
+- moved thruks reporting addon into seperate package
+
 * Tue Nov 26 2013 Sven Nierlein <sven.nierlein@consol.de> 0.0.1-1
 - initial naemon meta package
