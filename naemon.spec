@@ -243,6 +243,12 @@ fi
 case "$*" in
   2)
     # Upgrading so try and restart if already running
+    # For systemctl systems we need to reload the configs
+    # becaues it'll complain if we just installed a new
+    # init script
+    if [ `which systemctl 2>/dev/null` ]; then
+      systemctl daemon-reload
+    fi
     /etc/init.d/naemon condrestart &>/dev/null || :
   ;;
   1)
@@ -570,6 +576,9 @@ exit 0
 %{_datadir}/naemon/plugins/plugins-available/reports2
 
 %changelog
+* Thu Feb 06 2014 Daniel Wittenberg <dwittenberg2008@gmail.com> 0.1.0-1
+- Add reload for systemctl-based setups
+
 * Tue Feb 06 2014 Sven Nierlein <sven.nierlein@consol.de> 0.1.0-1
 - moved thruks reporting addon into seperate package
 
