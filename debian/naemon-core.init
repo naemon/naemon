@@ -37,7 +37,7 @@ exec_prefix="${prefix}"
 exec="/usr/bin/naemon"
 prog="naemon"
 config="/etc/naemon/naemon.cfg"
-pidfile="/var/run/naemon/naemon.pid"
+pidfile="/var/cache/naemon/naemon.pid"
 pidfolder="`dirname $pidfile`"
 user="naemon"
 group="naemon"
@@ -56,7 +56,7 @@ check_config() {
 
     if test "$WARN" = "0" && test "${ERR}" = "0"; then
         echo "OK - Configuration check verified" > /var/cache/naemon/naemon.configtest
-	retval=0
+        retval=0
         chmod 0644 /var/cache/naemon/naemon.configtest
         /bin/rm "$TMPFILE"
         return 0
@@ -67,9 +67,9 @@ check_config() {
         egrep -i "(^warning|^error)" "$TMPFILE" >> /var/cache/naemon/naemon.configtest
         chmod 0644 /var/cache/naemon/naemon.configtest
         cat "$TMPFILE"
-	log_failure_msg "Error parsing configuration"
-	log_end_msg 8
-    	exit 8
+        log_failure_msg "Error parsing configuration"
+        log_end_msg 8
+        exit 8
     fi
 }
 
@@ -98,14 +98,14 @@ start() {
     retval=0
     log_daemon_msg "Starting $prog: "
     if [ ! -x $exec ]; then
-	log_failure_msg "Executable $exec does not exists or execute (or search) permission is denied"
-	log_end_msg 5
+    log_failure_msg "Executable $exec does not exists or execute (or search) permission is denied"
+    log_end_msg 5
         exit 5
     fi
     if [ ! -f $config ]; then
-	log_failure_msg "Config file $config does not exist"
-	log_end_msg 6
-	exit 6
+        log_failure_msg "Config file $config does not exist"
+        log_end_msg 6
+        exit 6
     fi
     if [ "$checkconfig" = "false" ]; then
         check_config
@@ -184,7 +184,7 @@ case "$1" in
         force_reload
         ;;
     status)
-	status_of_proc "$exec" "$prog" && exit 0 || exit $?
+        status_of_proc "$exec" "$prog" && exit 0 || exit $?
         ;;
     condrestart|try-restart)
         status $prog|| exit 0

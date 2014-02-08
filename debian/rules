@@ -48,6 +48,7 @@ override_dh_auto_install:
 	mv debian/tmp/etc/logrotate.d/thruk debian/tmp/etc/logrotate.d/naemon-thruk
 	mv debian/tmp/etc/logrotate.d/naemon debian/tmp/etc/logrotate.d/naemon-core
 	cp naemon-core/naemon.logrotate debian/naemon-core.logrotate
+	cp debian/naemon-core.init debian/tmp/etc/init.d/naemon
 
 
 %:
