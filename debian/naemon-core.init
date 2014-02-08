@@ -37,7 +37,7 @@ exec_prefix="${prefix}"
 exec="/usr/bin/naemon"
 prog="naemon"
 config="/etc/naemon/naemon.cfg"
-pidfile="/var/cache/naemon/naemon.pid"
+pidfile="/var/run/naemon/naemon.pid"
 pidfolder="`dirname $pidfile`"
 user="naemon"
 group="naemon"
@@ -98,8 +98,8 @@ start() {
     retval=0
     log_daemon_msg "Starting $prog: "
     if [ ! -x $exec ]; then
-    log_failure_msg "Executable $exec does not exists or execute (or search) permission is denied"
-    log_end_msg 5
+        log_failure_msg "Executable $exec does not exists or execute (or search) permission is denied"
+        log_end_msg 5
         exit 5
     fi
     if [ ! -f $config ]; then
