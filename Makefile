@@ -16,6 +16,7 @@ all: naemon-core naemon-livestatus thruk
 
 thruk:
 	cd thruk && P5DIR=${P5DIR} make
+	cd thruk && P5DIR=${P5DIR} make staticfiles
 
 naemon-core:
 	cd naemon-core && make
@@ -67,7 +68,7 @@ dist:
 	cd naemon-${VERSION}/naemon-livestatus && autoreconf -i -v
 	cp -p thruk/gui/Makefile naemon-${VERSION}/thruk/gui
 	cd naemon-${VERSION}/thruk/gui && ./script/thruk_patch_makefile.pl
-	cd naemon-${VERSION}/thruk/gui && make staticfiles
+	-cd naemon-${VERSION}/thruk/gui && make staticfiles >/dev/null 2>&1
 	tar cf "naemon-${VERSION}.tar" \
 		--exclude=thruk/gui/support/thruk.spec \
 		--exclude=thruk/gui/debian \
