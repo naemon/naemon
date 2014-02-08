@@ -41,7 +41,6 @@ BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: libtool
 BuildRequires: gcc-c++
-BuildRequires: dos2unix
 # sles / rhel specific requirements
 %if %{defined suse_version}
 BuildRequires: libexpat-devel

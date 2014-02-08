@@ -15,8 +15,8 @@ all: naemon-core naemon-livestatus thruk
 
 
 thruk:
-	cd thruk && P5DIR=${P5DIR} make
-	cd thruk && P5DIR=${P5DIR} make staticfiles
+	cd thruk     && P5DIR=${P5DIR} make
+	cd thruk/gui && make staticfiles
 
 naemon-core:
 	cd naemon-core && make
