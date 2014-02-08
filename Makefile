@@ -96,10 +96,9 @@ resetdaily: versionprecheck
 	git checkout .
 	cd naemon-core; git reset HEAD^; git checkout .; cd ..
 	cd naemon-livestatus; git reset HEAD^; git checkout .; cd ..
-	cd thruk/gui;   git reset HEAD^; git clean -xdf; git checkout .; yes n | perl Makefile.PL  || yes n | perl Makefile.PL; rm -f root/thruk/javascript/all_in_one-*_201*.js; cd ../..
+	cd thruk/gui;   git reset HEAD^; git checkout .; git clean -xdf; yes n | perl Makefile.PL || yes n | perl Makefile.PL; cd ../..
 	cd thruk/libs;  git checkout .; cd ../..
 	git reset HEAD^; git checkout .
-	git submodule update
 
 dailyversion: versionprecheck
 	DAILYVERSION=`./get_version` && \
