@@ -4,6 +4,7 @@ RELEASE=2013-12-11
 .PHONY: naemon-core naemon-livestatus thruk
 
 P5DIR=$(shell pwd)/thruk/libs/.build
+DAILYVERSION=$(shell ./get_version)
 
 all: naemon-core naemon-livestatus thruk
 	@echo "***************************************"
@@ -94,19 +95,27 @@ versionprecheck:
 
 resetdaily: versionprecheck
 	git checkout .
-	cd naemon-core; git reset HEAD^; git checkout .; cd ..
-	cd naemon-livestatus; git reset HEAD^; git checkout .; cd ..
-	cd thruk/gui;   git reset HEAD^; git checkout .; git clean -xdf; yes n | perl Makefile.PL || yes n | perl Makefile.PL; cd ../..
-	cd thruk/libs;  git checkout .; cd ../..
-	git reset HEAD^; git checkout .
+	cd naemon-core       && if [ $$(git log -1 | grep -c "automatic build commit:") -gt 0 ]; then git reset HEAD^ && git checkout .; fi
+	cd naemon-livestatus && if [ $$(git log -1 | grep -c "automatic build commit:") -gt 0 ]; then git reset HEAD^ && git checkout .; fi
+	cd thruk/gui         && if [ $$(git log -1 | grep -c "automatic build commit:") -gt 0 ]; then git reset HEAD^; git checkout .; git clean -xdf; yes n | perl Makefile.PL || yes n | perl Makefile.PL; fi
+	cd thruk/libs        && git checkout .
+	if [ $$(git log -1 | grep -c "automatic build commit:") -gt 0 ]; then git reset HEAD^ && git checkout .; fi
+	git submodule update
+	cd thruk/gui         && git checkout master
+	cd thruk/libs        && git checkout master
+	cd naemon-core       && git checkout master
+	cd naemon-livestatus && git checkout master
 
 dailyversion: versionprecheck
-	DAILYVERSION=`./get_version` && \
-		cd thruk/gui && yes 'n' | Makefile.PL >/dev/null 2>&1 && make newversion; git add .; git commit -a -m "automatic build commit: $$DAILYVERSION"; cd ../.. && \
-		./update-version $$DAILYVERSION && \
-		cd naemon-core       && git commit -a -m "automatic build commit: $$DAILYVERSION"; cd ..; \
-		cd naemon-livestatus && git commit -a -m "automatic build commit: $$DAILYVERSION"; cd ..; \
-		git commit -a -m "automatic build commit: $$DAILYVERSION"
+	cd thruk/gui         && git checkout master
+	cd thruk/libs        && git checkout master
+	cd naemon-core       && git checkout master
+	cd naemon-livestatus && git checkout master
+	cd thruk/gui && yes 'n' | perl Makefile.PL >/dev/null 2>&1 && make newversion && git add . && git commit -a -m "automatic build commit: ${DAILYVERSION}"
+	./update-version ${DAILYVERSION}
+	cd naemon-core       && git commit -a -m "automatic build commit: ${DAILYVERSION}"
+	cd naemon-livestatus && git commit -a -m "automatic build commit: ${DAILYVERSION}"
+	git commit -a -m "automatic build commit: ${DAILYVERSION}"
 	@echo ""
 	@echo "******************"
 	@echo "ATTENTION: daily version (`grep ^VERSION Makefile | awk -F= '{ print $$2 }'`) set, do not push! Instead use 'make resetdaily' to unstage after building."
