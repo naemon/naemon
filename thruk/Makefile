@@ -9,6 +9,9 @@ all:
 	cd libs && make
 	cd gui && yes n | PERL5LIB=$$P5DIR/dest/lib/perl5/:${P5TMPDIST}/dest/lib/perl5 perl Makefile.PL
 
+staticfiles:
+	cd gui && PERL5LIB=$$P5DIR/dest/lib/perl5/:${P5TMPDIST}/dest/lib/perl5 make staticfiles
+
 install:
 	cd gui && make install naemon-patch
 	mkdir -p ${DESTDIR}${THRUKLIBS}
