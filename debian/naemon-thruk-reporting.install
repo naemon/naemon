@@ -1,1 +1,3 @@
 /usr/share/naemon/plugins/plugins-available/reports2
+/etc/naemon/plugins/plugins-available/reports2
+/etc/naemon/plugins/plugins-enabled/reports2

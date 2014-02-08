@@ -360,11 +360,11 @@ fi
 rm -rf /var/cache/naemon/thruk_update
 if [ -d /etc/naemon/themes/themes-enabled/. ]; then
   mkdir -p /var/cache/naemon/thruk_update/themes
-  cp -rp /etc/naemon/themes/themes-enabled/* /var/cache/naemon/thruk_update/themes/
+  cp -rp /etc/naemon/themes/themes-enabled/* /var/cache/naemon/thruk_update/themes/ 2>/dev/null
 fi
 if [ -d /etc/naemon/plugins/plugins-enabled/. ]; then
   mkdir -p /var/cache/naemon/thruk_update/plugins
-  cp -rp /etc/naemon/plugins/plugins-enabled/* /var/cache/naemon/thruk_update/plugins/
+  cp -rp /etc/naemon/plugins/plugins-enabled/* /var/cache/naemon/thruk_update/plugins/ 2>/dev/null
 fi
 exit 0
 
@@ -412,11 +412,11 @@ exit 0
 # restore themes and plugins
 if [ -d /var/cache/naemon/thruk_update/themes/. ]; then
   rm -f /etc/naemon/themes/themes-enabled/*
-  cp -rp /var/cache/naemon/thruk_update/themes/* /etc/naemon/themes/themes-enabled/
+  cp -rp /var/cache/naemon/thruk_update/themes/* /etc/naemon/themes/themes-enabled/ 2>/dev/null  # might fail if no themes are enabled
 fi
 if [ -d /var/cache/naemon/thruk_update/plugins/. ]; then
   rm -f /etc/naemon/plugins/plugins-enabled/*
-  cp -rp /var/cache/naemon/thruk_update/plugins/* /etc/naemon/plugins/plugins-enabled/
+  cp -rp /var/cache/naemon/thruk_update/plugins/* /etc/naemon/plugins/plugins-enabled/ 2>/dev/null  # might fail if no plugins are enabled
 fi
 echo "thruk plugins enabled:" $(ls /etc/naemon/plugins/plugins-enabled/)
 rm -rf /var/cache/naemon/thruk_update
@@ -441,6 +441,11 @@ case "$*" in
     rm -rf /var/cache/naemon/thruk \
            %{_datadir}/naemon/root/thruk/plugins \
            /var/lib/naemon/thruk
+    # try to clean some empty folders
+    rmdir /etc/naemon/plugins/plugins-available 2>/dev/null
+    rmdir /etc/naemon/plugins/plugins-enabled 2>/dev/null
+    rmdir /etc/naemon/plugins 2>/dev/null
+    rmdir /etc/naemon 2>/dev/null
     %{insserv_cleanup}
     ;;
   1)
@@ -479,6 +484,24 @@ exit 0
 rm -f /etc/naemon/plugins/plugins-enabled/reports2
 /etc/init.d/thruk condrestart &>/dev/null || :
 exit 0
+
+%postun thruk-reporting
+case "$*" in
+  0)
+    # POSTUN
+    # try to clean some empty folders
+    rmdir /etc/naemon/plugins/plugins-available 2>/dev/null
+    rmdir /etc/naemon/plugins/plugins-enabled 2>/dev/null
+    rmdir /etc/naemon/plugins 2>/dev/null
+    rmdir /etc/naemon 2>/dev/null
+    ;;
+  1)
+    # POSTUPDATE
+    ;;
+  *) echo case "$*" not handled in postun
+esac
+exit 0
+
 
 
 
@@ -530,7 +553,6 @@ exit 0
 %config(noreplace) %{_sysconfdir}/logrotate.d/naemon-thruk
 %config(noreplace) %{_sysconfdir}/%{apachedir}/conf.d/thruk.conf
 %config(noreplace) %{_sysconfdir}/%{apachedir}/conf.d/thruk_cookie_auth_vhost.conf
-%config(noreplace) %{_sysconfdir}/naemon/plugins
 %config(noreplace) %{_sysconfdir}/naemon/themes
 %config(noreplace) %{_sysconfdir}/naemon/menu_local.conf
 %attr(0755,root, root) %{_datadir}/naemon/thruk_auth
@@ -540,20 +562,29 @@ exit 0
 %{_datadir}/naemon/templates
 %{_datadir}/naemon/themes
 %{_datadir}/naemon/plugins/plugins-available/business_process
-%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/business_process
+%config %{_sysconfdir}/naemon/plugins/plugins-enabled/business_process
+%config %{_sysconfdir}/naemon/plugins/plugins-available/business_process
 %{_datadir}/naemon/plugins/plugins-available/conf
-%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/conf
+%config %{_sysconfdir}/naemon/plugins/plugins-enabled/conf
+%config %{_sysconfdir}/naemon/plugins/plugins-available/conf
 %{_datadir}/naemon/plugins/plugins-available/dashboard
+%config %{_sysconfdir}/naemon/plugins/plugins-available/dashboard
 %{_datadir}/naemon/plugins/plugins-available/minemap
-%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/minemap
+%config %{_sysconfdir}/naemon/plugins/plugins-enabled/minemap
+%config %{_sysconfdir}/naemon/plugins/plugins-available/minemap
 %{_datadir}/naemon/plugins/plugins-available/mobile
-%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/mobile
+%config %{_sysconfdir}/naemon/plugins/plugins-enabled/mobile
+%config %{_sysconfdir}/naemon/plugins/plugins-available/mobile
 %{_datadir}/naemon/plugins/plugins-available/panorama
-%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/panorama
+%config %{_sysconfdir}/naemon/plugins/plugins-enabled/panorama
+%config %{_sysconfdir}/naemon/plugins/plugins-available/panorama
 %{_datadir}/naemon/plugins/plugins-available/shinken_features
+%config %{_sysconfdir}/naemon/plugins/plugins-available/shinken_features
 %{_datadir}/naemon/plugins/plugins-available/statusmap
-%config(noreplace) %{_sysconfdir}/naemon/plugins/plugins-enabled/statusmap
+%config %{_sysconfdir}/naemon/plugins/plugins-enabled/statusmap
+%config %{_sysconfdir}/naemon/plugins/plugins-available/statusmap
 %{_datadir}/naemon/plugins/plugins-available/wml
+%config %{_sysconfdir}/naemon/plugins/plugins-available/wml
 %{_datadir}/naemon/lib
 %{_datadir}/naemon/Changes
 %{_datadir}/naemon/LICENSE
@@ -574,6 +605,8 @@ exit 0
 
 %files thruk-reporting
 %{_datadir}/naemon/plugins/plugins-available/reports2
+%{_sysconfdir}/naemon/plugins/plugins-available/reports2
+%{_sysconfdir}/naemon/plugins/plugins-enabled/reports2
 
 %changelog
 * Thu Feb 06 2014 Daniel Wittenberg <dwittenberg2008@gmail.com> 0.1.0-1

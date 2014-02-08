@@ -7,11 +7,11 @@ case "$1" in
         # restore themes and plugins
         if [ -d /var/cache/naemon/thruk_update/themes/. ]; then
           rm -f /etc/naemon/themes/themes-enabled/*
-          cp -rp /var/cache/naemon/thruk_update/themes/* /etc/naemon/themes/themes-enabled/
+          cp -rp /var/cache/naemon/thruk_update/themes/* /etc/naemon/themes/themes-enabled/ 2>/dev/null
         fi
         if [ -d /var/cache/naemon/thruk_update/plugins/. ]; then
           rm -f /etc/naemon/plugins/plugins-enabled/*
-          cp -rp /var/cache/naemon/thruk_update/plugins/* /etc/naemon/plugins/plugins-enabled/
+          cp -rp /var/cache/naemon/thruk_update/plugins/* /etc/naemon/plugins/plugins-enabled/ 2>/dev/null
         fi
         echo "thruk plugins enabled:" $(ls /etc/naemon/plugins/plugins-enabled/)
         rm -rf /var/cache/naemon/thruk_update

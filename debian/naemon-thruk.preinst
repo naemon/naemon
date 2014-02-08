@@ -52,11 +52,11 @@ fi
 rm -rf /var/cache/naemon/thruk_update
 if [ -d /etc/naemon/themes/themes-enabled/. ]; then
   mkdir -p /var/cache/naemon/thruk_update/themes
-  cp -rp /etc/naemon/themes/themes-enabled/* /var/cache/naemon/thruk_update/themes/
+  cp -rp /etc/naemon/themes/themes-enabled/* /var/cache/naemon/thruk_update/themes/ 2>/dev/null
 fi
 if [ -d /etc/naemon/plugins/plugins-enabled/. ]; then
   mkdir -p /var/cache/naemon/thruk_update/plugins
-  cp -rp /etc/naemon/plugins/plugins-enabled/* /var/cache/naemon/thruk_update/plugins/
+  cp -rp /etc/naemon/plugins/plugins-enabled/* /var/cache/naemon/thruk_update/plugins/ 2>/dev/null
 fi
 
 exit
