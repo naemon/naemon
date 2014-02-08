@@ -524,12 +524,12 @@ exit 0
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/naemon/archives
 %attr(-,root,root) %{_datadir}/naemon/documentation
+%attr(-,root,root) %{_libdir}/naemon/libnaemon.so*
 
 %files devel
 %attr(-,root,root) %{_includedir}/naemon/
 %attr(-,root,root) %{_libdir}/naemon/libnaemon.a
 %attr(-,root,root) %{_libdir}/naemon/libnaemon.la
-%attr(-,root,root) %{_libdir}/naemon/libnaemon.so*
 
 %files livestatus
 %attr(0755,root,root) %{_bindir}/naemon-unixcat
