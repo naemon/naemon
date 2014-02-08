@@ -44,7 +44,7 @@ case "$1" in
         rm -rf /var/lib/naemon/thruk
         rmdir /var/lib/naemon 2>/dev/null || :
         rm -rf /var/cache/naemon/thruk
-        rmdir /var/cache/naemon 2>/dev/null || :
+        rmdir /var/cache/naemon 2>/dev/null || :
     ;;
 
     failed-upgrade|abort-install|abort-upgrade|disappear)
