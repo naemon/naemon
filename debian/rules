@@ -25,7 +25,7 @@ override_dh_auto_configure:
 				--with-logrotatedir="/etc/logrotate.d" \
 				--with-naemon-user="naemon" \
 				--with-naemon-group="naemon" \
-				--with-lockfile="/var/cache/naemon/naemon.pid" \
+				--with-lockfile="/var/run/naemon/naemon.pid" \
 				--with-thruk-user="www-data" \
 				--with-thruk-group="naemon" \
 				--with-thruk-libs="/usr/lib/naemon/perl5" \
