@@ -183,7 +183,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
     --with-logrotatedir="%{_sysconfdir}/logrotate.d" \
     --with-naemon-user="naemon" \
     --with-naemon-group="naemon" \
-    --with-lockfile="%{_localstatedir}/cache/naemon/naemon.pid" \
+    --with-lockfile="%{_localstatedir}/run/naemon/naemon.pid" \
     --with-thruk-user="%{apacheuser}" \
     --with-thruk-group="naemon" \
     --with-thruk-libs="%{_libdir}/naemon/perl5" \
