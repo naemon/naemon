@@ -1,6 +1,8 @@
 #!/usr/bin/make -f
 # debian/rules makefile for naemon
 
+.PHONY: override_dh_strip
+
 export DH_VERBOSE=1
 DESTDIR=$(CURDIR)/debian/tmp/
 PERLARCH=$(shell perl -e 'use Config; print $$Config{archname}')
@@ -41,6 +43,7 @@ override_dh_auto_configure:
 override_dh_auto_install:
 	dh_auto_install
 	# because we globally disabled binary striping, we have to do this manually for some files
+	cp -p debian/tmp/usr/bin/naemon debian/tmp/usr/bin/naemon-dbg
 	strip debian/tmp/usr/bin/naemon
 	strip debian/tmp/usr/bin/naemonstats
 	strip debian/tmp/usr/bin/naemon-unixcat
@@ -50,6 +53,8 @@ override_dh_auto_install:
 	cp naemon-core/naemon.logrotate debian/naemon-core.logrotate
 	cp debian/naemon-core.naemon.init debian/tmp/etc/init.d/naemon
 
+override_dh_strip:
+	dh_strip -pnaemon-core --dbg-package=naemon-core-dbg
 
 %:
 	dh $@

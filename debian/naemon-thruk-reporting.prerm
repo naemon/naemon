@@ -8,7 +8,7 @@ set -e
 case "$1" in
   remove|deconfigure)
     rm -f /etc/naemon/plugins/plugins-enabled/reports2
-    service thruk condrestart &>/dev/null || :
+    ! test -f /etc/init.d/thruk || service thruk condrestart >/dev/null || :
   ;;
 
   upgrade|failed-upgrade)

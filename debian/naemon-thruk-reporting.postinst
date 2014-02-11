@@ -6,7 +6,7 @@ case "$1" in
     configure)
         rm -f /etc/naemon/plugins/plugins-enabled/reports2
         ln -s ../plugins-available/reports2 /etc/naemon/plugins/plugins-enabled/reports2
-        service thruk condrestart &>/dev/null || :
+        service thruk condrestart >/dev/null || :
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

@@ -50,6 +50,18 @@ Description: contains the Naemon core
  Naemon is a monitoring and management system for hosts, services and
  networks.
 
+Package: naemon-core-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends:
+    naemon-core (= ${binary:Version}),
+    ${misc:Depends}
+Description: contains the Naemon core with debug symbols
+ Naemon is a monitoring and management system for hosts, services and
+ networks.
+
+
 Package: naemon-livestatus
 Architecture: any
 Depends: naemon-core, ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
