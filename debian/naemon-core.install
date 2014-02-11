@@ -11,3 +11,4 @@
 /var/log/naemon/archives
 /etc/logrotate.d/naemon-core
 /usr/lib/naemon/libnaemon.so*
+/usr/lib/naemon/plugins
