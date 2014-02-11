@@ -46,6 +46,7 @@ override_dh_auto_install:
 	cp -p debian/tmp/usr/bin/naemon debian/tmp/usr/bin/naemon-dbg
 	strip debian/tmp/usr/bin/naemon
 	strip debian/tmp/usr/bin/naemonstats
+	strip debian/tmp/usr/bin/oconfsplit
 	strip debian/tmp/usr/bin/naemon-unixcat
 	strip debian/tmp/usr/lib/naemon/libnaemon.so.0.0.0
 	mv debian/tmp/etc/logrotate.d/thruk debian/tmp/etc/logrotate.d/naemon-thruk

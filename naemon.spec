@@ -207,6 +207,7 @@ cd naemon-core
 # because we globally disabled binary striping, we have to do this manually for some files
 %{__strip} %{buildroot}%{_bindir}/naemon
 %{__strip} %{buildroot}%{_bindir}/naemonstats
+%{__strip} %{buildroot}%{_bindir}/oconfsplit
 %{__strip} %{buildroot}%{_bindir}/naemon-unixcat
 %{__strip} %{buildroot}%{_libdir}/naemon/libnaemon.so.0.0.0
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/naemon-thruk
@@ -512,6 +513,7 @@ exit 0
 %files core
 %attr(0755,root,root) %{_bindir}/naemon
 %attr(0755,root,root) %{_bindir}/naemonstats
+%attr(0755,root,root) %{_bindir}/oconfsplit
 %attr(0755,root,root) %{_initrddir}/naemon
 %config(noreplace) %{_sysconfdir}/logrotate.d/naemon-core
 %attr(0755,root,root) %dir %{_sysconfdir}/naemon/
