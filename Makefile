@@ -121,6 +121,14 @@ dailyversion: versionprecheck
 	@echo "ATTENTION: daily version (`grep ^VERSION Makefile | awk -F= '{ print $$2 }'`) set, do not push! Instead use 'make resetdaily' to unstage after building."
 	@echo "******************"
 
+dailydist:
+	make resetdaily
+	make dailyversion
+	make dist
+	make resetdaily
+	@echo "finished"
+	@echo "daily dist created: naemon-${DAILYVERSION}.tar.gz"
+
 releaseversion: versionprecheck
 	RELEASEVERSION=`dialog --stdout --inputbox "New Version:" 0 0 "${VERSION}"` && \
 		./update-version $$RELEASEVERSION && \
