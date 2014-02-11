@@ -83,7 +83,10 @@ dist:
 naemon-${VERSION}.tar.gz: dist
 
 rpm: naemon-${VERSION}.tar.gz
-	P5DIR=${P5DIR} rpmbuild -tb naemon-${VERSION}.tar.gz
+	# NO_BRP_STALE_LINK_ERROR ignores errors when symlinking non existing
+	# folders. And since we link the plugins folder to a not yet installed pkg,
+	# the build will break
+	NO_BRP_STALE_LINK_ERROR="yes" P5DIR=${P5DIR} rpmbuild -tb naemon-${VERSION}.tar.gz
 
 deb:
 	P5DIR=${P5DIR} debuild -i -us -uc -b

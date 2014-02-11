@@ -223,7 +223,8 @@ cd naemon-core
 %{__install} -d -m 0755 %{buildroot}/%{_sysconfdir}/sysconfig/
 %{__install} -m 0644 naemon-core/sample-config/naemon.sysconfig %{buildroot}/%{_sysconfdir}/sysconfig/naemon
 
-ln -s %{_libdir}/nagios/libexec %{_libdir}/naemon/plugins
+%{__mkdir_p} -m 0755 %{buildroot}%{_libdir}/naemon/
+ln -s %{_libdir}/nagios/libexec %{buildroot}%{_libdir}/naemon/plugins
 
 %clean
 %{__rm} -rf %{buildroot}
