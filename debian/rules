@@ -53,7 +53,7 @@ override_dh_auto_install:
 	mv debian/tmp/etc/logrotate.d/naemon debian/tmp/etc/logrotate.d/naemon-core
 	cp naemon-core/naemon.logrotate debian/naemon-core.logrotate
 	cp debian/naemon-core.naemon.init debian/tmp/etc/init.d/naemon
-	ln -s /usr/lib/nagios/libexec debian/tmp/usr/lib/naemon/plugins
+	ln -s /usr/lib/nagios/plugins debian/tmp/usr/lib/naemon/plugins
 
 override_dh_strip:
 	dh_strip -pnaemon-core --dbg-package=naemon-core-dbg
