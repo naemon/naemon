@@ -92,6 +92,15 @@ Requires:  logrotate
 contains the %{name} core
 
 
+%package core-dbg
+Summary:   Naemon Monitoring Debug Core
+Group:     Applications/System
+
+%description core-dbg
+contains the %{name} core with debug symbols.
+
+
+
 %package livestatus
 Summary:        Naemon Livestatus Eventbroker Module
 Group:          Applications/System
@@ -205,6 +214,7 @@ cd naemon-core
     COMMAND_OPTS="" \
     INIT_OPTS=""
 # because we globally disabled binary striping, we have to do this manually for some files
+%{__cp} -p %{buildroot}%{_bindir}/naemon %{buildroot}%{_bindir}/naemon-dbg
 %{__strip} %{buildroot}%{_bindir}/naemon
 %{__strip} %{buildroot}%{_bindir}/naemonstats
 %{__strip} %{buildroot}%{_bindir}/oconfsplit
@@ -531,6 +541,9 @@ exit 0
 %attr(-,root,root) %{_datadir}/naemon/documentation
 %attr(-,root,root) %{_libdir}/naemon/libnaemon.so*
 %attr(-,root,root) %{_libdir}/naemon/plugins
+
+%files core-dbg
+%attr(0755,root,root) %{_bindir}/naemon-dbg
 
 %files devel
 %attr(-,root,root) %{_includedir}/naemon/

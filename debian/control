@@ -55,7 +55,6 @@ Architecture: any
 Section: debug
 Priority: extra
 Depends:
-    naemon-core (= ${binary:Version}),
     ${shlibs:Depends},
     ${misc:Depends}
 Description: contains the Naemon core with debug symbols
