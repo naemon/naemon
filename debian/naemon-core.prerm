@@ -1,11 +1,17 @@
 #!/bin/sh -e
 
-if [ -x "/etc/init.d/naemon" ]; then
-    if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
-        invoke-rc.d naemon stop || true
-    else
-        /etc/init.d/naemon stop || true
-    fi
-fi
+case "$1" in
+  remove|deconfigure)
+    invoke-rc.d naemon stop || true
+  ;;
+
+  upgrade|failed-upgrade)
+  ;;
+
+  *)
+    echo "prerm called with unknown argument \`$1'" >&2
+    exit 0
+  ;;
+esac
 
 #DEBHELPER#
