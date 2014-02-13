@@ -19,7 +19,7 @@
 status() {
   [ ! -e $pidfile ] && return 1;
   PID=`cat $pidfile`;
-  kill -0 $PID
+  kill -0 $PID 2>/dev/null
   return $?
 }
 
@@ -76,6 +76,7 @@ check_config() {
 naemon_wait_stop() {
     stop
     # wait until really stopped
+    pid=$(pidof_naemon)
     if [ -n "${pid:-}" ]; then
         i=0
         while kill -0 "${pid:-}" 2> /dev/null;  do
