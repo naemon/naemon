@@ -352,9 +352,18 @@ esac
 exit 0
 
 %postun livestatus
-if [ -e /etc/naemon/naemon.cfg ]; then
-  sed -i /etc/naemon/naemon.cfg -e 's~\(broker_module=/usr/lib[0-9]*/naemon/livestatus.o.*\)~#\1~'
-fi
+case "$*" in
+  0)
+    # POSTUN
+    if [ -e /etc/naemon/naemon.cfg ]; then
+      sed -i /etc/naemon/naemon.cfg -e 's~\(broker_module=/usr/lib[0-9]*/naemon/livestatus.o.*\)~#\1~'
+    fi
+    ;;
+  1)
+    # POSTUPDATE
+    ;;
+  *) echo case "$*" not handled in postun
+esac
 exit 0
 
 
