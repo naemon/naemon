@@ -1,5 +1,5 @@
-VERSION=0.0.1
-RELEASE=2013-12-11
+VERSION=0.8.0
+RELEASE=2014-02-13
 
 .PHONY: naemon-core naemon-livestatus thruk
 
@@ -132,12 +132,12 @@ dailydist:
 	@echo "finished"
 	@echo "daily dist created: naemon-${DAILYVERSION}.tar.gz"
 
-releaseversion: versionprecheck
+releaseversion:
 	RELEASEVERSION=`dialog --stdout --inputbox "New Version:" 0 0 "${VERSION}"` && \
 		./update-version $$RELEASEVERSION && \
-		cd naemon-core && git commit -a -m "released $$RELEASEVERSION" && git tag "v$$RELEASEVERSION" && cd .. && \
-		cd naemon-livestatus && git commit -a -m "released $$RELEASEVERSION" && git tag "v$$RELEASEVERSION" && cd .. && \
-		git commit -a -m "released $$RELEASEVERSION" && git tag "v$$RELEASEVERSION"
+		cd naemon-core && git commit -as -m "released $$RELEASEVERSION" && git tag "v$$RELEASEVERSION" && cd .. && \
+		cd naemon-livestatus && git commit -as -m "released $$RELEASEVERSION" && git tag "v$$RELEASEVERSION" && cd .. && \
+		git commit -as -m "released $$RELEASEVERSION" && git tag "v$$RELEASEVERSION"
 	@echo ""
 	@echo "******************"
 	@echo "ATTENTION: release tag (`grep ^VERSION Makefile | awk -F= '{ print $$2 }'`) set, please double check before pushing anything."
