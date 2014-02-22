@@ -12,7 +12,6 @@ Vcs-Git: git://github.com:naemon/naemon.git
 Package: naemon
 Architecture: any
 Depends: adduser,
-         bsd-mailx | mailx,
          coreutils (>= 4.5.3),
          lsb-base (>= 3.0-6),
          naemon-core (= ${binary:Version}),
@@ -45,7 +44,8 @@ Description: A host/service/network monitoring and management system
 
 Package: naemon-core
 Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
+Depends: bsd-mailx | mailx,
+         ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
 Description: contains the Naemon core
  Naemon is a monitoring and management system for hosts, services and
  networks.
