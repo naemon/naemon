@@ -396,6 +396,20 @@ mkdir -p /var/lib/naemon/thruk /var/cache/naemon/thruk /etc/naemon/bp /var/log/n
 touch /var/log/naemon/thruk.log
 chown -R %{apacheuser}:%{apachegroup} /var/cache/naemon/thruk /var/log/naemon/thruk.log /etc/naemon/plugins/plugins-enabled /etc/naemon/thruk_local.conf /etc/naemon/bp /var/lib/naemon/thruk
 /usr/bin/crontab -l -u %{apacheuser} 2>/dev/null | /usr/bin/crontab -u %{apacheuser} -
+
+# add webserver user to group naemon
+if /usr/bin/id %{apacheuser} &>/dev/null; then
+    if ! /usr/bin/id -Gn %{apacheuser} 2>/dev/null | grep -q naemon ; then
+%if %{defined suse_version}
+        /usr/sbin/groupmod -A %{apacheuser} naemon >/dev/null
+%else
+        /usr/sbin/usermod -a -G naemon %{apacheuser} >/dev/null
+%endif
+    fi
+else
+    %logmsg "User \"%{apacheuser}\" does not exist and is not added to group \"naemon\". Sending commands to naemon from the CGIs is not possible."
+fi
+
 %if %{defined suse_version}
 a2enmod alias
 a2enmod fcgid
@@ -413,17 +427,6 @@ fi
 %endif
 if [ -d %{_libdir}/naemon/perl5 ]; then
   /usr/bin/thruk -a clearcache,installcron --local > /dev/null
-fi
-if /usr/bin/id %{apacheuser} &>/dev/null; then
-    if ! /usr/bin/id -Gn %{apacheuser} 2>/dev/null | grep -q naemon ; then
-%if %{defined suse_version}
-        /usr/sbin/groupmod -A %{apacheuser} naemon >/dev/null
-%else
-        /usr/sbin/usermod -a -G naemon %{apacheuser} >/dev/null
-%endif
-    fi
-else
-    %logmsg "User \"%{apacheuser}\" does not exist and is not added to group \"naemon\". Sending commands to naemon from the CGIs is not possible."
 fi
 
 echo "Naemon/Thruk have been configured for http://$(hostname)/naemon/."
