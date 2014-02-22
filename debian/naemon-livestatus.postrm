@@ -24,6 +24,7 @@ case "$1" in
       if [ -e /etc/naemon/naemon.cfg ]; then
         sed -i /etc/naemon/naemon.cfg -e 's~\(broker_module=/usr/lib[0-9]*/naemon/livestatus.o.*\)~#\1~'
       fi
+      rm -f /var/cache/naemon/live
     ;;
     upgrade)
     ;;

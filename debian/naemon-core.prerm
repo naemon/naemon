@@ -3,6 +3,8 @@
 case "$1" in
   remove|deconfigure)
     invoke-rc.d naemon stop || true
+    rm -f /var/lib/naemon/status.dat
+    rm -f /var/lib/naemon/naemon.qh
   ;;
 
   upgrade|failed-upgrade)

@@ -74,9 +74,9 @@ check_config() {
 }
 
 naemon_wait_stop() {
-    stop
     # wait until really stopped
     pid=$(pidof_naemon)
+    stop
     if [ -n "${pid:-}" ]; then
         i=0
         while kill -0 "${pid:-}" 2> /dev/null;  do
@@ -136,7 +136,7 @@ start() {
 stop() {
     log_daemon_msg "Stopping $prog: "
     retval=0
-    start-stop-daemon --oknodo --stop --quiet --exec $exec
+    start-stop-daemon --oknodo --stop --quiet --exec $exec --retry=TERM/5/INT/3/KILL/3
     retval=$?
     test $retval -eq 0 && rm -f $lockfile
     log_end_msg $retval
