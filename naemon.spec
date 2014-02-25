@@ -564,7 +564,7 @@ exit 0
   %attr(0644,root,root) %{_tmpfilesdir}/%{name}.conf
   %attr(0755,root,root) %{_bindir}/%{name}-ctl
 %else
-  %attr(0755,root,root) %{_initrddir}/nagios
+  %attr(0755,root,root) %{_initrddir}/naemon
 %endif
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}-core
 %attr(0755,root,root) %dir %{_sysconfdir}/%{name}/
