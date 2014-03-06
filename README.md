@@ -27,6 +27,7 @@ gperf and doxygen.
 
     git clone --recursive https://github.com/naemon/naemon.git
     cd naemon
+    make update
     ./configure
     make
     make [rpm|deb|install]
