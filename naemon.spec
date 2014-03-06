@@ -272,7 +272,7 @@ case "$*" in
       systemctl daemon-reload
       systemctl condrestart %{name}.service
     %else
-      /etc/init.d/%{name} condrestart &>/dev/null ||
+      /etc/init.d/%{name} condrestart &>/dev/null || true
     %endif
   ;;
   1)
