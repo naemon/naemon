@@ -569,8 +569,8 @@ exit 0
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}-core
 %attr(0755,root,root) %dir %{_sysconfdir}/%{name}/
 %attr(2775,naemon,naemon) %dir %{_sysconfdir}/%{name}/conf.d
-%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/%{name}/%{name}.cfg
-%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/%{name}/resource.cfg
+%attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/%{name}.cfg
+%attr(0640,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/resource.cfg
 %attr(0664,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/conf.d/*.cfg
 %attr(0664,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/conf.d/templates/*.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
