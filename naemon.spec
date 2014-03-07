@@ -242,6 +242,7 @@ cd naemon-core
 # Install systemd entry
 %{__install} -D -m 0644 -p %{name}-core/daemon-systemd %{buildroot}%{_unitdir}/%{name}.service
 %{__install} -D -m 0644 -p %{name}-core/%{name}.tmpfiles.conf %{buildroot}%{_tmpfilesdir}/%{name}.conf
+%{__install} -d -m 0755 %{buildroot}/%{_localstatedir}/run/%{name}/
 # Move SystemV init-script
 %{__mv} -f %{buildroot}%{_initrddir}/%{name} %{buildroot}/%{_bindir}/%{name}-ctl
 %endif
@@ -328,6 +329,7 @@ case "$*" in
           /var/lib/%{name}/retention.dat \
           /var/log/%{name}/%{name}.log \
           /var/log/%{name}/archives \
+          /var/run/%{name} \
           /var/lib/%{name}/%{name}.cmd
     %{insserv_cleanup}
     chkconfig --del %{name} >/dev/null 2>&1 || :
@@ -563,6 +565,7 @@ exit 0
   %attr(0644,root,root) %{_unitdir}/%{name}.service
   %attr(0644,root,root) %{_tmpfilesdir}/%{name}.conf
   %attr(0755,root,root) %{_bindir}/%{name}-ctl
+  %attr(0755,naemon,naemon) %dir %{_localstatedir}/run/%{name}
 %else
   %attr(0755,root,root) %{_initrddir}/naemon
 %endif
