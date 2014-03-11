@@ -310,6 +310,7 @@ case "$*" in
     %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
       %systemd_preun %{name}.service
     %else
+      /etc/init.d/naemon stop >/dev/null 2>&1 || :
       service %{name} stop >/dev/null 2>&1 || :
       chkconfig --del %{name} || :
     %endif
