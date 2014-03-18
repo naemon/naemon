@@ -58,6 +58,7 @@ BuildRequires: systemd
 
 Requires(pre): shadow-utils
 Requires: %{name}-core            = %{version}-%{release}
+Requires: %{name}-tools           = %{version}-%{release}
 Requires: %{name}-livestatus      = %{version}-%{release}
 Requires: %{name}-thruk           = %{version}-%{release}
 Requires: %{name}-thruk-reporting = %{version}-%{release}
@@ -91,6 +92,18 @@ Requires:  logrotate
 
 %description core
 contains the %{name} core
+
+
+%package tools
+Summary:   Naemon Monitoring Tools
+Group:     Applications/System
+
+%description tools
+contains tools for %{name}.
+ - naemonstats:  display statistics
+ - oconfsplit:   divide configurations by groups
+ - shadownaemon: shadow a remote naemon core over livestatus
+
 
 
 %package core-dbg
@@ -219,6 +232,7 @@ cd naemon-core
 %{__strip} %{buildroot}%{_bindir}/%{name}
 %{__strip} %{buildroot}%{_bindir}/naemonstats
 %{__strip} %{buildroot}%{_bindir}/oconfsplit
+%{__strip} %{buildroot}%{_bindir}/shadownaemon
 %{__strip} %{buildroot}%{_bindir}/%{name}-unixcat
 %{__strip} %{buildroot}%{_libdir}/%{name}/libnaemon.so.0.0.0
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/%{name}-thruk
@@ -560,8 +574,6 @@ exit 0
 
 %files core
 %attr(0755,root,root) %{_bindir}/%{name}
-%attr(0755,root,root) %{_bindir}/naemonstats
-%attr(0755,root,root) %{_bindir}/oconfsplit
 %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
   %attr(0644,root,root) %{_unitdir}/%{name}.service
   %attr(0644,root,root) %{_tmpfilesdir}/%{name}.conf
@@ -586,6 +598,11 @@ exit 0
 %attr(-,root,root) %{_datadir}/%{name}/documentation
 %attr(-,root,root) %{_libdir}/%{name}/libnaemon.so*
 %attr(-,root,root) %{_libdir}/%{name}/plugins
+
+%files tools
+%attr(0755,root,root) %{_bindir}/naemonstats
+%attr(0755,root,root) %{_bindir}/oconfsplit
+%attr(0755,root,root) %{_bindir}/shadownaemon
 
 %files core-dbg
 %attr(0755,root,root) %{_bindir}/%{name}-dbg

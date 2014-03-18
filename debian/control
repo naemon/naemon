@@ -62,6 +62,14 @@ Description: contains the Naemon core with debug symbols
  networks.
 
 
+Package: naemon-tools
+Architecture: any
+Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
+Description: contains tools for the Naemon core
+ - naemonstats:  display statistics
+ - oconfsplit:   divide configurations by groups
+ - shadownaemon: shadow a remote naemon core over livestatus
+
 Package: naemon-livestatus
 Architecture: any
 Depends: naemon-core, ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}

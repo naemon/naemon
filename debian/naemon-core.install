@@ -5,8 +5,6 @@
 /etc/naemon/naemon.cfg
 /etc/naemon/resource.cfg
 /usr/bin/naemon
-/usr/bin/naemonstats
-/usr/bin/oconfsplit
 /var/cache/naemon/checkresults
 /var/log/naemon
 /var/log/naemon/archives
