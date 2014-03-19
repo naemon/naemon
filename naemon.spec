@@ -188,13 +188,10 @@ this package.
 
 %build
 CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
-    --prefix="%{_prefix}" \
-    --bindir="%{_bindir}" \
     --datadir="%{_datadir}/%{name}" \
     --libdir="%{_libdir}/%{name}" \
     --localstatedir="%{_localstatedir}/lib/%{name}" \
     --sysconfdir="%{_sysconfdir}/%{name}" \
-    --mandir="%{_mandir}" \
     --enable-event-broker \
     --without-tests \
     --with-pluginsdir="%{_libdir}/%{name}/plugins" \
@@ -671,10 +668,10 @@ exit 0
 %{_datadir}/%{name}/docs/FAQ.html
 %{_datadir}/%{name}/%{name}-version
 %attr(0755,root,root) %{_datadir}/%{name}/fcgid_env.sh
-%doc %{_mandir}/man3/nagexp.3
-%doc %{_mandir}/man3/naglint.3
-%doc %{_mandir}/man3/thruk.3
-%doc %{_mandir}/man8/thruk.8
+%{_mandir}/man3/nagexp.3*
+%{_mandir}/man3/naglint.3*
+%{_mandir}/man3/thruk.3*
+%{_mandir}/man8/thruk.8*
 
 %files thruk-libs
 %attr(-,root,root) %{_libdir}/%{name}/perl5
