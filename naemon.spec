@@ -36,7 +36,6 @@ BuildRequires: doxygen
 BuildRequires: gperf
 BuildRequires: perl
 BuildRequires: logrotate
-BuildRequires: gd
 BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: libtool
@@ -91,7 +90,7 @@ Group:     Applications/System
 Requires:  logrotate
 
 %description core
-contains the %{name} core
+contains the %{name} core.
 
 
 %package tools
@@ -122,7 +121,7 @@ Requires:       %{name}-core = %{version}-%{release}
 Requires(post): %{name}-core = %{version}-%{release}
 
 %description livestatus
-contains the %{name} livestatus eventbroker module
+contains the %{name} livestatus eventbroker module.
 
 
 %package thruk
@@ -141,7 +140,7 @@ Requires:    httpd mod_fcgid
 %endif
 
 %description thruk
-This package contains the thruk gui for %{name}
+This package contains the thruk gui for %{name}.
 
 
 %package thruk-libs
@@ -152,7 +151,7 @@ Requires:    %{name}-thruk = %{version}-%{release}
 Conflicts:   thruk
 
 %description thruk-libs
-This package contains the library files for the thruk gui
+This package contains the library files for the thruk gui.
 
 
 %package thruk-reporting
@@ -217,8 +216,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__make} %{?_smp_mflags} all
 
 ### Build our documentaiton
-cd naemon-core
-%{__make} dox
+make -C %{name}-core dox %{?_smp_mflags}
 
 %install
 %{__rm} -rf %{buildroot}
@@ -297,7 +295,7 @@ case "$*" in
       chkconfig --add %{name}
     %endif
   ;;
-  *) echo case "$*" not handled in postun
+  *) echo case "$*" not handled in post
 esac
 
 if /usr/bin/id %{apacheuser} &>/dev/null; then
@@ -308,8 +306,6 @@ if /usr/bin/id %{apacheuser} &>/dev/null; then
         /usr/sbin/usermod -a -G naemon %{apacheuser} >/dev/null
 %endif
     fi
-else
-    %logmsg "User \"%{apacheuser}\" does not exist and is not added to group \"naemon\". Sending commands to naemon from the CGIs is not possible."
 fi
 touch /var/log/%{name}/%{name}.log
 chmod 0664 /var/log/%{name}/%{name}.log
