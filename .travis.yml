@@ -12,6 +12,7 @@ install:
   - sudo apt-get install dh-make
   - sudo apt-get install libmodule-install-perl
   - sudo apt-get install asciidoc
+  - sudo apt-get install chrpath
 script:
   - git config --global user.email "travis@localhost"
   - git config --global user.name "Travis Testuser"
