@@ -40,6 +40,7 @@ BuildRequires: autoconf
 BuildRequires: automake
 BuildRequires: libtool
 BuildRequires: gcc-c++
+BuildRequires: help2man
 # sles / rhel specific requirements
 %if %{defined suse_version}
 BuildRequires: libexpat-devel
@@ -211,9 +212,6 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
     --with-httpd-conf="%{_sysconfdir}/%{apachedir}/conf.d" \
     --with-htmlurl="/naemon"
 %{__make} %{?_smp_mflags} all
-
-### Build our documentaiton
-make -C %{name}-core dox %{?_smp_mflags}
 
 %install
 %{__rm} -rf %{buildroot}
@@ -591,11 +589,15 @@ exit 0
 %attr(-,root,root) %{_datadir}/%{name}/documentation
 %attr(-,root,root) %{_libdir}/%{name}/libnaemon.so*
 %attr(-,root,root) %{_libdir}/%{name}/plugins
+%{_mandir}/man8/naemon.8*
 
 %files tools
 %attr(0755,root,root) %{_bindir}/naemonstats
 %attr(0755,root,root) %{_bindir}/oconfsplit
 %attr(0755,root,root) %{_bindir}/shadownaemon
+%{_mandir}/man8/naemonstats.8*
+%{_mandir}/man8/oconfsplit.8*
+%{_mandir}/man8/shadownaemon.8*
 
 %files core-dbg
 %attr(0755,root,root) %{_bindir}/%{name}-dbg
