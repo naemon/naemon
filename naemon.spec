@@ -32,7 +32,6 @@ BuildRequires: zlib-devel
 BuildRequires: libpng-devel
 BuildRequires: libjpeg-devel
 BuildRequires: mysql-devel
-BuildRequires: doxygen
 BuildRequires: gperf
 BuildRequires: perl
 BuildRequires: logrotate
@@ -177,10 +176,9 @@ Summary: Development Files For Naemon
 Group: Development/Libraries
 
 %description devel
-This package contains the header files, static libraries and development
-documentation for %{name}. If you are a NEB-module author or wish to
-write addons for Naemon using Naemons own APIs, you should install
-this package.
+This package contains the header files, static libraries for %{name}.
+If you are a NEB-module author or wish to write addons for Naemon
+using Naemons own APIs, you should install this package.
 
 
 
@@ -211,7 +209,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
     --with-thruk-vardir="%{_localstatedir}/lib/%{name}/thruk" \
     --with-httpd-conf="%{_sysconfdir}/%{apachedir}/conf.d" \
     --with-htmlurl="/naemon"
-%{__make} %{?_smp_mflags} all
+%{__make} %{?_smp_mflags} -j 1 all
 
 %install
 %{__rm} -rf %{buildroot}
@@ -230,13 +228,6 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__strip} %{buildroot}%{_libdir}/%{name}/libnaemon.so.0.0.0
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/%{name}-thruk
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/%{name} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}-core
-
-### Install documentation
-%{__mkdir_p} -m 0755 %{buildroot}%{_datadir}/%{name}/documentation/search
-%{__cp} -a %{name}-core/Documentation/html/* %{buildroot}%{_datadir}/%{name}/documentation
-%{__chmod} 0644 %{buildroot}%{_datadir}/%{name}/documentation/*
-%{__chmod} 0755 %{buildroot}%{_datadir}/%{name}/documentation/search
-%{__rm} -f %{buildroot}%{_datadir}/%{name}/documentation/installdox
 
 # Put the new RC sysconfig in place
 %{__install} -d -m 0755 %{buildroot}/%{_sysconfdir}/sysconfig/
@@ -586,7 +577,6 @@ exit 0
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/%{name}
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}/archives
-%attr(-,root,root) %{_datadir}/%{name}/documentation
 %attr(-,root,root) %{_libdir}/%{name}/libnaemon.so*
 %attr(-,root,root) %{_libdir}/%{name}/plugins
 %{_mandir}/man8/naemon.8*
