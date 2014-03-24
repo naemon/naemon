@@ -50,6 +50,7 @@ BuildRequires: expat-devel
 # rhel6 specific requirements
 %if 0%{?el6}
 BuildRequires: perl-ExtUtils-MakeMaker
+BuildRequires: perl-Module-Install
 %endif
 %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
 BuildRequires: perl-autodie
