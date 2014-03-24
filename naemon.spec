@@ -40,6 +40,7 @@ BuildRequires: automake
 BuildRequires: libtool
 BuildRequires: gcc-c++
 BuildRequires: help2man
+BuildRequires: rsync
 # sles / rhel specific requirements
 %if %{defined suse_version}
 BuildRequires: libexpat-devel
