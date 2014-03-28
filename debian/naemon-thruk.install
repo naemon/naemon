@@ -5,6 +5,7 @@
 /etc/naemon/log4perl.conf
 /etc/naemon/menu_local.conf
 /etc/naemon/naglint.conf
+/etc/naemon/usercontent
 /usr/share/naemon/plugins/plugins-available/business_process
 /etc/naemon/plugins/plugins-available/business_process
 /etc/naemon/plugins/plugins-enabled/business_process

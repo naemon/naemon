@@ -622,6 +622,7 @@ exit 0
 %config(noreplace) %{_sysconfdir}/%{apachedir}/conf.d/thruk_cookie_auth_vhost.conf
 %config(noreplace) %{_sysconfdir}/%{name}/themes
 %config(noreplace) %{_sysconfdir}/%{name}/menu_local.conf
+%config(noreplace) %{_sysconfdir}/%{name}/usercontent
 %attr(0755,root, root) %{_datadir}/%{name}/thruk_auth
 %attr(0755,root, root) %{_datadir}/%{name}/script/thruk_fastcgi.pl
 %attr(0755,%{apacheuser},%{apachegroup}) %dir %{_localstatedir}/cache/%{name}/thruk
