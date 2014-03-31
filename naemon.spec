@@ -313,6 +313,9 @@ case "$*" in
       service %{name} stop >/dev/null 2>&1 || :
       chkconfig --del %{name} || :
     %endif
+    rm -f /var/lib/naemon/status.dat
+    rm -f /var/lib/naemon/naemon.qh
+    rm -f /var/lib/naemon/naemon.tmp*
   ;;
   *) echo case "$*" not handled in preun
 esac

@@ -5,6 +5,7 @@ case "$1" in
     invoke-rc.d naemon stop || true
     rm -f /var/lib/naemon/status.dat
     rm -f /var/lib/naemon/naemon.qh
+    rm -f /var/lib/naemon/naemon.tmp*
   ;;
 
   upgrade|failed-upgrade)
