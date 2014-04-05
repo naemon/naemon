@@ -18,7 +18,6 @@ override_dh_auto_configure:
 				--sysconfdir="/etc/naemon" \
 				--mandir="/usr/share/man" \
 				--enable-event-broker \
-				--without-tests \
 				--with-pluginsdir="/usr/lib/naemon/plugins" \
 				--with-tempdir="/var/cache/naemon" \
 				--with-checkresultdir="/var/cache/naemon/checkresults" \

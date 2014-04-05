@@ -194,7 +194,6 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
     --localstatedir="%{_localstatedir}/lib/%{name}" \
     --sysconfdir="%{_sysconfdir}/%{name}" \
     --enable-event-broker \
-    --without-tests \
     --with-pluginsdir="%{_libdir}/%{name}/plugins" \
     --with-tempdir="%{_localstatedir}/cache/%{name}" \
     --with-checkresultdir="%{_localstatedir}/cache/%{name}/checkresults" \
