@@ -119,8 +119,6 @@ contains the %{name} core with debug symbols.
 %package livestatus
 Summary:        Naemon Livestatus Eventbroker Module
 Group:          Applications/System
-Requires:       %{name}-core = %{version}-%{release}
-Requires(post): %{name}-core = %{version}-%{release}
 
 %description livestatus
 contains the %{name} livestatus eventbroker module.
@@ -581,7 +579,6 @@ exit 0
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/%{name}
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}/archives
-%attr(-,root,root) %{_libdir}/%{name}/libnaemon.so*
 %attr(-,root,root) %{_libdir}/%{name}/plugins
 %{_mandir}/man8/naemon.8*
 
@@ -589,6 +586,7 @@ exit 0
 %attr(0755,root,root) %{_bindir}/naemonstats
 %attr(0755,root,root) %{_bindir}/oconfsplit
 %attr(0755,root,root) %{_bindir}/shadownaemon
+%attr(-,root,root) %{_libdir}/%{name}/libnaemon.so*
 %{_mandir}/man8/naemonstats.8*
 %{_mandir}/man8/oconfsplit.8*
 %{_mandir}/man8/shadownaemon.8*

@@ -72,7 +72,7 @@ Description: contains tools for the Naemon core
 
 Package: naemon-livestatus
 Architecture: any
-Depends: naemon-core, ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
 Description: contains the Naemon livestatus eventbroker module
  Naemon is a monitoring and management system for hosts, services and
  networks.
