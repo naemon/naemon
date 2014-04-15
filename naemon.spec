@@ -25,7 +25,7 @@ Group: Applications/System
 URL: http://www.naemon.org/
 Packager: Naemon Core Development Team <naemon-dev@monitoring-lists.org>
 Vendor: Naemon Core Development Team
-Source0: http://www.naemon.org/download/naemon/%{name}-%{version}.tar.gz
+Source0: http://labs.consol.de/naemon/download/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}
 BuildRequires: gd-devel > 1.8
 BuildRequires: zlib-devel
