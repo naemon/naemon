@@ -14,6 +14,7 @@ install:
   - sudo apt-get install asciidoc
   - sudo apt-get install chrpath
   - sudo apt-get install help2man
+  - sudo apt-get install libicu-dev
 script:
   - git config --global user.email "travis@localhost"
   - git config --global user.name "Travis Testuser"
