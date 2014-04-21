@@ -56,6 +56,7 @@ BuildRequires: perl-Module-Install
 %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
 BuildRequires: perl-autodie
 BuildRequires: systemd
+BuildRequires: chrpath
 %endif
 
 Requires(pre): shadow-utils
@@ -243,6 +244,12 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__install} -d -m 0755 %{buildroot}/%{_localstatedir}/run/%{name}/
 # Move SystemV init-script
 %{__mv} -f %{buildroot}%{_initrddir}/%{name} %{buildroot}/%{_bindir}/%{name}-ctl
+
+# Cleanup rpath errors in perl modules
+chrpath --delete %{buildroot}%{_libdir}/%{name}/perl5/%{_arch}-linux-thread-multi/auto/GD/GD.so
+chrpath --delete %{buildroot}%{_libdir}/%{name}/perl5/%{_arch}-linux-thread-multi/auto/DBD/mysql/mysql.so
+chrpath --delete %{buildroot}%{_libdir}/%{name}/perl5/%{_arch}-linux-thread-multi/auto/Time/HiRes/HiRes.so
+chrpath --delete %{buildroot}%{_libdir}/%{name}/perl5/%{_arch}-linux-thread-multi/auto/XML/Parser/Expat/Expat.so
 %endif
 
 %clean
