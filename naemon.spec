@@ -41,6 +41,7 @@ BuildRequires: libtool
 BuildRequires: gcc-c++
 BuildRequires: help2man
 BuildRequires: rsync
+BuildRequires: libicu-devel
 # sles / rhel specific requirements
 %if %{defined suse_version}
 BuildRequires: libexpat-devel
@@ -355,7 +356,7 @@ case "$*" in
   1)
     # New install, enable module
     if [ -e /etc/%{name}/%{name}.cfg ]; then
-      sed -i /etc/%{name}/%{name}.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/%{name}/livestatus.o.*\)~\1~'
+      sed -i /etc/%{name}/%{name}.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/%{name}/livestatus.so.*\)~\1~'
     fi
   ;;
   *) echo case "$*" not handled in postun
@@ -380,7 +381,7 @@ case "$*" in
   0)
     # POSTUN
     if [ -e /etc/%{name}/%{name}.cfg ]; then
-      sed -i /etc/%{name}/%{name}.cfg -e 's~\(broker_module=/usr/lib[0-9]*/%{name}/livestatus.o.*\)~#\1~'
+      sed -i /etc/%{name}/%{name}.cfg -e 's~\(broker_module=/usr/lib[0-9]*/%{name}/livestatus.so.*\)~#\1~'
     fi
     ;;
   1)
@@ -601,7 +602,7 @@ exit 0
 
 %files livestatus
 %attr(0755,root,root) %{_bindir}/%{name}-unixcat
-%attr(0644,root,root) %{_libdir}/%{name}/livestatus.o
+%attr(0644,root,root) %{_libdir}/%{name}/%{name}-livestatus/livestatus.so
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}
 
 %files thruk
