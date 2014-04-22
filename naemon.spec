@@ -609,7 +609,9 @@ exit 0
 
 %files livestatus
 %attr(0755,root,root) %{_bindir}/%{name}-unixcat
+%attr(0755,naemon,naemon) %dir /%{name}/%{name}-livestatus
 %attr(0644,root,root) %{_libdir}/%{name}/%{name}-livestatus/livestatus.so
+%attr(-,root,root)    %{_libdir}/%{name}/%{name}-livestatus/livestatus.la
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}
 
 %files thruk
