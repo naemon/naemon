@@ -219,6 +219,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
     INSTALL_OPTS="" \
     COMMAND_OPTS="" \
     INIT_OPTS=""
+
 # because we globally disabled binary striping, we have to do this manually for some files
 %{__cp} -p %{buildroot}%{_bindir}/%{name} %{buildroot}%{_bindir}/%{name}-dbg
 %{__strip} %{buildroot}%{_bindir}/%{name}
@@ -236,6 +237,9 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 
 %{__mkdir_p} -m 0755 %{buildroot}%{_libdir}/%{name}/
 %{__ln_s} %{_libdir}/nagios/plugins %{buildroot}%{_libdir}/%{name}/plugins
+
+# We don't really want to distribute this
+rm -f %{_libdir}/%{name}/%{name}-livestatus/livestatus.la
 
 %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
 # Install systemd entry
@@ -609,9 +613,8 @@ exit 0
 
 %files livestatus
 %attr(0755,root,root) %{_bindir}/%{name}-unixcat
-%attr(0755,naemon,naemon) %dir /%{name}/%{name}-livestatus
+%attr(0755,naemon,naemon) %dir %{_libdir}/%{name}/%{name}-livestatus
 %attr(0644,root,root) %{_libdir}/%{name}/%{name}-livestatus/livestatus.so
-%attr(-,root,root)    %{_libdir}/%{name}/%{name}-livestatus/livestatus.la
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}
 
 %files thruk
