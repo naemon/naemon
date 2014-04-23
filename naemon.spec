@@ -239,7 +239,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__ln_s} %{_libdir}/nagios/plugins %{buildroot}%{_libdir}/%{name}/plugins
 
 # We don't really want to distribute this
-rm -f %{_libdir}/%{name}/%{name}-livestatus/livestatus.la
+rm -f %{buildroot}%{_libdir}/%{name}/%{name}-livestatus/livestatus.la
 
 %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
 # Install systemd entry
