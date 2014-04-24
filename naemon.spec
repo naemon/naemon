@@ -235,6 +235,9 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__install} -d -m 0755 %{buildroot}/%{_sysconfdir}/sysconfig/
 %{__install} -m 0644 %{name}-core/sample-config/%{name}.sysconfig %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
 
+# Make sure the default run directory exists
+mkdir -p -m 0755 %{buildroot}%{_localstatedir}/run/%{name}
+
 %{__mkdir_p} -m 0755 %{buildroot}%{_libdir}/%{name}/
 %{__ln_s} %{_libdir}/nagios/plugins %{buildroot}%{_libdir}/%{name}/plugins
 
@@ -569,15 +572,20 @@ exit 0
 %files
 
 %files core
+%doc README.md naemon.rpmlintrc
+%doc naemon-core/AUTHORS naemon-core/COPYING 
+%doc naemon-core/ChangeLog naemon-core/INSTALL naemon-core/LEGAL
+%doc naemon-core/NEWS naemon-core/README naemon-core/THANKS
+%doc naemon-core/UPGRADING
 %attr(0755,root,root) %{_bindir}/%{name}
 %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
   %attr(0644,root,root) %{_unitdir}/%{name}.service
   %attr(0644,root,root) %{_tmpfilesdir}/%{name}.conf
   %attr(0755,root,root) %{_bindir}/%{name}-ctl
-  %attr(0755,naemon,naemon) %dir %{_localstatedir}/run/%{name}
 %else
   %attr(0755,root,root) %{_initrddir}/naemon
 %endif
+%attr(0755,naemon,naemon) %dir %{_localstatedir}/run/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}-core
 %attr(0755,root,root) %dir %{_sysconfdir}/%{name}/
 %attr(2775,naemon,naemon) %dir %{_sysconfdir}/%{name}/conf.d
