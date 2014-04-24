@@ -228,6 +228,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__strip} %{buildroot}%{_bindir}/shadownaemon
 %{__strip} %{buildroot}%{_bindir}/%{name}-unixcat
 %{__strip} %{buildroot}%{_libdir}/%{name}/libnaemon.so.0.0.0
+%{__strip} %{buildroot}%{_libdir}/%{name}/%{name}-livestatus/livestatus.so
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/%{name}-thruk
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/%{name} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}-core
 
