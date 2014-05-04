@@ -367,6 +367,8 @@ case "$*" in
     %else
       /etc/init.d/%{name} condrestart &>/dev/null || :
     %endif
+    # change broker path to new location
+    sed -i /etc/%{name}/%{name}.cfg -e 's#/%{name}/livestatus.o#/%{name}/%{name}-livestatus/livestatus.so#'
   ;;
   1)
     # New install, enable module
