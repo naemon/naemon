@@ -398,7 +398,7 @@ case "$*" in
   0)
     # POSTUN
     if [ -e /etc/%{name}/%{name}.cfg ]; then
-      sed -i /etc/%{name}/%{name}.cfg -e 's~\(broker_module=/usr/lib[0-9]*/%{name}/%{name}-livestatus/livestatus.so.*\)~#\1~'
+      sed -i /etc/%{name}/%{name}.cfg -e 's~^\s*\(broker_module=/usr/lib[0-9]*/%{name}/%{name}-livestatus/livestatus.so.*\)~#\1~'
     fi
     ;;
   1)
