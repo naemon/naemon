@@ -6,9 +6,9 @@ case "$1" in
     configure)
         if [ -e /etc/naemon/naemon.cfg ]; then
           sed -i /etc/naemon/naemon.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/naemon/naemon-livestatus/livestatus.so.*\)~\1~'
+          # change broker path to new location
+          sed -i /etc/naemon/naemon.cfg -e 's#/naemon/livestatus.o#/naemon/naemon-livestatus/livestatus.so#'
         fi
-        # change broker path to new location
-        sed -i /etc/naemon/naemon.cfg -e 's#/naemon/livestatus.o#/naemon/naemon-livestatus/livestatus.so#'
         invoke-rc.d naemon condrestart || true
     ;;
 
