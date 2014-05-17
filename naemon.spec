@@ -499,8 +499,6 @@ if [ $1 = 0 ]; then
 fi
 /etc/init.d/thruk stop
 chkconfig --del thruk >/dev/null 2>&1
-rmdir /etc/%{name}/bp 2>/dev/null
-rmdir /etc/%{name} 2>/dev/null
 exit 0
 
 %postun thruk
@@ -514,6 +512,7 @@ case "$*" in
     rmdir /etc/%{name}/plugins/plugins-available 2>/dev/null
     rmdir /etc/%{name}/plugins/plugins-enabled 2>/dev/null
     rmdir /etc/%{name}/plugins 2>/dev/null
+    rmdir /etc/%{name}/bp 2>/dev/null
     rmdir /etc/%{name} 2>/dev/null
     %{insserv_cleanup}
     ;;
@@ -649,6 +648,7 @@ exit 0
 %config(noreplace) %{_sysconfdir}/%{name}/themes
 %config(noreplace) %{_sysconfdir}/%{name}/menu_local.conf
 %config(noreplace) %{_sysconfdir}/%{name}/usercontent
+%config(noreplace) %{_sysconfdir}/%{name}/bp/bp_functions.pm
 %attr(0755,root, root) %{_datadir}/%{name}/thruk_auth
 %attr(0755,root, root) %{_datadir}/%{name}/script/thruk_fastcgi.pl
 %attr(0755,%{apacheuser},%{apachegroup}) %dir %{_localstatedir}/cache/%{name}/thruk

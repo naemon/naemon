@@ -6,6 +6,7 @@
 /etc/naemon/menu_local.conf
 /etc/naemon/naglint.conf
 /etc/naemon/usercontent
+/etc/naemon/bp/bp_functions.pm
 /usr/share/naemon/plugins/plugins-available/business_process
 /etc/naemon/plugins/plugins-available/business_process
 /etc/naemon/plugins/plugins-enabled/business_process
