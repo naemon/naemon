@@ -59,7 +59,14 @@ BuildRequires: systemd
 BuildRequires: chrpath
 %endif
 
+%if 0%{suse_version} < 1230
+Requires(pre): pwdutils
+%else
+Requires(pre): shadow
+%endif
+%if %{undefined suse_version}
 Requires(pre): shadow-utils
+%endif
 Requires: %{name}-core            = %{version}-%{release}
 Requires: %{name}-tools           = %{version}-%{release}
 Requires: %{name}-livestatus      = %{version}-%{release}
@@ -301,7 +308,7 @@ esac
 
 if /usr/bin/id %{apacheuser} &>/dev/null; then
     if ! /usr/bin/id -Gn %{apacheuser} 2>/dev/null | grep -q naemon ; then
-%if %{defined suse_version}
+%if 0%{?suse_version} < 1230
         /usr/sbin/groupmod -A %{apacheuser} naemon >/dev/null
 %else
         /usr/sbin/usermod -a -G naemon %{apacheuser} >/dev/null
@@ -444,7 +451,7 @@ chown -R %{apacheuser}:%{apachegroup} /var/cache/%{name}/thruk /var/log/%{name}/
 # add webserver user to group naemon
 if /usr/bin/id %{apacheuser} &>/dev/null; then
     if ! /usr/bin/id -Gn %{apacheuser} 2>/dev/null | grep -q naemon ; then
-%if %{defined suse_version}
+%if 0%{?suse_version} < 1230
         /usr/sbin/groupmod -A %{apacheuser} naemon >/dev/null
 %else
         /usr/sbin/usermod -a -G naemon %{apacheuser} >/dev/null
