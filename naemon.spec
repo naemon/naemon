@@ -60,11 +60,11 @@ BuildRequires: chrpath
 %endif
 
 %if %{defined suse_version}
-% if 0%{suse_version} < 1230
+%if 0%{suse_version} < 1230
 Requires(pre): pwdutils
-% else
+%else
 Requires(pre): shadow
-% endif
+%endif
 Requires(pre): shadow-utils
 %endif
 Requires: %{name}-core            = %{version}-%{release}
