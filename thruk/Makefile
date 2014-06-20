@@ -14,8 +14,8 @@ staticfiles:
 
 install:
 	cd gui && make install naemon-patch
-	[ ${THRUKLIBS} -ne '' ] || mkdir -p ${DESTDIR}${THRUKLIBS}
-	[ ${THRUKLIBS} -ne '' ] || cp -rp ${P5TMPDIST}/dest/lib/perl5/* ${DESTDIR}${THRUKLIBS}/
+	[ "x${THRUKLIBS}" != 'x' ] || mkdir -p ${DESTDIR}${THRUKLIBS}
+	[ "x${THRUKLIBS}" != 'x' ] || cp -rp ${P5TMPDIST}/dest/lib/perl5/* ${DESTDIR}${THRUKLIBS}/
 	# clean up some old files
 	rm -rf ${DESTDIR}/etc/naemon/themes/themes-available/{Wakizashi,Neat}
 	rm -rf ${DESTDIR}/etc/naemon/themes/themes-enabled/{Wakizashi,Neat}
