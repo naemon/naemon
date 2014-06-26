@@ -6,7 +6,7 @@ include gui/script/append.make.options
 P5TMPDIST = $(shell pwd)/libs/.build
 
 all:
-	[ "x${THRUKLIBS}" = "x" ] || cd libs && make
+	if [ "x${THRUKLIBS}" = "x" ]; then true; else cd libs && make; fi
 	cd gui && yes n | PERL5LIB=$$P5DIR/dest/lib/perl5/:${P5TMPDIST}/dest/lib/perl5 perl Makefile.PL
 
 staticfiles:
