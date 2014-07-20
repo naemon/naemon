@@ -125,6 +125,7 @@ dailyversion: versionprecheck
 	@echo "******************"
 
 dailydist:
+	make update
 	make resetdaily
 	make dailyversion
 	make dist
