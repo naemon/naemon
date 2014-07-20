@@ -78,6 +78,12 @@ dist:
 		--exclude=.gitignore \
 		"naemon-${VERSION}"
 	gzip -9 "naemon-${VERSION}.tar"
+	cd naemon-${VERSION} && mv naemon-core naemon-core-${VERSION} && tar cf "naemon-core-${VERSION}.tar" naemon-core-${VERSION}
+	gzip -9 "naemon-${VERSION}/naemon-core-${VERSION}.tar"
+	mv naemon-${VERSION}/naemon-core-${VERSION}.tar.gz .
+	cd naemon-${VERSION} && mv naemon-livestatus naemon-livestatus-${VERSION} && tar cf "naemon-livestatus-${VERSION}.tar" naemon-livestatus-${VERSION}
+	gzip -9 "naemon-${VERSION}/naemon-livestatus-${VERSION}.tar"
+	mv naemon-${VERSION}/naemon-livestatus-${VERSION}.tar.gz .
 	rm -rf "naemon-${VERSION}"
 
 naemon-${VERSION}.tar.gz: dist
@@ -131,6 +137,7 @@ dailydist:
 	make dist
 	make resetdaily
 	@echo "finished"
+	@echo "optional submodule tarballs created: naemon-core-${DAILYVERSION}.tar.gz and naemon-livestatus-${DAILYVERSION}.tar.gz"
 	@echo "daily dist created: naemon-${DAILYVERSION}.tar.gz"
 
 releaseversion:
