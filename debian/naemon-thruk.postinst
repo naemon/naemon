@@ -39,8 +39,8 @@ case "$1" in
                            /etc/naemon/thruk_local.conf \
                            /etc/naemon/bp
         chown naemon:naemon /var/cache/naemon /var/run/naemon /var/log/naemon /var/cache/naemon/checkresults
-        chown 755 /usr/share/naemon/fcgid_env.sh
-        chown 755 /usr/bin/thruk
+        chmod 755 /usr/share/naemon/fcgid_env.sh
+        chmod 755 /usr/bin/thruk
         chmod 2775 /var/cache/naemon/checkresults
 
         # restart apache
