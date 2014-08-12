@@ -308,8 +308,12 @@ esac
 
 if /usr/bin/id %{apacheuser} &>/dev/null; then
     if ! /usr/bin/id -Gn %{apacheuser} 2>/dev/null | grep -q naemon ; then
+%if %{defined suse_version}
 %if 0%{?suse_version} < 1230
         /usr/sbin/groupmod -A %{apacheuser} naemon >/dev/null
+%else
+        /usr/sbin/usermod -a -G naemon %{apacheuser} >/dev/null
+%endif
 %else
         /usr/sbin/usermod -a -G naemon %{apacheuser} >/dev/null
 %endif
@@ -451,8 +455,12 @@ chown -R %{apacheuser}:%{apachegroup} /var/cache/%{name}/thruk /var/log/%{name}/
 # add webserver user to group naemon
 if /usr/bin/id %{apacheuser} &>/dev/null; then
     if ! /usr/bin/id -Gn %{apacheuser} 2>/dev/null | grep -q naemon ; then
+%if %{defined suse_version}
 %if 0%{?suse_version} < 1230
         /usr/sbin/groupmod -A %{apacheuser} naemon >/dev/null
+%else
+        /usr/sbin/usermod -a -G naemon %{apacheuser} >/dev/null
+%endif
 %else
         /usr/sbin/usermod -a -G naemon %{apacheuser} >/dev/null
 %endif
