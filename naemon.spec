@@ -238,6 +238,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__strip} %{buildroot}%{_libdir}/%{name}/%{name}-livestatus/livestatus.so
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/%{name}-thruk
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/%{name} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}-core
+%{__mv} %{buildroot}%{_libdir}/%{name}/pkgconfig %{buildroot}%{_libdir}/pkgconfig
 
 # Put the new RC sysconfig in place
 %{__install} -d -m 0755 %{buildroot}/%{_sysconfdir}/sysconfig/
@@ -637,6 +638,7 @@ exit 0
 %attr(-,root,root) %{_includedir}/%{name}/
 %attr(-,root,root) %{_libdir}/%{name}/libnaemon.a
 %attr(-,root,root) %{_libdir}/%{name}/libnaemon.la
+%attr(-,root,root) %{_libdir}/pkgconfig/naemon.pc
 
 %files livestatus
 %attr(0755,root,root) %{_bindir}/%{name}-unixcat

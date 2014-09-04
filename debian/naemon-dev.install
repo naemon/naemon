@@ -1,3 +1,4 @@
 /usr/include/naemon
 /usr/lib/naemon/libnaemon.a
 /usr/lib/naemon/libnaemon.la
+/usr/lib/naemon/pkgconfig/naemon.pc usr/share/pkgconfig/

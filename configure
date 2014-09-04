@@ -41,7 +41,7 @@ test -f ./configure || autoreconf -i
 
 cd ../naemon-livestatus
 test -f ./configure || autoreconf -i
-./configure $* 2>&1 | grep -v 'WARNING: unrecognized options'
+NAEMON_LIBS="-L$(pwd)/../naemon-core" NAEMON_CFLAGS="-I$(pwd)/../naemon-core" ./configure $* 2>&1 | grep -v 'WARNING: unrecognized options'
 
 cd ../thruk/gui
 ./configure --quiet $*
