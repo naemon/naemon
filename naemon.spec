@@ -200,6 +200,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
     --libdir="%{_libdir}/%{name}" \
     --localstatedir="%{_localstatedir}/lib/%{name}" \
     --sysconfdir="%{_sysconfdir}/%{name}" \
+    --with-pkgconfdir="%{_sysconfdir}/%{name}" \
     --enable-event-broker \
     --with-pluginsdir="%{_libdir}/%{name}/plugins" \
     --with-tempdir="%{_localstatedir}/cache/%{name}" \

@@ -16,6 +16,7 @@ override_dh_auto_configure:
 				--libdir="/usr/lib/naemon" \
 				--localstatedir="/var/lib/naemon" \
 				--sysconfdir="/etc/naemon" \
+				--with-pkgconfdir="/etc/naemon" \
 				--mandir="/usr/share/man" \
 				--enable-event-broker \
 				--with-pluginsdir="/usr/lib/naemon/plugins" \
