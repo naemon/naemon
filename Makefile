@@ -4,6 +4,9 @@ RELEASE=2014-02-13
 .PHONY: naemon-core naemon-livestatus thruk
 
 P5DIR?=$(shell pwd)/thruk/libs/.build
+export P5DIR
+P5TMPDIST=$(P5DIR)
+export P5TMPDIST
 
 DAILYVERSION=$(shell ./get_version)
 
@@ -17,7 +20,7 @@ all: naemon-core naemon-livestatus thruk
 
 
 thruk:
-	cd thruk && P5DIR=${P5DIR} make
+	cd thruk && P5TMPDIST=${P5DIR} make
 	cd thruk && make staticfiles
 
 naemon-core:
@@ -93,10 +96,10 @@ rpm: naemon-${VERSION}.tar.gz
 	# NO_BRP_STALE_LINK_ERROR ignores errors when symlinking non existing
 	# folders. And since we link the plugins folder to a not yet installed pkg,
 	# the build will break
-	NO_BRP_STALE_LINK_ERROR="yes" P5DIR=${P5DIR} rpmbuild -tb naemon-${VERSION}.tar.gz
+	NO_BRP_STALE_LINK_ERROR="yes" P5TMPDIST=${P5DIR} rpmbuild -tb naemon-${VERSION}.tar.gz
 
 deb:
-	P5DIR=${P5DIR} debuild -i -us -uc -b
+	P5TMPDIST=${P5DIR} debuild -i -us -uc -b
 
 versionprecheck:
 	[ -e .git ] || { echo "changing versions only works in git clones!"; exit 1; }
