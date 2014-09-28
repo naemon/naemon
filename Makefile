@@ -3,7 +3,8 @@ RELEASE=2014-02-13
 
 .PHONY: naemon-core naemon-livestatus thruk
 
-P5DIR=$(shell pwd)/thruk/libs/.build
+P5DIR?=$(shell pwd)/thruk/libs/.build
+
 DAILYVERSION=$(shell ./get_version)
 
 all: naemon-core naemon-livestatus thruk
