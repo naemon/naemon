@@ -107,6 +107,7 @@ contains the %{name} core.
 %package tools
 Summary:   Naemon Monitoring Tools
 Group:     Applications/System
+Requires:  libnaemon = %{version}-%{release}
 
 %description tools
 contains tools for %{name}.
@@ -188,6 +189,15 @@ Group: Development/Libraries
 This package contains the header files, static libraries for %{name}.
 If you are a NEB-module author or wish to write addons for Naemon
 using Naemons own APIs, you should install this package.
+
+
+%package -n libnaemon
+Summary: Shared Library for Naemon and NEB modules
+Group: Development/Libraries
+
+%description -n libnaemon
+libnaemon contains the shared library for building NEB modules or addons for
+Naemon.
 
 
 
@@ -627,6 +637,11 @@ exit 0
 %attr(0755,root,root) %{_bindir}/naemonstats
 %attr(0755,root,root) %{_bindir}/oconfsplit
 %attr(0755,root,root) %{_bindir}/shadownaemon
+%{_mandir}/man8/naemonstats.8*
+%{_mandir}/man8/oconfsplit.8*
+%{_mandir}/man8/shadownaemon.8*
+
+%files -n libnaemon
 %attr(-,root,root) %{_libdir}/%{name}/libnaemon.so*
 %{_mandir}/man8/naemonstats.8*
 %{_mandir}/man8/oconfsplit.8*

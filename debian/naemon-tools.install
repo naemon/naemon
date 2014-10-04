@@ -1,4 +1,3 @@
 /usr/bin/naemonstats
 /usr/bin/oconfsplit
 /usr/bin/shadownaemon
-/usr/lib/naemon/libnaemon.so*
