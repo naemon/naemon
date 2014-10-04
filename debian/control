@@ -95,7 +95,7 @@ Description: This package contains the thruk gui for Naemon
 
 Package: naemon-thruk-libs
 Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}, ${extra:Depends}
 Description: This package contains the thruk gui for Naemon
  Naemon is a monitoring and management system for hosts, services and
  networks.

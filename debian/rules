@@ -6,6 +6,7 @@
 export DH_VERBOSE=1
 DESTDIR=$(CURDIR)/debian/tmp/
 PERLARCH=$(shell perl -e 'use Config; print $$Config{archname}')
+PERLVER=$(shell perl -e 'use Config; print $$Config{version}')
 
 HTTPDCONF=$(shell if [ -d "/etc/apache2/conf-available" ]; then echo "/etc/apache2/conf-available"; else echo "/etc/apache2/conf.d"; fi )
 
@@ -56,6 +57,9 @@ override_dh_auto_install:
 	mv debian/tmp/etc/logrotate.d/naemon debian/tmp/etc/logrotate.d/naemon-core
 	cp naemon-core/naemon.logrotate debian/naemon-core.logrotate
 	ln -s /usr/lib/nagios/plugins debian/tmp/usr/lib/naemon/plugins
+
+override_dh_gencontrol:
+	dh_gencontrol -- -Vextra:Depends=perlapi-$(PERLVER)
 
 override_dh_strip:
 	dh_strip -pnaemon-core --dbg-package=naemon-core-dbg
