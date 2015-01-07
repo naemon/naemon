@@ -718,8 +718,6 @@ exit 0
 %{_datadir}/%{name}/menu.conf
 %{_datadir}/%{name}/dist.ini
 %{_datadir}/%{name}/thruk_cookie_auth.include
-%{_datadir}/%{name}/docs/THRUK_MANUAL.html
-%{_datadir}/%{name}/docs/FAQ.html
 %{_datadir}/%{name}/%{name}-version
 %attr(0755,root,root) %{_datadir}/%{name}/fcgid_env.sh
 %{_mandir}/man3/nagexp.3*
