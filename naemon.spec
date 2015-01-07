@@ -604,7 +604,7 @@ exit 0
 
 %files core
 %doc README.md naemon.rpmlintrc
-%doc naemon-core/AUTHORS naemon-core/COPYING 
+%doc naemon-core/AUTHORS naemon-core/COPYING
 %doc naemon-core/ChangeLog naemon-core/INSTALL naemon-core/LEGAL
 %doc naemon-core/NEWS naemon-core/README naemon-core/THANKS
 %doc naemon-core/UPGRADING
