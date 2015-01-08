@@ -171,7 +171,13 @@ Requires:    %{name}-thruk = %{version}-%{release}
 %if %{defined suse_version}
 Requires: xorg-x11-server-extra
 %else
+%if 0%{?el6}%{?el7}%{?fc20}%{?fc21}%{?fc22}
+# >rhel6
 Requires: xorg-x11-server-Xvfb libXext dejavu-fonts-common
+%else
+# rhel5 (there is no el5 rpm macro)
+Requires: xorg-x11-server-Xvfb libXext dejavu-lgc-fonts
+%endif
 %endif
 AutoReqProv: no
 
