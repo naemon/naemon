@@ -320,6 +320,11 @@ case "$*" in
     %else
       chkconfig --add %{name}
     %endif
+    # enable livestatus if its installed. It happens that rpm install order is mixed up and the livestatus module
+    # get installed first and is therfore not enabled in its post script because there is no naemon.cfg yet.
+    if [ -e /usr/lib*/%{name}/%{name}-livestatus/livestatus.so ]; then
+      sed -i /etc/%{name}/%{name}.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/%{name}/%{name}-livestatus/livestatus.so.*\)~\1~'
+    fi
   ;;
   *) echo case "$*" not handled in post
 esac
