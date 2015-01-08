@@ -1,3 +1,9 @@
+naemon (0.9.1) UNRELEASED; urgency=low
+
+  * new upstream release
+
+ -- Naemon Development Team <naemon-dev@monitoring-lists.org>  Thu, 08 Jan 2015 14:17:12 +0100
+
 naemon (0.8.0) UNRELEASED; urgency=low
 
   * new upstream release

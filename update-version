@@ -13,7 +13,7 @@ sed -i -e 's/^RELEASE=.*$/RELEASE='$DATE'/g' Makefile
 
 sed -i -e 's/^Version:.*$/Version: '$VERSION'/g'   naemon.spec
 
-cd naemon-core       && ./update-version "$VERSION" "$DATE" && cd ..
+#cd naemon-core       && ./update-version "$VERSION" "$DATE" && cd ..
 cd naemon-livestatus && ./update-version "$VERSION" "$DATE" && cd ..
 
 if [ "x$DEBEMAIL" = "x" ]; then
