@@ -43,6 +43,13 @@ case "$1" in
         chmod 755 /usr/bin/thruk
         chmod 2775 /var/cache/naemon/checkresults
 
+        # add apache user to group naemon
+        if /usr/bin/id www-data &>/dev/null; then
+            if ! /usr/bin/id -Gn www-data 2>/dev/null | grep -q naemon ; then
+                /usr/bin/gpasswd -a www-data naemon >/dev/null
+            fi
+        fi
+
         # restart apache
         if which invoke-rc.d >/dev/null 2>&1; then
             invoke-rc.d apache2 restart || true
@@ -55,13 +62,6 @@ case "$1" in
 
         # update cron entries
         /usr/bin/thruk -a clearcache,installcron --local > /dev/null
-
-        # add apache user to group naemon
-        if /usr/bin/id www-data &>/dev/null; then
-            if ! /usr/bin/id -Gn www-data 2>/dev/null | grep -q naemon ; then
-                /usr/bin/gpasswd -a www-data naemon >/dev/null
-            fi
-        fi
 
         echo "Naemon/Thruk have been configured for http://$(hostname)/naemon/."
         echo "The default user is 'admin' with password 'admin'. You can usually change that by 'htpasswd /etc/naemon/htpasswd admin'. And you really should change that!"
