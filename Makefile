@@ -1,5 +1,5 @@
-VERSION=0.9.1
-RELEASE=2015-01-08
+VERSION=1.0.0
+RELEASE=2015-02-12
 
 .PHONY: naemon-core naemon-livestatus thruk
 
