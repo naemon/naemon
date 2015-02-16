@@ -144,7 +144,7 @@ dailydist:
 	@echo "optional submodule tarballs created: naemon-core-${DAILYVERSION}.tar.gz and naemon-livestatus-${DAILYVERSION}.tar.gz"
 	@echo "daily dist created: naemon-${DAILYVERSION}.tar.gz"
 
-releaseversion:
+releaseversion: versionprecheck
 	RELEASEVERSION=`dialog --stdout --inputbox "New Version:" 0 0 "${VERSION}"` && \
 		./update-version $$RELEASEVERSION && \
 		cd naemon-core && git commit -as -m "released $$RELEASEVERSION" && git tag "v$$RELEASEVERSION" && cd .. && \
@@ -154,3 +154,5 @@ releaseversion:
 	@echo "******************"
 	@echo "ATTENTION: release tag (`grep ^VERSION Makefile | awk -F= '{ print $$2 }'`) set, please double check before pushing anything."
 	@echo "******************"
+
+version: releaseversion
