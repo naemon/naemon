@@ -1,5 +1,5 @@
-VERSION=1.0.0
-RELEASE=2015-02-12
+VERSION=1.0.2
+RELEASE=2015-03-28
 
 .PHONY: naemon-core naemon-livestatus thruk
 
@@ -153,6 +153,7 @@ releaseversion: versionprecheck
 	@echo ""
 	@echo "******************"
 	@echo "ATTENTION: release tag (`grep ^VERSION Makefile | awk -F= '{ print $$2 }'`) set, please double check before pushing anything."
+	@echo "naemon-core/NEWS file has to be updated manually!"
 	@echo "******************"
 
 version: releaseversion
