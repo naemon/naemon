@@ -2,7 +2,7 @@ Source: naemon
 Section: net
 Priority: optional
 Maintainer: Naemon Core Development Team <naemon-dev@monitoring-lists.org>
-Build-Depends: debhelper (>= 9), gperf, libgd-dev, libmysqlclient-dev, rsync, chrpath, help2man, libicu-dev
+Build-Depends: debhelper (>= 9), gperf, libgd-dev, libmysqlclient-dev, rsync, chrpath, help2man, libicu-dev, libmodule-install-perl
 Standards-Version: 3.7.3
 Homepage: http://www.naemon.org
 Bugs: https://github.com/naemon/naemon/issues
@@ -79,9 +79,9 @@ Description: contains the Naemon livestatus eventbroker module
 
 Package: naemon-thruk
 Architecture: any
-Depends: apache2,
+Depends: apache2 | nginx-full,
          cron,
-         libapache2-mod-fcgid,
+         libapache2-mod-fcgid | nginx-full,
          logrotate,
          naemon-thruk-libs (= ${source:Version}),
          ${misc:Depends},

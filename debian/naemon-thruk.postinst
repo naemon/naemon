@@ -1,5 +1,10 @@
 #!/bin/sh
 
+
+# check if apache is installed and needs configuring (nginx is alternative)
+dpkg -s apache2 >/dev/null 2>&1
+[ $? = 0 ] && CONFIGURE_APACHE=true || CONFIGURE_APACHE=false
+
 set -e
 
 case "$1" in
@@ -16,19 +21,6 @@ case "$1" in
         echo "thruk plugins enabled:" $(ls /etc/naemon/plugins/plugins-enabled/)
         rm -rf /var/cache/naemon/thruk_update
 
-        # enable modules we need
-        a2enmod alias
-        a2enmod fcgid
-        a2enmod auth_basic
-        a2enmod rewrite
-
-        # enable thruk itself
-        if [ -x '/usr/sbin/a2enconf' ]; then
-            [ -f /etc/apache2/conf-enabled/thruk.conf ]              || /usr/sbin/a2enconf thruk
-            [ -f /etc/apache2/conf-enabled/thruk_cookie_auth_vhost ] || /usr/sbin/a2enconf thruk_cookie_auth_vhost
-        fi
-
-
         # set permissions
         mkdir -p /var/lib/naemon/thruk /var/log/thruk /var/cache/naemon/thruk/reports /etc/naemon/bp /etc/naemon/conf.d /var/cache/naemon/checkresults /var/run/naemon
         touch /var/log/naemon/thruk.log
@@ -43,18 +35,32 @@ case "$1" in
         chmod 755 /usr/bin/thruk
         chmod 2775 /var/cache/naemon/checkresults
 
-        # add apache user to group naemon
-        if /usr/bin/id www-data &>/dev/null; then
-            if ! /usr/bin/id -Gn www-data 2>/dev/null | grep -q naemon ; then
-                /usr/bin/gpasswd -a www-data naemon >/dev/null
-            fi
-        fi
+	if $CONFIGURE_APACHE; then
+            # enable modules we need
+            a2enmod alias
+            a2enmod fcgid
+            a2enmod auth_basic
+            a2enmod rewrite
 
-        # restart apache
-        if which invoke-rc.d >/dev/null 2>&1; then
-            invoke-rc.d apache2 restart || true
-        else
-            /etc/init.d/apache2 restart || true
+            # enable thruk itself
+            if [ -x '/usr/sbin/a2enconf' ]; then
+                [ -f /etc/apache2/conf-enabled/thruk.conf ]              || /usr/sbin/a2enconf thruk
+                [ -f /etc/apache2/conf-enabled/thruk_cookie_auth_vhost ] || /usr/sbin/a2enconf thruk_cookie_auth_vhost
+            fi
+
+            # add apache user to group naemon
+            if /usr/bin/id www-data &>/dev/null; then
+                if ! /usr/bin/id -Gn www-data 2>/dev/null | grep -q naemon ; then
+                    /usr/bin/gpasswd -a www-data naemon >/dev/null
+                fi
+            fi
+
+            # restart apache
+            if which invoke-rc.d >/dev/null 2>&1; then
+                invoke-rc.d apache2 restart || true
+            else
+                /etc/init.d/apache2 restart || true
+            fi
         fi
 
         # create empty crontab
