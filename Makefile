@@ -154,6 +154,7 @@ releaseversion: versionprecheck
 	@echo "******************"
 	@echo "ATTENTION: release tag (`grep ^VERSION Makefile | awk -F= '{ print $$2 }'`) set, please double check before pushing anything."
 	@echo "naemon-core/NEWS file has to be updated manually!"
+	@echo "also do not forget about naemon.org: _config.yml and documentation/usersguide/whatsnew.md"
 	@echo "******************"
 
 version: releaseversion
