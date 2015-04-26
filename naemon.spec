@@ -256,6 +256,9 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/thruk %{buildroot}%{_sysconfdir}/logrotate.d/%{name}-thruk
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/%{name} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}-core
 %{__mv} %{buildroot}%{_libdir}/%{name}/pkgconfig %{buildroot}%{_libdir}/pkgconfig
+%{__mkdir_p} -m 0755 %{buildroot}%{_datadir}/%{name}/examples
+%{__mv} %{buildroot}%{_sysconfdir}/%{name}/conf.d %{buildroot}%{_datadir}/%{name}/examples/
+%{__mkdir_p} -m 0755 %{buildroot}%{_sysconfdir}/%{name}/conf.d
 
 # Put the new RC sysconfig in place
 %{__install} -d -m 0755 %{buildroot}/%{_sysconfdir}/sysconfig/
@@ -315,6 +318,18 @@ case "$*" in
     %endif
   ;;
   1)
+    # install example conf.d only once on the first installation
+    if [ ! -d %{_sysconfdir}/%{name}/conf.d/templates ]; then
+        mkdir -p %{_sysconfdir}/%{name}/conf.d/
+        cp -rp %{_datadir}/%{name}/examples/conf.d/* %{_sysconfdir}/%{name}/conf.d/
+    fi
+    chown naemon:naemon \
+        /etc/naemon/conf.d \
+        /etc/naemon/conf.d/*.cfg \
+        /etc/naemon/conf.d/templates \
+        /etc/naemon/conf.d/templates/*.cfg \
+    chmod 0664 /etc/naemon/conf.d/*.cfg /etc/naemon/conf.d/templates/*.cfg
+    chmod 2775 /etc/naemon/conf.d /etc/naemon/conf.d/templates
     %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
       %systemd_post %{name}.service
     %else
@@ -633,8 +648,6 @@ exit 0
 %attr(2775,naemon,naemon) %dir %{_sysconfdir}/%{name}/conf.d
 %attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/%{name}.cfg
 %attr(0640,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/resource.cfg
-%attr(0664,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/conf.d/*.cfg
-%attr(0664,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/conf.d/templates/*.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %attr(2775,naemon,%{apachegroup}) %dir %{_localstatedir}/cache/%{name}/checkresults
 %attr(2775,naemon,naemon) %dir %{_localstatedir}/cache/%{name}
@@ -643,6 +656,7 @@ exit 0
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}/archives
 %attr(-,root,root) %{_libdir}/%{name}/plugins
 %{_mandir}/man8/naemon.8*
+%{_datadir}/%{name}/examples
 
 %files tools
 %attr(0755,root,root) %{_bindir}/naemonstats
