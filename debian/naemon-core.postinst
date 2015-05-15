@@ -25,7 +25,7 @@ if [ ! -d /etc/naemon/conf.d/templates ]; then
         /etc/naemon/conf.d \
         /etc/naemon/conf.d/*.cfg \
         /etc/naemon/conf.d/templates \
-        /etc/naemon/conf.d/templates/*.cfg \
+        /etc/naemon/conf.d/templates/*.cfg
     chmod 0664 /etc/naemon/conf.d/*.cfg /etc/naemon/conf.d/templates/*.cfg
     chmod 2775 /etc/naemon/conf.d /etc/naemon/conf.d/templates
 fi
