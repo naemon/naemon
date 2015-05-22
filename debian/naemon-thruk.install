@@ -49,6 +49,7 @@
 /usr/share/naemon/root
 /usr/share/naemon/thruk_auth
 /usr/share/naemon/script/thruk_fastcgi.pl
+/usr/share/naemon/script/thruk.psgi
 /usr/share/naemon/templates
 /usr/share/naemon/themes
 /var/cache/naemon/thruk

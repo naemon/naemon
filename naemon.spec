@@ -709,6 +709,7 @@ exit 0
 %config(noreplace) %{_sysconfdir}/%{name}/bp/bp_functions.pm
 %attr(0755,root, root) %{_datadir}/%{name}/thruk_auth
 %attr(0755,root, root) %{_datadir}/%{name}/script/thruk_fastcgi.pl
+%attr(0755,root, root) %{_datadir}/%{name}/script/thruk.psgi
 %attr(0755,%{apacheuser},%{apachegroup}) %dir %{_localstatedir}/cache/%{name}/thruk
 %{_datadir}/%{name}/root
 %{_datadir}/%{name}/templates
