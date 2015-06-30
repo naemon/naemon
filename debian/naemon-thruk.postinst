@@ -1,5 +1,7 @@
 #!/bin/sh
-
+# postinst script for thruk
+#
+# see: dh_installdeb(1)
 
 # check if apache is installed and needs configuring (nginx is alternative)
 dpkg -s apache2 >/dev/null 2>&1
@@ -7,48 +9,44 @@ dpkg -s apache2 >/dev/null 2>&1
 
 set -e
 
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <postinst> `abort-remove'
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+
 case "$1" in
     configure)
-        # restore themes and plugins
-        if [ -d /var/cache/naemon/thruk_update/themes/. ]; then
-          rm -f /etc/naemon/themes/themes-enabled/*
-          cp -rp /var/cache/naemon/thruk_update/themes/* /etc/naemon/themes/themes-enabled/ 2>/dev/null
-        fi
-        if [ -d /var/cache/naemon/thruk_update/plugins/. ]; then
-          rm -f /etc/naemon/plugins/plugins-enabled/*
-          cp -rp /var/cache/naemon/thruk_update/plugins/* /etc/naemon/plugins/plugins-enabled/ 2>/dev/null
-        fi
-        echo "thruk plugins enabled:" $(ls /etc/naemon/plugins/plugins-enabled/)
-        rm -rf /var/cache/naemon/thruk_update
+        mkdir -p /etc/thruk/
+        [ ! -e /etc/naemon/cgi.cfg ]          || mv /etc/naemon/cgi.cfg          /etc/thruk/cgi.cfg
+        [ ! -e /etc/naemon/thruk_local.conf ] || mv /etc/naemon/thruk_local.conf /etc/thruk/thruk_local.d/_migrated_naemon_thruk_local.conf
+        [ ! -e /etc/naemon/menu_local.conf ]  || mv /etc/naemon/menu_local.conf  /etc/thruk/menu_local.conf
+        [ ! -e /etc/naemon/htpasswd ]         || mv /etc/naemon/htpasswd         /etc/thruk/htpasswd
 
-        # set permissions
-        mkdir -p /var/lib/naemon/thruk /var/log/thruk /var/cache/naemon/thruk/reports /etc/naemon/bp /etc/naemon/conf.d /var/cache/naemon/checkresults /var/run/naemon
-        touch /var/log/naemon/thruk.log
-        chown -R www-data: /var/lib/naemon/thruk \
-                           /var/cache/naemon/thruk \
-                           /var/log/naemon/thruk.log \
-                           /etc/naemon/plugins/plugins-enabled \
-                           /etc/naemon/thruk_local.conf \
-                           /etc/naemon/bp
-        chown naemon:naemon /var/cache/naemon /var/run/naemon /var/log/naemon /var/cache/naemon/checkresults
-        chmod 755 /usr/share/naemon/fcgid_env.sh
-        chmod 755 /usr/bin/thruk
-        chmod 2775 /var/cache/naemon/checkresults
-
-	if $CONFIGURE_APACHE; then
-            # enable modules we need
-            a2enmod alias
-            a2enmod fcgid
-            a2enmod auth_basic
-            a2enmod rewrite
-
-            # enable thruk itself
+        if $CONFIGURE_APACHE; then
+            # enable naemon redirect
             if [ -x '/usr/sbin/a2enconf' ]; then
-                [ -f /etc/apache2/conf-enabled/thruk.conf ]              || /usr/sbin/a2enconf thruk
-                [ -f /etc/apache2/conf-enabled/thruk_cookie_auth_vhost ] || /usr/sbin/a2enconf thruk_cookie_auth_vhost
+                [ -f /etc/apache2/conf-enabled/naemon.conf ] || /usr/sbin/a2enconf naemon
             fi
 
-            # add apache user to group naemon
+            # activate cookie in existing default virtual hosts
+            set +e
+            ls -1 /etc/apache2/sites-available/*default* | \
+            while read file; do
+                if ! grep naemon-thruk.include $file >/dev/null 2>&1; then
+                    sed -i -e 's|</VirtualHost>|\n    Include /usr/share/naemon/naemon-thruk.include\n</VirtualHost>|g' $file
+                fi
+            done
+            set -e
+
+            # add apache user to group naemon so thruk can access the livestatus socket
             if /usr/bin/id www-data &>/dev/null; then
                 if ! /usr/bin/id -Gn www-data 2>/dev/null | grep -q naemon ; then
                     /usr/bin/gpasswd -a www-data naemon >/dev/null
@@ -62,15 +60,6 @@ case "$1" in
                 /etc/init.d/apache2 restart || true
             fi
         fi
-
-        # create empty crontab
-        /usr/bin/crontab -l -u www-data 2>/dev/null | /usr/bin/crontab -u www-data -
-
-        # update cron entries
-        /usr/bin/thruk -a clearcache,installcron --local > /dev/null
-
-        echo "Naemon/Thruk have been configured for http://$(hostname)/naemon/."
-        echo "The default user is 'admin' with password 'admin'. You can usually change that by 'htpasswd /etc/naemon/htpasswd admin'. And you really should change that!"
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
@@ -82,6 +71,8 @@ case "$1" in
     ;;
 esac
 
+# dh_installdeb will replace this with shell code automatically
+# generated by other debhelper scripts.
 
 #DEBHELPER#
 

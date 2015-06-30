@@ -2,7 +2,7 @@ Source: naemon
 Section: net
 Priority: optional
 Maintainer: Naemon Core Development Team <naemon-dev@monitoring-lists.org>
-Build-Depends: debhelper (>= 9), gperf, libgd-dev, libmysqlclient-dev, rsync, chrpath, help2man, libicu-dev, libmodule-install-perl
+Build-Depends: debhelper (>= 9), gperf, chrpath, help2man, libicu-dev
 Standards-Version: 3.7.3
 Homepage: http://www.naemon.org
 Bugs: https://github.com/naemon/naemon/issues
@@ -17,7 +17,6 @@ Depends: adduser,
          naemon-core (= ${binary:Version}),
          naemon-livestatus (= ${binary:Version}),
          naemon-thruk (= ${binary:Version}),
-         naemon-thruk-reporting (= ${binary:Version}),
          ${misc:Depends},
          ${perl:Depends},
          ${shlibs:Depends}
@@ -79,34 +78,10 @@ Description: contains the Naemon livestatus eventbroker module
 
 Package: naemon-thruk
 Architecture: any
-Depends: apache2 | nginx-full,
-         cron,
-         libapache2-mod-fcgid | nginx-full,
-         logrotate,
-         naemon-thruk-libs (= ${source:Version}),
-         ${misc:Depends},
-         ${perl:Depends},
-         ${shlibs:Depends}
-Conflicts: thruk
-Provides: thruk
-Description: This package contains the thruk gui for Naemon
+Depends: thruk, ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
+Description: Thruk is a web gui for Naemon
  Naemon is a monitoring and management system for hosts, services and
  networks.
-
-Package: naemon-thruk-libs
-Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}, ${extra:Depends}
-Description: This package contains the thruk gui for Naemon
- Naemon is a monitoring and management system for hosts, services and
- networks.
-
-Package: naemon-thruk-reporting
-Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends},
-         xvfb,
-         naemon-thruk (= ${source:Version})
-Description: This package contains the reporting addon for naemons thruk gui useful for sla
- and event reporting.
 
 Package: naemon-dev
 Architecture: any

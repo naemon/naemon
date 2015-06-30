@@ -5,8 +5,6 @@
 
 export DH_VERBOSE=1
 DESTDIR=$(CURDIR)/debian/tmp/
-PERLARCH=$(shell perl -e 'use Config; print $$Config{archname}')
-PERLVER=$(shell perl -e 'use Config; print $$Config{version}')
 
 HTTPDCONF=$(shell if [ -d "/etc/apache2/conf-available" ]; then echo "/etc/apache2/conf-available"; else echo "/etc/apache2/conf.d"; fi )
 
@@ -28,18 +26,8 @@ override_dh_auto_configure:
 				--with-logrotatedir="/etc/logrotate.d" \
 				--with-naemon-user="naemon" \
 				--with-naemon-group="naemon" \
-				--with-lockfile="/var/run/naemon/naemon.pid" \
-				--with-thruk-user="www-data" \
-				--with-thruk-group="naemon" \
-				--with-thruk-libs="/usr/lib/naemon/perl5" \
-				--with-thruk-tempdir="/var/cache/naemon/thruk" \
-				--with-thruk-vardir="/var/lib/naemon/thruk" \
-				--with-httpd-conf="$(HTTPDCONF)" \
-				--with-htmlurl="/naemon"
-	echo "naemon-thruk-libs: embedded-library usr/lib/naemon/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so: zlib" >> debian/naemon-thruk-libs.lintian-overrides
-	echo "naemon-thruk-libs: embedded-zlib ./usr/lib/naemon/perl5/$(PERLARCH)/auto/Compress/Raw/Zlib/Zlib.so"        >> debian/naemon-thruk-libs.lintian-overrides
-	echo $(HTTPDCONF)/thruk.conf                   >> debian/naemon-thruk.install
-	echo $(HTTPDCONF)/thruk_cookie_auth_vhost.conf >> debian/naemon-thruk.install
+				--with-lockfile="/var/run/naemon/naemon.pid"
+	echo $(HTTPDCONF)/naemon.conf >> debian/naemon-thruk.install
 
 override_dh_auto_install:
 	dh_auto_install
@@ -55,7 +43,6 @@ override_dh_auto_install:
 	strip debian/tmp/usr/bin/naemon-unixcat
 	strip debian/tmp/usr/lib/naemon/libnaemon.so.0.0.0
 	strip debian/tmp/usr/lib/naemon/naemon-livestatus/livestatus.so
-	mv debian/tmp/etc/logrotate.d/thruk debian/tmp/etc/logrotate.d/naemon-thruk
 	mv debian/tmp/etc/logrotate.d/naemon debian/tmp/etc/logrotate.d/naemon-core
 	cp naemon-core/naemon.logrotate debian/naemon-core.logrotate
 	ln -s /usr/lib/nagios/plugins debian/tmp/usr/lib/naemon/plugins
@@ -63,7 +50,7 @@ override_dh_auto_install:
 	mv debian/tmp/etc/naemon/conf.d debian/tmp/usr/share/naemon/examples
 
 override_dh_gencontrol:
-	dh_gencontrol -- -Vextra:Depends=perlapi-$(PERLVER)
+	dh_gencontrol
 
 override_dh_strip:
 	dh_strip -pnaemon-core --dbg-package=naemon-core-dbg

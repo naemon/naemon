@@ -1,5 +1,5 @@
 #!/bin/sh
-# prerm   script for thruk
+# prerm   script for naemon-thruk
 #
 # see: dh_installdeb(1)
 
@@ -7,9 +7,7 @@ set -e
 
 case "$1" in
   remove|deconfigure)
-    /usr/bin/thruk -a uninstallcron --local || echo "ERROR: removing cron failed, please remove www-data cron manually"
-    invoke-rc.d thruk stop || true
-    rm -rf /usr/share/naemon/root/thruk/plugins
+    sed -i -e '/thruk_cookie_auth.include/d' /etc/apache2/sites-available/default*
   ;;
 
   upgrade|failed-upgrade)

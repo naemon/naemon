@@ -1,8 +1,0 @@
-/var/log/naemon/thruk.log {
-    weekly
-    missingok
-    rotate 10
-    compress
-    delaycompress
-    notifempty
-}

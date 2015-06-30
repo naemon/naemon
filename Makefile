@@ -3,11 +3,6 @@ RELEASE=2015-03-29
 
 .PHONY: naemon-core naemon-livestatus thruk
 
-P5DIR?=$(shell pwd)/thruk/libs/.build
-export P5DIR
-P5TMPDIST=$(P5DIR)
-export P5TMPDIST
-
 DAILYVERSION=$(shell ./get_version)
 
 all: naemon-core naemon-livestatus thruk
@@ -20,8 +15,7 @@ all: naemon-core naemon-livestatus thruk
 
 
 thruk:
-	cd thruk && P5TMPDIST=${P5DIR} make
-	cd thruk && make staticfiles
+	cd thruk && make
 
 naemon-core:
 	cd naemon-core && make
@@ -29,7 +23,7 @@ naemon-core:
 naemon-livestatus:
 	cd naemon-livestatus && make CPPFLAGS="$$CPPFLAGS -I$$(pwd)/../naemon-core/src"
 
-update: update-naemon-core update-naemon-livestatus update-thruk
+update: update-naemon-core update-naemon-livestatus
 	@if [ `git status 2>/dev/null | grep -c "new commits"` -gt 0 ]; then \
 		git commit -av -m 'automatic update';\
 		git log -1; \
@@ -42,9 +36,6 @@ update-naemon-core: submoduleinit
 
 update-naemon-livestatus: submoduleinit
 	cd naemon-livestatus && git checkout master &&  git pull --rebase
-
-update-thruk: submoduleinit
-	cd thruk && make update
 
 submoduleinit:
 	git submodule init
@@ -67,16 +58,9 @@ dist:
 	git archive --format=tar HEAD | tar x -C "naemon-${VERSION}"
 	cd naemon-core       && git archive --format=tar HEAD | tar x -C    "../naemon-${VERSION}/naemon-core/"
 	cd naemon-livestatus && git archive --format=tar HEAD | tar x -C    "../naemon-${VERSION}/naemon-livestatus/"
-	cd thruk/gui         && git archive --format=tar HEAD | tar x -C "../../naemon-${VERSION}/thruk/gui/"
-	cd thruk/libs        && git archive --format=tar HEAD | tar x -C "../../naemon-${VERSION}/thruk/libs/"
 	cd naemon-${VERSION}/naemon-core && autoreconf -i -v
 	cd naemon-${VERSION}/naemon-livestatus && autoreconf -i -v
-	cp -p thruk/gui/Makefile naemon-${VERSION}/thruk/gui
-	cd naemon-${VERSION}/thruk/gui && ./script/thruk_patch_makefile.pl
-	-cd naemon-${VERSION}/thruk/gui && make staticfiles >/dev/null 2>&1
 	tar cf "naemon-${VERSION}.tar" \
-		--exclude=thruk/gui/support/thruk.spec \
-		--exclude=thruk/gui/debian \
 		--exclude=naemon-core/naemon.spec \
 		--exclude=.gitmodules \
 		--exclude=.gitignore \
@@ -110,22 +94,16 @@ resetdaily: versionprecheck
 	git checkout .
 	cd naemon-core       && if [ $$(git log -1 | grep -c "automatic build commit:") -gt 0 ]; then git reset HEAD^ && git checkout .; fi
 	cd naemon-livestatus && if [ $$(git log -1 | grep -c "automatic build commit:") -gt 0 ]; then git reset HEAD^ && git checkout .; fi
-	cd thruk/gui         && if [ $$(git log -1 | grep -c "automatic build commit:") -gt 0 ]; then git reset HEAD^; git checkout .; git clean -xdf; yes n | perl Makefile.PL || yes n | perl Makefile.PL; fi
-	cd thruk/libs        && git checkout .
 	if [ $$(git log -1 | grep -c "automatic build commit:") -gt 0 ]; then git reset HEAD^ && git checkout .; fi
 	git submodule update
-	cd thruk/gui         && git checkout master
-	cd thruk/libs        && git checkout master
 	cd naemon-core       && git checkout master
 	cd naemon-livestatus && git checkout master
 
 dailyversion: versionprecheck
-	cd thruk/gui         && git checkout master
-	cd thruk/libs        && git checkout master
 	cd naemon-core       && git checkout master
 	cd naemon-livestatus && git checkout master
-	cd thruk/gui && yes 'n' | perl Makefile.PL >/dev/null 2>&1 && make newversion && git add . && git commit -a -m "automatic build commit: ${DAILYVERSION}"
 	./update-version ${DAILYVERSION}
+	sed -e 's/-source//g' -i naemon-core/version.sh
 	cd naemon-core       && git commit -a -m "automatic build commit: ${DAILYVERSION}"
 	cd naemon-livestatus && git commit -a -m "automatic build commit: ${DAILYVERSION}"
 	git commit -a -m "automatic build commit: ${DAILYVERSION}"

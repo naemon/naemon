@@ -21,30 +21,12 @@ set -e
 
 case "$1" in
     remove)
-        rm -f /etc/apache2/conf-enabled/thruk.conf
-        rm -f /etc/apache2/conf-enabled/thruk_cookie_auth_vhost.conf
-        rm -rf /var/cache/naemon/thruk/*
-        rmdir /etc/naemon/thruk/bp >/dev/null 2>&1 || true
+        rm -f /etc/apache2/conf-enabled/naemon.conf
     ;;
     upgrade)
-        rm -rf /var/cache/naemon/thruk/*
-        mkdir -p /var/cache/naemon/thruk/reports
-        chown -R www-data: /var/cache/naemon/thruk
     ;;
     purge)
-        rm -rf /etc/naemon/bp \
-               /etc/naemon/thruk.conf \
-               /etc/naemon/ssi \
-               /etc/naemon/htpasswd \
-               /etc/naemon/cgi.cfg \
-               /etc/naemon/log4perl.conf
-        rm -f /etc/apache2/conf-enabled/thruk.conf
-        rm -f /etc/apache2/conf-enabled/thruk_cookie_auth_vhost.conf
-        rm -f /var/log/naemon/thruk.log*
-        rm -rf /var/lib/naemon/thruk
-        rmdir /var/lib/naemon 2>/dev/null || :
-        rm -rf /var/cache/naemon/thruk
-        rmdir /var/cache/naemon 2>/dev/null || :
+        rm -f /etc/apache2/conf-enabled/naemon.conf
     ;;
 
     failed-upgrade|abort-install|abort-upgrade|disappear)

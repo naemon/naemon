@@ -19,41 +19,20 @@ test -f naemon-livestatus/configure.ac || {
     git submodule update
     cd ..
 }
-test -f thruk/gui/configure || {
-    git submodule update thruk/gui
-    cd thruk/gui
-    git checkout integration
-    git submodule update
-    cd ../..
-}
-test -d thruk/libs/src || {
-    git submodule update thruk/libs
-    cd thruk/libs
-    git checkout master
-    git submodule update
-    cd ../..
-}
 
 # now just run the real configure scripts
 cd naemon-core
 test -f ./configure || autoreconf -i
-./configure $* 2>&1 | grep -v 'WARNING: unrecognized options'
+./configure $* 2>&1
 
 cd ../naemon-livestatus
 test -f ./configure || autoreconf -i
-NAEMON_LIBS="-L$(pwd)/../naemon-core" NAEMON_CFLAGS="-I$(pwd)/../naemon-core" ./configure $* 2>&1 | grep -v 'WARNING: unrecognized options'
-
-cd ../thruk/gui
-./configure --quiet $*
-cd ../..
+NAEMON_LIBS="-L$(pwd)/../naemon-core" NAEMON_CFLAGS="-I$(pwd)/../naemon-core" ./configure $*
 
 echo "***************************************"
-echo "finished configuring Naemon:"
-echo ""
-grep -v '^#' thruk/gui/script/append.make.options
+echo "finished configuring Naemon."
 echo "continue with"
 echo ""
 echo "make [rpm|deb]"
 echo "or"
 echo "make && make install"
-

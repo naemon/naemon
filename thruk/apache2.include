@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteRule   ^/naemon/(.*) /thruk/$1 [R,L]
+RewriteRule   ^/naemon$     /thruk/   [R,L]
