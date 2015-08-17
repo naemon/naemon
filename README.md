@@ -16,7 +16,7 @@ the aforementioned project.
 
 ### Installation ###
 
-Before installing from source, consider using prebuild native
+Before installing from source, consider using prebuilt native
 packages which make things a lot easier and cleaner.
 Daily updated packages for common linux systems can be found at
 http://labs.consol.de/naemon/testing/
