@@ -35,6 +35,7 @@ BuildRequires: libtool
 BuildRequires: gcc-c++
 BuildRequires: help2man
 BuildRequires: libicu-devel
+BuildRequires: pkgconfig
 # sles / rhel specific requirements
 %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
 BuildRequires: systemd
