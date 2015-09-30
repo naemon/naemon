@@ -9,6 +9,13 @@
 %define apachedir httpd
 %endif
 
+%if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
+%global use_systemd 1
+%endif
+%if 0%{?suse_version} >= 1315
+%global use_systemd 1
+%endif
+
 # Setup some debugging options in case we build with --with debug
 %if %{defined _with_debug}
   %define mycflags -O0 -pg -ggdb3
@@ -38,8 +45,10 @@ BuildRequires: libicu-devel
 BuildRequires: pkgconfig
 # sles / rhel specific requirements
 %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
-BuildRequires: systemd
 BuildRequires: chrpath
+%endif
+%if 0%{?use_systemd}
+BuildRequires: systemd
 %endif
 
 %if %{defined suse_version}
@@ -207,7 +216,7 @@ mkdir -p -m 0755 %{buildroot}%{_localstatedir}/run/%{name}
 # We don't really want to distribute this
 rm -f %{buildroot}%{_libdir}/%{name}/%{name}-livestatus/livestatus.la
 
-%if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
+%if 0%{?use_systemd}
 # Install systemd entry
 %{__install} -D -m 0644 -p %{name}-core/daemon-systemd %{buildroot}%{_unitdir}/%{name}.service
 %{__install} -D -m 0644 -p %{name}-core/%{name}.tmpfiles.conf %{buildroot}%{_tmpfilesdir}/%{name}.conf
@@ -238,7 +247,7 @@ case "$*" in
     # For systemctl systems we need to reload the configs
     # becaues it'll complain if we just installed a new
     # init script
-    %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
+    %if 0%{?use_systemd}
       systemctl daemon-reload
       systemctl condrestart %{name}.service
     %else
@@ -258,7 +267,7 @@ case "$*" in
         /etc/naemon/conf.d/templates/*.cfg
     chmod 0664 /etc/naemon/conf.d/*.cfg /etc/naemon/conf.d/templates/*.cfg
     chmod 2775 /etc/naemon/conf.d /etc/naemon/conf.d/templates
-    %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
+    %if 0%{?use_systemd}
       %systemd_post %{name}.service
     %else
       chkconfig --add %{name}
@@ -283,7 +292,7 @@ case "$*" in
   ;;
   0)
     # Uninstall, go ahead and stop before removing
-    %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
+    %if 0%{?use_systemd}
       %systemd_preun %{name}.service
     %else
       /etc/init.d/naemon stop >/dev/null 2>&1 || :
@@ -326,7 +335,7 @@ exit 0
 case "$*" in
   2)
     # Upgrading so try and restart if already running
-    %if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
+    %if 0%{?use_systemd}
       systemctl condrestart %{name}.service
     %else
       /etc/init.d/%{name} condrestart &>/dev/null || :
@@ -429,7 +438,7 @@ exit 0
 %doc naemon-core/NEWS naemon-core/README naemon-core/THANKS
 %doc naemon-core/UPGRADING
 %attr(0755,root,root) %{_bindir}/%{name}
-%if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
+%if 0%{?use_systemd}
   %attr(0644,root,root) %{_unitdir}/%{name}.service
   %attr(0644,root,root) %{_tmpfilesdir}/%{name}.conf
   %attr(0755,root,root) %{_bindir}/%{name}-ctl
