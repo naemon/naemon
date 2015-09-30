@@ -48,7 +48,9 @@ Requires(pre): pwdutils
 %else
 Requires(pre): shadow
 %endif
+%if 0%{?suse_version} < 1315
 Requires(pre): shadow-utils
+%endif
 %endif
 Requires: %{name}-core            = %{version}-%{release}
 Requires: %{name}-tools           = %{version}-%{release}
