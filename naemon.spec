@@ -132,6 +132,8 @@ Summary:     Thruk Gui For Naemon
 Group:       Applications/System
 Requires:    thruk
 Requires(pre): naemon-core = %{version}-%{release}
+Obsoletes: naemon-thruk-reporting
+Obsoletes: naemon-thruk-libs
 
 %description thruk
 This package contains the thruk gui for %{name}.
@@ -389,6 +391,7 @@ exit 0
 mkdir -p -m 0755 /etc/thruk/
 [ ! -e %{_sysconfdir}/%{name}/cgi.cfg ]          || %{__mv} %{_sysconfdir}/%{name}/cgi.cfg          /etc/thruk/cgi.cfg
 [ ! -e %{_sysconfdir}/%{name}/thruk_local.conf ] || %{__mv} %{_sysconfdir}/%{name}/thruk_local.conf /etc/thruk/thruk_local.d/_migrated_naemon_thruk_local.conf
+[ ! -e %{_sysconfdir}/%{name}/menu_local.conf ]  || sed -e 's%/usr/share/naemon/%/usr/share/thruk/%g' -i %{_sysconfdir}/%{name}/menu_local.conf
 [ ! -e %{_sysconfdir}/%{name}/menu_local.conf ]  || %{__mv} %{_sysconfdir}/%{name}/menu_local.conf  /etc/thruk/menu_local.conf
 [ ! -e %{_sysconfdir}/%{name}/htpasswd ]         || %{__mv} %{_sysconfdir}/%{name}/htpasswd         /etc/thruk/htpasswd
 
