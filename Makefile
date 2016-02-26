@@ -62,6 +62,7 @@ dist:
 	cd naemon-${VERSION}/naemon-livestatus && autoreconf -i -v
 	tar cf "naemon-${VERSION}.tar" \
 		--exclude=naemon-core/naemon.spec \
+		--exclude=op5build \
 		--exclude=.gitmodules \
 		--exclude=.gitignore \
 		"naemon-${VERSION}"
