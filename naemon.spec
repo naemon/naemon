@@ -198,7 +198,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__strip} %{buildroot}%{_bindir}/%{name}
 %{__strip} %{buildroot}%{_bindir}/naemonstats
 %{__strip} %{buildroot}%{_bindir}/shadownaemon
-%{__strip} %{buildroot}%{_bindir}/%{name}-unixcat
+%{__strip} %{buildroot}%{_bindir}/unixcat
 %{__strip} %{buildroot}%{_libdir}/%{name}/libnaemon.so.0.0.0
 %{__strip} %{buildroot}%{_libdir}/%{name}/%{name}-livestatus/livestatus.so
 %{__mv} %{buildroot}%{_sysconfdir}/logrotate.d/%{name} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}-core
@@ -488,7 +488,7 @@ exit 0
 %attr(-,root,root) %{_libdir}/pkgconfig/naemon.pc
 
 %files livestatus
-%attr(0755,root,root) %{_bindir}/%{name}-unixcat
+%attr(0755,root,root) %{_bindir}/unixcat
 %attr(0755,naemon,naemon) %dir %{_libdir}/%{name}/%{name}-livestatus
 %attr(0644,root,root) %{_libdir}/%{name}/%{name}-livestatus/livestatus.so
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}

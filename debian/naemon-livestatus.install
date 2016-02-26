@@ -1,3 +1,3 @@
-/usr/bin/naemon-unixcat
+/usr/bin/unixcat
 /usr/lib/naemon/naemon-livestatus/livestatus.so
 /var/log/naemon

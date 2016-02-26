@@ -38,7 +38,7 @@ override_dh_auto_install:
 	chrpath -c debian/tmp/usr/bin/shadownaemon
 	chrpath -c debian/tmp/usr/bin/naemonstats
 	strip debian/tmp/usr/bin/shadownaemon
-	strip debian/tmp/usr/bin/naemon-unixcat
+	strip debian/tmp/usr/bin/unixcat
 	strip debian/tmp/usr/lib/naemon/libnaemon.so.0.0.0
 	strip debian/tmp/usr/lib/naemon/naemon-livestatus/livestatus.so
 	mv debian/tmp/etc/logrotate.d/naemon debian/tmp/etc/logrotate.d/naemon-core
