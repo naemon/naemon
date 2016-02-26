@@ -43,8 +43,9 @@ BuildRequires: gcc-c++
 BuildRequires: help2man
 BuildRequires: libicu-devel
 BuildRequires: pkgconfig
+BuildRequires: glib2-devel
 # sles / rhel specific requirements
-%if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
+%if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}%{?fc23}
 BuildRequires: chrpath
 %endif
 %if 0%{?use_systemd}
@@ -92,6 +93,7 @@ Naemon ships the Thruk gui with extended reporting and dashboard features.
 Summary:   Naemon Monitoring Core
 Group:     Applications/System
 Requires:  logrotate
+Requires:  glib2
 
 %description core
 contains the %{name} core.
@@ -122,6 +124,7 @@ contains the %{name} core with debug symbols.
 %package livestatus
 Summary:        Naemon Livestatus Eventbroker Module
 Group:          Applications/System
+Requires:       glib2
 
 %description livestatus
 contains the %{name} livestatus eventbroker module.
@@ -142,6 +145,8 @@ This package contains the thruk gui for %{name}.
 %package devel
 Summary: Development Files For Naemon
 Group: Development/Libraries
+Requires: naemon = %version
+Requires: glib2-devel
 
 %description devel
 This package contains the header files, static libraries for %{name}.
