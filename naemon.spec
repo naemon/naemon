@@ -93,7 +93,6 @@ Naemon ships the Thruk gui with extended reporting and dashboard features.
 Summary:   Naemon Monitoring Core
 Group:     Applications/System
 Requires:  logrotate
-Requires:  glib2
 
 %description core
 contains the %{name} core.
@@ -123,7 +122,6 @@ contains the %{name} core with debug symbols.
 %package livestatus
 Summary:        Naemon Livestatus Eventbroker Module
 Group:          Applications/System
-Requires:       glib2
 
 %description livestatus
 contains the %{name} livestatus eventbroker module.
