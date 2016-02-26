@@ -66,7 +66,6 @@ Architecture: any
 Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}, libnaemon
 Description: contains tools for the Naemon core
  - naemonstats:  display statistics
- - oconfsplit:   divide configurations by groups
  - shadownaemon: shadow a remote naemon core over livestatus
 
 Package: naemon-livestatus

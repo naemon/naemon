@@ -35,8 +35,6 @@ override_dh_auto_install:
 	cp -p debian/tmp/usr/bin/naemon debian/tmp/usr/bin/naemon-dbg
 	strip debian/tmp/usr/bin/naemon
 	strip debian/tmp/usr/bin/naemonstats
-	strip debian/tmp/usr/bin/oconfsplit
-	chrpath -c debian/tmp/usr/bin/oconfsplit
 	chrpath -c debian/tmp/usr/bin/shadownaemon
 	chrpath -c debian/tmp/usr/bin/naemonstats
 	strip debian/tmp/usr/bin/shadownaemon
