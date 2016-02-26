@@ -21,7 +21,7 @@ naemon-core:
 	cd naemon-core && make
 
 naemon-livestatus:
-	cd naemon-livestatus && make CPPFLAGS="$$CPPFLAGS -I$$(pwd)/../naemon-core/src"
+	cd naemon-livestatus && make CPPFLAGS="$$CPPFLAGS"
 
 update: update-naemon-core update-naemon-livestatus
 	@if [ `git status 2>/dev/null | grep -c "new commits"` -gt 0 ]; then \
