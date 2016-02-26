@@ -27,7 +27,7 @@ test -f ./configure || autoreconf -i
 
 cd ../naemon-livestatus
 test -f ./configure || autoreconf -i
-NAEMON_LIBS="-L$(pwd)/../naemon-core" NAEMON_CFLAGS="-I$(pwd)/../naemon-core" ./configure $*
+PKG_CONFIG_PATH="$(pwd)/../naemon-core" ./configure $*
 
 echo "***************************************"
 echo "finished configuring Naemon."
