@@ -25,6 +25,7 @@ case "$1" in
         sed -i /etc/naemon/naemon.cfg -e 's~^\s*\(broker_module=/usr/lib[0-9]*/naemon/naemon-livestatus/livestatus.so.*\)~#\1~'
       fi
       rm -f /var/cache/naemon/live
+      invoke-rc.d naemon condrestart || true
     ;;
     upgrade)
     ;;

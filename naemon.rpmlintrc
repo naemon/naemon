@@ -1,4 +1,5 @@
 addFilter("E: non-readable /etc/naemon/resource.cfg")
+addFilter("E: non-readable /etc/naemon/module-conf.d/livestatus.cfg")
 addFilter("E: non-standard-dir-perm /var/cache/naemon 2775")
 addFilter("E: non-standard-dir-perm /var/cache/naemon 02775")
 addFilter("E: non-standard-dir-perm /etc/naemon/conf.d 2775")

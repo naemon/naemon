@@ -170,11 +170,11 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
     --libdir="%{_libdir}/%{name}" \
     --localstatedir="%{_localstatedir}/lib/%{name}" \
     --sysconfdir="%{_sysconfdir}/%{name}" \
+    --with-naemon-config-dir="%{_sysconfdir}/%{name}/module-conf.d" \
     --with-pkgconfdir="%{_sysconfdir}/%{name}" \
     --enable-event-broker \
     --with-pluginsdir="%{_libdir}/%{name}/plugins" \
     --with-tempdir="%{_localstatedir}/cache/%{name}" \
-    --with-checkresultdir="%{_localstatedir}/cache/%{name}/checkresults" \
     --with-logdir="%{_localstatedir}/log/%{name}" \
     --with-initdir="%{_initrddir}" \
     --with-logrotatedir="%{_sysconfdir}/logrotate.d" \
@@ -205,6 +205,8 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__mv} %{buildroot}%{_sysconfdir}/%{name}/conf.d %{buildroot}%{_datadir}/%{name}/examples/
 %{__mkdir_p} -m 0755 %{buildroot}%{_sysconfdir}/%{name}/conf.d
 %{__mkdir_p} -m 0755 %{buildroot}%{_localstatedir}/lib/%{name}
+%{__mkdir_p} -m 0755 %{buildroot}%{_localstatedir}/lib/%{name}/spool/checkresults
+%{__mkdir_p} -m 0755 %{buildroot}%{_localstatedir}/cache/%{name}
 
 # Put the new RC sysconfig in place
 %{__install} -d -m 0755 %{buildroot}/%{_sysconfdir}/sysconfig/
@@ -266,6 +268,7 @@ case "$*" in
     chown naemon:naemon \
         /etc/naemon/conf.d \
         /etc/naemon/conf.d/*.cfg \
+        /etc/naemon/module-conf.d/*.cfg \
         /etc/naemon/conf.d/templates \
         /etc/naemon/conf.d/templates/*.cfg
     chmod 0664 /etc/naemon/conf.d/*.cfg /etc/naemon/conf.d/templates/*.cfg
@@ -275,11 +278,6 @@ case "$*" in
     %else
       chkconfig --add %{name}
     %endif
-    # enable livestatus if its installed. It happens that rpm install order is mixed up and the livestatus module
-    # get installed first and is therfore not enabled in its post script because there is no naemon.cfg yet.
-    if [ -e /usr/lib*/%{name}/%{name}-livestatus/livestatus.so ]; then
-      sed -i /etc/%{name}/%{name}.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/%{name}/%{name}-livestatus/livestatus.so.*\)~\1~'
-    fi
   ;;
   *) echo case "$*" not handled in post
 esac
@@ -338,24 +336,22 @@ exit 0
 case "$*" in
   2)
     # Upgrading so try and restart if already running
-    %if 0%{?use_systemd}
-      systemctl condrestart %{name}.service
-    %else
-      /etc/init.d/%{name} condrestart &>/dev/null || :
-    %endif
-    # change broker path to new location
     if [ -e /etc/%{name}/%{name}.cfg ]; then
-      sed -i /etc/%{name}/%{name}.cfg -e 's#/%{name}/livestatus.o#/%{name}/%{name}-livestatus/livestatus.so#'
+      # livestatus configuration has been moved to single drop dir file
+      sed -i /etc/%{name}/%{name}.cfg -e 's~^\s*\(broker_module=/usr/lib[0-9]*/%{name}/%{name}-livestatus/livestatus.so.*\)~#\1~'
     fi
   ;;
   1)
-    # New install, enable module
-    if [ -e /etc/%{name}/%{name}.cfg ]; then
-      sed -i /etc/%{name}/%{name}.cfg -e 's~#\(broker_module=/usr/lib[0-9]*/%{name}/%{name}-livestatus/livestatus.so.*\)~\1~'
-    fi
+    # First installation, no acton required
+    :
   ;;
   *) echo case "$*" not handled in postun
 esac
+%if 0%{?use_systemd}
+  systemctl condrestart %{name}.service
+%else
+  /etc/init.d/%{name} condrestart &>/dev/null || :
+%endif
 exit 0
 
 %preun livestatus
@@ -453,10 +449,12 @@ exit 0
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}-core
 %attr(0755,root,root) %dir %{_sysconfdir}/%{name}/
 %attr(2775,naemon,naemon) %dir %{_sysconfdir}/%{name}/conf.d
+%attr(0755,naemon,naemon) %dir %{_sysconfdir}/%{name}/module-conf.d
 %attr(0644,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/%{name}.cfg
 %attr(0640,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/resource.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
-%attr(2775,naemon,%{apachegroup}) %dir %{_localstatedir}/cache/%{name}/checkresults
+%attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/%{name}/spool
+%attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/%{name}/spool/checkresults
 %attr(2775,naemon,naemon) %dir %{_localstatedir}/cache/%{name}
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/%{name}
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}
@@ -490,6 +488,7 @@ exit 0
 %attr(0755,naemon,naemon) %dir %{_libdir}/%{name}/%{name}-livestatus
 %attr(0644,root,root) %{_libdir}/%{name}/%{name}-livestatus/livestatus.so
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}
+%attr(0640,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/module-conf.d/livestatus.cfg
 
 %files thruk
 %config(noreplace) %{_sysconfdir}/%{apachedir}/conf.d/naemon.conf

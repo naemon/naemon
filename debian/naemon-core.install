@@ -2,7 +2,6 @@
 /etc/naemon/naemon.cfg
 /etc/naemon/resource.cfg
 /usr/bin/naemon
-/var/cache/naemon/checkresults
 /var/log/naemon
 /var/log/naemon/archives
 /etc/logrotate.d/naemon-core
