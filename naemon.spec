@@ -445,7 +445,6 @@ exit 0
 %else
   %attr(0755,root,root) %{_initrddir}/naemon
 %endif
-%attr(0755,naemon,naemon) %dir %{_localstatedir}/run/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}-core
 %attr(0755,root,root) %dir %{_sysconfdir}/%{name}/
 %attr(2775,naemon,naemon) %dir %{_sysconfdir}/%{name}/conf.d
