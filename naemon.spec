@@ -318,8 +318,8 @@ case "$*" in
           /var/lib/%{name}/retention.dat \
           /var/log/%{name}/%{name}.log \
           /var/log/%{name}/archives \
-          /var/run/%{name} \
           /var/lib/%{name}/%{name}.cmd
+    rm -rf /var/run/%{name}
     %{insserv_cleanup}
     chkconfig --del %{name} >/dev/null 2>&1 || :
     systemctl try-restart %{name}.service >/dev/null 2>&1 || :
@@ -374,6 +374,7 @@ case "$*" in
     if [ -e /etc/%{name}/%{name}.cfg ]; then
       sed -i /etc/%{name}/%{name}.cfg -e 's~^\s*\(broker_module=/usr/lib[0-9]*/%{name}/%{name}-livestatus/livestatus.so.*\)~#\1~'
     fi
+    rm -f /var/cache/%{name}/live
     ;;
   1)
     # POSTUPDATE
