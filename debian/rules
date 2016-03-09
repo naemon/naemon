@@ -29,6 +29,11 @@ override_dh_auto_configure:
 				--with-naemon-group="naemon" \
 				--with-lockfile="/var/run/naemon/naemon.pid"
 	echo $(HTTPDCONF)/naemon.conf >> debian/naemon-thruk.install
+	if [ "x$(DEB_HOST_MULTIARCH)" != "x" ]; then \
+		echo /usr/lib/naemon/pkgconfig/naemon.pc usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ >> debian/naemon-dev.install; \
+	else \
+		echo /usr/lib/naemon/pkgconfig/naemon.pc usr/share/pkgconfig/ >> debian/naemon-dev.install; \
+	fi
 
 override_dh_auto_install:
 	dh_auto_install
