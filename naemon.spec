@@ -268,9 +268,10 @@ case "$*" in
     chown naemon:naemon \
         /etc/naemon/conf.d \
         /etc/naemon/conf.d/*.cfg \
-        /etc/naemon/module-conf.d/*.cfg \
         /etc/naemon/conf.d/templates \
         /etc/naemon/conf.d/templates/*.cfg
+    chown naemon:naemon \
+        /etc/naemon/module-conf.d/*.cfg 2>/dev/null
     chmod 0664 /etc/naemon/conf.d/*.cfg /etc/naemon/conf.d/templates/*.cfg
     chmod 2775 /etc/naemon/conf.d /etc/naemon/conf.d/templates
     %if 0%{?use_systemd}
