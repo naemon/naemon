@@ -142,7 +142,7 @@ This package contains the thruk gui for %{name}.
 %package devel
 Summary: Development Files For Naemon
 Group: Development/Libraries
-Requires: naemon = %version
+Requires: libnaemon = %version
 Requires: glib2-devel
 
 %description devel
