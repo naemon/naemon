@@ -30,6 +30,11 @@ if [ ! -d /etc/naemon/conf.d/templates ]; then
     chmod 2775 /etc/naemon/conf.d /etc/naemon/conf.d/templates
 fi
 
+if [ ! -d /etc/naemon/module-conf.d ]; then
+    mkdir -p /etc/naemon/module-conf.d
+    chown naemon:naemon /etc/naemon/module-conf.d
+fi
+
 #if we stop naemon in prerm we should also start it here..
 if [ -x "/etc/init.d/naemon" ]; then
     if ! /etc/init.d/naemon status >/dev/null; then
