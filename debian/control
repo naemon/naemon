@@ -84,7 +84,7 @@ Description: Thruk is a web gui for Naemon
 
 Package: naemon-dev
 Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}, libnaemon
+Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}, libnaemon, libglib2.0-dev
 Description: This package contains the header files, static libraries and development
  documentation for Naemon. If you are a NEB-module author or wish to
  write addons for Naemon using Naemons own APIs, you should install
