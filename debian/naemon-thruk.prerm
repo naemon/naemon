@@ -7,7 +7,7 @@ set -e
 
 case "$1" in
   remove|deconfigure)
-    sed -i -e '/thruk_cookie_auth.include/d' /etc/apache2/sites-available/default*
+    sed -i -e '/naemon-thruk.include/d' /etc/apache2/sites-available/default*
   ;;
 
   upgrade|failed-upgrade)
