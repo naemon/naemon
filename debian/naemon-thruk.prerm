@@ -7,7 +7,7 @@ set -e
 
 case "$1" in
   remove|deconfigure)
-    sed -i -e '/naemon-thruk.include/d' /etc/apache2/sites-available/default*
+    sed -i -e '/naemon-thruk.include/d' /etc/apache2/sites-available/*default*
   ;;
 
   upgrade|failed-upgrade)
