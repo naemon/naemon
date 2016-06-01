@@ -13,7 +13,7 @@ chown naemon:naemon \
         /var/log/naemon/archives \
         /var/lib/naemon/spool/checkresults
 chmod 0755 /var/cache/naemon
-chmod 0755 /var/lib/naemon/spool/checkresults
+chmod 2775 /var/lib/naemon/spool/checkresults
 chmod 0664 /var/log/naemon/naemon.log
 chmod 0640 /etc/naemon/resource.cfg
 

@@ -205,7 +205,7 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__mv} %{buildroot}%{_sysconfdir}/%{name}/conf.d %{buildroot}%{_datadir}/%{name}/examples/
 %{__mkdir_p} -m 0755 %{buildroot}%{_sysconfdir}/%{name}/conf.d
 %{__mkdir_p} -m 0755 %{buildroot}%{_localstatedir}/lib/%{name}
-%{__mkdir_p} -m 0755 %{buildroot}%{_localstatedir}/lib/%{name}/spool/checkresults
+%{__mkdir_p} -m 2775 %{buildroot}%{_localstatedir}/lib/%{name}/spool/checkresults
 %{__mkdir_p} -m 0755 %{buildroot}%{_localstatedir}/cache/%{name}
 
 # Put the new RC sysconfig in place
@@ -455,7 +455,7 @@ exit 0
 %attr(0640,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/resource.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/%{name}/spool
-%attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/%{name}/spool/checkresults
+%attr(2775,naemon,naemon) %dir %{_localstatedir}/lib/%{name}/spool/checkresults
 %attr(2775,naemon,naemon) %dir %{_localstatedir}/cache/%{name}
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/lib/%{name}
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}
