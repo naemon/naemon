@@ -7,6 +7,7 @@ export DH_VERBOSE=1
 DESTDIR=$(CURDIR)/debian/tmp/
 
 HTTPDCONF=$(shell if [ -d "/etc/apache2/conf-available" ]; then echo "/etc/apache2/conf-available"; else echo "/etc/apache2/conf.d"; fi )
+PYTHON_SITELIB=$(shell python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')
 
 override_dh_auto_configure:
 	dh_auto_configure -- --prefix=/usr \
@@ -54,6 +55,9 @@ override_dh_auto_install:
 	mv debian/tmp/etc/naemon/conf.d debian/tmp/usr/share/naemon/examples
 	# get rid of dependency_libs in la files, see https://wiki.debian.org/ReleaseGoals/LAFileRemoval
 	sed -i "/dependency_libs/ s/'.*'/''/" `find . -name '*.la'`
+	install -d debian/tmp$(PYTHON_SITELIB)/livestatus
+	cp naemon-livestatus/api/python/__init__.py debian/tmp$(PYTHON_SITELIB)/livestatus/
+	cp naemon-livestatus/api/python/livestatus.py debian/tmp$(PYTHON_SITELIB)/livestatus/
 
 override_dh_gencontrol:
 	dh_gencontrol
