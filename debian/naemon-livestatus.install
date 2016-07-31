@@ -2,5 +2,3 @@
 /usr/lib/naemon/naemon-livestatus/livestatus.so
 /var/log/naemon
 /etc/naemon/module-conf.d/livestatus.cfg
-/usr/lib/python2.7/dist-packages/livestatus/__init__.py
-/usr/lib/python2.7/dist-packages/livestatus/livestatus.py
