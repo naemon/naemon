@@ -10,7 +10,6 @@ install:
   - sudo apt-get install libgd2-xpm-dev
   - sudo apt-get install devscripts
   - sudo apt-get install dh-make
-  - sudo apt-get install dh-autoreconf
   - sudo apt-get install asciidoc
   - sudo apt-get install chrpath
   - sudo apt-get install help2man
