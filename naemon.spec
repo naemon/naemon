@@ -23,6 +23,12 @@
   %define mycflags %{nil}
 %endif
 
+%if ! ( 0%{?rhel} > 5 )
+%{!?python_sitelib: %global python_sitelib %(/usr/bin/python26 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%else
+%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%endif
+
 Summary: Open Source Host, Service And Network Monitoring Program
 Name: naemon
 Version: 1.0.5
@@ -220,6 +226,11 @@ mkdir -p -m 0755 %{buildroot}%{_localstatedir}/run/%{name}
 
 # We don't really want to distribute this
 rm -f %{buildroot}%{_libdir}/%{name}/%{name}-livestatus/livestatus.la
+
+# Livestatus Python API
+install -d %buildroot%{python_sitelib}/livestatus
+install -pm 0644 api/python/livestatus.py %buildroot%{python_sitelib}/livestatus/
+install -pm 0644 api/python/__init__.py %buildroot%{python_sitelib}/livestatus/
 
 %if 0%{?use_systemd}
 # Install systemd entry
@@ -489,6 +500,7 @@ exit 0
 %attr(0755,naemon,naemon) %dir %{_libdir}/%{name}/%{name}-livestatus
 %attr(0644,root,root) %{_libdir}/%{name}/%{name}-livestatus/livestatus.so
 %attr(0755,naemon,naemon) %dir %{_localstatedir}/log/%{name}
+%attr(0755,root,root) %{python_sitelib}/livestatus
 %attr(0640,naemon,naemon) %config(noreplace) %{_sysconfdir}/%{name}/module-conf.d/livestatus.cfg
 
 %files thruk
