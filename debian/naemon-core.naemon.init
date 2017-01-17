@@ -121,7 +121,7 @@ start() {
     if type start-stop-daemon >/dev/null 2>&1; then
         NICE_OPT=""
         if [ $NICELEVEL != "0" ]; then NICE_OPT="--nicelevel $NICELEVEL"; fi
-        start-stop-daemon $NICE_OPT --start --user $user --name $prog --pidfile $pidfile --exec $exec -- -d $config
+        start-stop-daemon $NICE_OPT --start --user $user --chuid $user:$group --name $prog --pidfile $pidfile --exec $exec -- -d $config
     else
         daemon --user=$user $exec -d $config
     fi
