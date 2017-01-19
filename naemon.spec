@@ -9,7 +9,7 @@
 %define apachedir httpd
 %endif
 
-%if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}
+%if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}%{?fc23}%{?fc24}%{?fc25}
 %global use_systemd 1
 %endif
 %if 0%{?suse_version} >= 1315
@@ -51,7 +51,7 @@ BuildRequires: libicu-devel
 BuildRequires: pkgconfig
 BuildRequires: glib2-devel
 # sles / rhel specific requirements
-%if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}%{?fc23}
+%if 0%{?el7}%{?fc20}%{?fc21}%{?fc22}%{?fc23}%{?fc23}%{?fc24}%{?fc25}
 BuildRequires: chrpath
 %endif
 %if 0%{?use_systemd}
