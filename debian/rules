@@ -8,6 +8,7 @@ DESTDIR=$(CURDIR)/debian/tmp/
 
 HTTPDCONF=$(shell if [ -d "/etc/apache2/conf-available" ]; then echo "/etc/apache2/conf-available"; else echo "/etc/apache2/conf.d"; fi )
 PYTHON_SITELIB=$(shell python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')
+WITH_SYSTEMD=$(shell if [ -x "/bin/systemctl" ]; then echo "--with systemd"; else echo ""; fi )
 
 override_dh_auto_configure:
 	dh_auto_configure -- --prefix=/usr \
@@ -35,6 +36,11 @@ override_dh_auto_configure:
 	else \
 		echo /usr/lib/naemon/pkgconfig/naemon.pc usr/share/pkgconfig/ >> debian/naemon-dev.install; \
 	fi
+	if [ "x$(WITH_SYSTEMD)" != "x" ]; then \
+		echo "/usr/bin/naemon-ctl" >> debian/naemon-core.install; \
+	fi
+
+
 
 override_dh_auto_install:
 	dh_auto_install
@@ -55,6 +61,11 @@ override_dh_auto_install:
 	mv debian/tmp/etc/naemon/conf.d debian/tmp/usr/share/naemon/examples
 	# get rid of dependency_libs in la files, see https://wiki.debian.org/ReleaseGoals/LAFileRemoval
 	sed -i "/dependency_libs/ s/'.*'/''/" `find . -name '*.la'`
+	# Move SystemV init-script
+	if [ "x$(WITH_SYSTEMD)" != "x" ]; then \
+		mkdir -p -m 0755 debian/tmp; \
+		install -m 755 debian/naemon-core.naemon.init debian/tmp/usr/bin/naemon-ctl; \
+	fi
 
 override_dh_install:
 	dh_install --package=naemon-livestatus naemon-livestatus/api/python/__init__.py $(PYTHON_SITELIB)/livestatus/
@@ -68,7 +79,8 @@ override_dh_strip:
 	dh_strip -pnaemon-core --dbg-package=naemon-core-dbg
 
 override_dh_installinit:
-	rm debian/naemon-core/etc/init.d/naemon # make space for the debian specific rc file
+	# make space for the debian specific rc file
+	rm debian/naemon-core/etc/init.d/naemon
 	dh_installinit --name=naemon
 
 %:

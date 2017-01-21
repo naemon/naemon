@@ -43,7 +43,7 @@ Description: A host/service/network monitoring and management system
 
 Package: naemon-core
 Architecture: any
-Depends: bsd-mailx | mailx | sendemail,
+Depends: bsd-mailx | mailx | sendemail, lsb-base
          ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
 Description: contains the Naemon core
  Naemon is a monitoring and management system for hosts, services and
