@@ -31,7 +31,7 @@
 
 Summary: Open Source Host, Service And Network Monitoring Program
 Name: naemon
-Version: 1.0.5
+Version: 1.0.6
 Release: 1%{?dist}
 License: GPLv2
 Group: Applications/System
