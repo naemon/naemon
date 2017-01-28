@@ -335,6 +335,7 @@ case "$*" in
     %{insserv_cleanup}
     chkconfig --del %{name} >/dev/null 2>&1 || :
     systemctl try-restart %{name}.service >/dev/null 2>&1 || :
+    rm -rf /var/lib/%{name}/.local
     ;;
   1)
     # POSTUPDATE
