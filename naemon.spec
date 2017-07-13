@@ -112,7 +112,6 @@ Requires:  libnaemon = %{version}-%{release}
 %description tools
 contains tools for %{name}.
  - naemonstats:  display statistics
- - shadownaemon: shadow a remote naemon core over livestatus
 
 
 
@@ -201,7 +200,6 @@ CFLAGS="%{mycflags}" LDFLAGS="$CFLAGS" %configure \
 %{__cp} -p %{buildroot}%{_bindir}/%{name} %{buildroot}%{_bindir}/%{name}-dbg
 %{__strip} %{buildroot}%{_bindir}/%{name}
 %{__strip} %{buildroot}%{_bindir}/naemonstats
-%{__strip} %{buildroot}%{_bindir}/shadownaemon
 %{__strip} %{buildroot}%{_bindir}/unixcat
 %{__strip} %{buildroot}%{_libdir}/%{name}/libnaemon.so.0.0.0
 %{__strip} %{buildroot}%{_libdir}/%{name}/%{name}-livestatus/livestatus.so
@@ -478,14 +476,11 @@ exit 0
 
 %files tools
 %attr(0755,root,root) %{_bindir}/naemonstats
-%attr(0755,root,root) %{_bindir}/shadownaemon
 %{_mandir}/man8/naemonstats.8*
-%{_mandir}/man8/shadownaemon.8*
 
 %files -n libnaemon
 %attr(-,root,root) %{_libdir}/%{name}/libnaemon.so*
 %{_mandir}/man8/naemonstats.8*
-%{_mandir}/man8/shadownaemon.8*
 
 %files core-dbg
 %attr(0755,root,root) %{_bindir}/%{name}-dbg

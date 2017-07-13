@@ -48,9 +48,7 @@ override_dh_auto_install:
 	cp -p debian/tmp/usr/bin/naemon debian/tmp/usr/bin/naemon-dbg
 	strip debian/tmp/usr/bin/naemon
 	strip debian/tmp/usr/bin/naemonstats
-	chrpath -c debian/tmp/usr/bin/shadownaemon
 	chrpath -c debian/tmp/usr/bin/naemonstats
-	strip debian/tmp/usr/bin/shadownaemon
 	strip debian/tmp/usr/bin/unixcat
 	strip debian/tmp/usr/lib/naemon/libnaemon.so.0.0.0
 	strip debian/tmp/usr/lib/naemon/naemon-livestatus/livestatus.so
