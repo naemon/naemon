@@ -1,9 +1,0 @@
-/etc/init.d/naemon
-/etc/naemon/naemon.cfg
-/etc/naemon/resource.cfg
-/usr/bin/naemon
-/var/log/naemon
-/var/log/naemon/archives
-/etc/logrotate.d/naemon-core
-/usr/lib/naemon/plugins
-/usr/share/naemon/examples

@@ -1,38 +1,6 @@
 #!/bin/sh
 
-[ ! -z $BASH ] && set -o pipefail
-set -e
-
-# initialize submodules unless they exist already
-test -f naemon-core/configure.ac || git submodule init
-test -f naemon-core/configure.ac || {
-    git submodule update naemon-core
-    cd naemon-core
-    git checkout master
-    git submodule update
-    cd ..
-}
-test -f naemon-livestatus/configure.ac || {
-    git submodule update naemon-livestatus
-    cd naemon-livestatus
-    git checkout master
-    git submodule update
-    cd ..
-}
-
-# now just run the real configure scripts
-cd naemon-core
-test -f ./configure || autoreconf -i
-./configure $* 2>&1
-
-cd ../naemon-livestatus
-test -f ./configure || autoreconf -i
-PKG_CONFIG_PATH="$(pwd)/../naemon-core" ./configure $*
-
 echo "***************************************"
-echo "finished configuring Naemon."
-echo "continue with"
+echo "this is just a meta package, run either:"
 echo ""
 echo "make [rpm|deb]"
-echo "or"
-echo "make && make install"

@@ -14,8 +14,8 @@ Architecture: any
 Depends: adduser,
          coreutils (>= 4.5.3),
          lsb-base (>= 3.0-6),
-         naemon-core (= ${binary:Version}),
-         naemon-livestatus (= ${binary:Version}),
+         naemon-core (>= ${binary:Version}),
+         naemon-livestatus (>= ${binary:Version}),
          naemon-thruk (= ${binary:Version}),
          ${misc:Depends},
          ${perl:Depends},
@@ -41,60 +41,10 @@ Description: A host/service/network monitoring and management system
  .
  Upstream URL: http://www.naemon.org/
 
-Package: naemon-core
-Architecture: any
-Depends: bsd-mailx | mailx | sendemail, lsb-base (>= 3.0-6)
-         ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
-Description: contains the Naemon core
- Naemon is a monitoring and management system for hosts, services and
- networks.
-
-Package: naemon-core-dbg
-Architecture: any
-Section: debug
-Priority: extra
-Depends:
-    ${shlibs:Depends},
-    ${misc:Depends}
-Description: contains the Naemon core with debug symbols
- Naemon is a monitoring and management system for hosts, services and
- networks.
-
-
-Package: naemon-tools
-Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}, libnaemon
-Description: contains tools for the Naemon core
- - naemonstats:  display statistics
-
-Package: naemon-livestatus
-Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
-Description: contains the Naemon livestatus eventbroker module
- Naemon is a monitoring and management system for hosts, services and
- networks.
-
 Package: naemon-thruk
 Architecture: any
 Depends: thruk, ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
 Description: Thruk is a web gui for Naemon
  Naemon is a monitoring and management system for hosts, services and
  networks.
-
-Package: naemon-dev
-Architecture: any
-Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}, libnaemon, libglib2.0-dev
-Description: This package contains the header files, static libraries and development
- documentation for Naemon. If you are a NEB-module author or wish to
- write addons for Naemon using Naemons own APIs, you should install
- this package.
-
-Package: libnaemon
-Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: Library for Naemon - common data files
- libnaemon contains the shared library for building NEB modules or addons for
- Naemon.
-
 
