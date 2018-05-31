@@ -17,17 +17,10 @@ install:
 script:
   - git config --global user.email "travis@localhost"
   - git config --global user.name "Travis Testuser"
-  - git fetch --all -t
-  - make dailyversion
   - ./configure    || exit 1
   - make           || exit 1
-  - mkdir _install || exit 1
-  - make install DESTDIR=$(pwd)/_install || exit 1
-  - sudo make install || exit 1
-  - make deb || exit 1
-  - make update || exit 1
-  - make || exit 1
-  - make install DESTDIR=$(pwd)/_install
+  - mkdir dist     || exit 1
+  - make deb       || exit 1
 notifications:
   irc:
     channels:
@@ -35,5 +28,3 @@ notifications:
     on_success: change
     on_failure: always
     skip_join: true
-  email:
-    - ozamosi@flukkost.nu
