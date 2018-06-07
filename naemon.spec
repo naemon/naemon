@@ -10,7 +10,7 @@
 
 Summary: Open Source Host, Service And Network Monitoring Program
 Name: naemon
-Version: 1.0.6
+Version: 1.0.7
 Release: 0
 License: GPLv2
 BuildArch: noarch
@@ -20,7 +20,11 @@ Packager: Naemon Core Development Team <naemon-dev@monitoring-lists.org>
 Vendor: Naemon Core Development Team
 Source0: http://labs.consol.de/naemon/download/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}
+%if %{defined suse_version}
+BuildRequires: apache2
+%else
 BuildRequires: httpd
+%endif
 Requires: %{name}-core            >= %{version}-%{release}
 Requires: %{name}-livestatus      >= %{version}-%{release}
 Requires: %{name}-thruk           = %{version}-%{release}
@@ -49,6 +53,9 @@ Summary:     Thruk Gui For Naemon
 Group:       Applications/System
 Requires:    thruk
 Requires(pre): naemon-core >= %{version}-%{release}
+%if 0%{?systemd_requires}
+%systemd_requires
+%endif
 Obsoletes: naemon-thruk-reporting
 Obsoletes: naemon-thruk-libs
 
@@ -93,12 +100,24 @@ if /usr/bin/id %{apacheuser} &>/dev/null; then
 %endif
     fi
 fi
-%if %{defined suse_version}
-/etc/init.d/apache2 restart || /etc/init.d/apache2 start
-%else
-service httpd condrestart
-%endif
 
+# restart apache webserver
+%if %{defined suse_version}
+  %if %{?_unitdir:1}0
+    systemctl daemon-reload &>/dev/null || true
+    systemctl condrestart apache2.service &>/dev/null || true
+  %else
+    /etc/init.d/apache2 restart &>/dev/null || true
+  %endif
+%else
+  %if %{?_unitdir:1}0
+    systemctl daemon-reload &>/dev/null || true
+    systemctl condrestart httpd.service &>/dev/null || true
+  %else
+    /etc/init.d/httpd condrestart &>/dev/null || true
+  %endif
+%endif
+exit 0
 
 %postun thruk
 case "$*" in
@@ -120,6 +139,10 @@ exit 0
 %config(noreplace) %{_sysconfdir}/%{apachedir}/conf.d/naemon.conf
 %attr(-,root,root) %{_datadir}/%{name}/naemon-thruk.include
 %config(noreplace) %{_sysconfdir}/thruk/thruk_local.d/naemon.conf
+%if 0%{?suse_version} >= 1315
+%attr(-,-,-) %dir %{_sysconfdir}/thruk/
+%attr(-,-,-) %dir %{_sysconfdir}/thruk/thruk_local.d/
+%endif
 
 %changelog
 * Tue Sep 19 2017 Sven Nierlein <sven.nierlein@consol.de> 1.0.7-1
