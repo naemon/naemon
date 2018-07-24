@@ -21,13 +21,11 @@ packages which make things a lot easier and cleaner.
 Daily updated packages for common linux systems can be found at
 http://labs.consol.de/naemon/testing/
 
-For a fresh source installation, follow these steps. You will need
-a standard build environment with gcc, automake, autoconf, etc... and
-gperf and doxygen.
+This repository contains the meta package only. It is not required for
+a source installation.
 
     git clone --recursive https://github.com/naemon/naemon.git
     cd naemon
-    make update
     ./configure
     make
     make [rpm|deb|install]
