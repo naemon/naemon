@@ -12,7 +12,7 @@ Summary: Open Source Host, Service And Network Monitoring Program
 Name: naemon
 Version: 1.0.10
 Release: 0
-License: GPLv2
+License: GPL-2.0-only
 BuildArch: noarch
 Group: Applications/System
 URL: http://www.naemon.org/
