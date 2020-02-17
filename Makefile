@@ -44,7 +44,7 @@ deb:
 versionprecheck:
 	[ -e .git ] || { echo "changing versions only works in git clones!"; exit 1; }
 	which dch >/dev/null 2>&1 || { echo "dch is required for changing versions"; exit 1; }
-	[ `git status | grep -c 'working directory clean'` -eq 1 ] || { echo "git project is not clean, cannot tag version"; exit 1; }
+	[ `git status | grep -cP 'working (directory|tree) clean'` -eq 1 ] || { echo "git project is not clean, cannot tag version"; exit 1; }
 
 resetdaily: versionprecheck
 	git checkout .
