@@ -1,4 +1,4 @@
-VERSION=1.0.10
+VERSION=1.2.0
 
 .PHONY: thruk
 
