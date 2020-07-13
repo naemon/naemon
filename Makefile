@@ -68,14 +68,16 @@ dailydist:
 	@echo "daily dist created: naemon-${DAILYVERSION}.tar.gz"
 
 releaseversion: versionprecheck
-	RELEASEVERSION=`dialog --stdout --inputbox "New Version:" 0 0 "${VERSION}"` && \
-		./update-version $$RELEASEVERSION && \
-		git commit -as -m "released $$RELEASEVERSION" && git tag "v$$RELEASEVERSION"
+	NEWVERSION=`dialog --stdout --inputbox "New Version:" 0 0 "$(VERSION)"` && \
+		if [ -n "$$NEWVERSION" ] && [ "$$NEWVERSION" != "$(VERSION)" ]; then \
+			sed -ri "s/$(VERSION)/$$NEWVERSION/" Makefile naemon.spec; \
+			sed -e 's/UNRELEASED/unstable/g' -i debian/changelog; \
+			DEBFULLNAME="Naemon Development Team" DEBEMAIL="Naemon Development <naemon-dev@monitoring-lists.org>" dch --newversion "$$NEWVERSION" --package "naemon" -D "UNRELEASED" --urgency "low" "new upstream release"; \
+			sed -e 's/unstable/UNRELEASED/g' -i debian/changelog; \
+		fi;
 	@echo ""
 	@echo "******************"
-	@echo "ATTENTION: release tag (`grep ^VERSION Makefile | awk -F= '{ print $$2 }'`) set, please double check before pushing anything."
-	@echo "naemon-core/NEWS file has to be updated manually!"
-	@echo "also do not forget about naemon.org: _config.yml and documentation/usersguide/whatsnew.md"
+	@echo "do not forget about naemon.org: _config.yml and documentation/usersguide/whatsnew.md"
 	@echo "******************"
 
 version: releaseversion
