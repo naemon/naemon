@@ -1,0 +1,41 @@
+name: citest
+
+on:
+  push:
+  pull_request:
+  release:
+
+jobs:
+  citest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      #- name: Setup tmate session, see https://github.com/marketplace/actions/debugging-with-tmate
+      #  uses: mxschmitt/action-tmate@v3
+      - name: prepare machine
+        run: |
+          sudo apt-get update
+          sudo apt-get install autoconf
+          sudo apt-get install build-essential
+          sudo apt-get install gperf
+          sudo apt-get install libgd-dev
+          sudo apt-get install fakeroot
+          sudo apt-get install devscripts
+          sudo apt-get install dh-make
+          sudo apt-get install asciidoc
+          sudo apt-get install chrpath
+          sudo apt-get install help2man
+          sudo apt-get install libicu-dev
+          sudo apt-get install apache2
+
+      - name: run build
+        run: |
+          git config --global user.email "naemon@localhost"
+          git config --global user.name "Naemon Testuser"
+          ./configure    || exit 1
+          make           || exit 1
+
+      - name: run tests
+        run: |
+          mkdir dist     || exit 1
+          make deb       || exit 1
