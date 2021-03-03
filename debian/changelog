@@ -1,3 +1,9 @@
+naemon (1.2.4) UNRELEASED; urgency=low
+
+  * new upstream release
+
+ -- Naemon Development Team <naemon-dev@monitoring-lists.org>  Wed, 03 Mar 2021 11:12:49 +0100
+
 naemon (1.2.2) UNRELEASED; urgency=low
 
   * new upstream release
