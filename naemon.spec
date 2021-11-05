@@ -27,6 +27,7 @@ BuildRequires: httpd
 %endif
 Requires: %{name}-core            >= %{version}-%{release}
 Requires: %{name}-livestatus      >= %{version}-%{release}
+Requires: %{name}-vimvault        >= %{version}-%{release}
 Requires: %{name}-thruk           = %{version}-%{release}
 
 # do not generate debug packages
@@ -145,6 +146,9 @@ exit 0
 %endif
 
 %changelog
+* Fri Nov 05 2021 Sven Nierlein <sven.nierlein@consol.de> 1.3.0-1
+- Add vimvault module
+
 * Tue Sep 19 2017 Sven Nierlein <sven.nierlein@consol.de> 1.0.7-1
 - Decouple core and livestatus
 
