@@ -25,10 +25,10 @@ BuildRequires: apache2
 %else
 BuildRequires: httpd
 %endif
-Requires: %{name}-core            >= %{version}-%{release}
-Requires: %{name}-livestatus      >= %{version}-%{release}
-Requires: %{name}-vimvault        >= %{version}-%{release}
-Requires: %{name}-thruk           = %{version}-%{release}
+Requires: %{name}-core            >= %{version}
+Requires: %{name}-livestatus      >= %{version}
+Requires: %{name}-vimvault        >= %{version}
+Requires: %{name}-thruk           = %{version}
 
 # do not generate debug packages
 %define debug_package %{nil}
