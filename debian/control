@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Naemon Core Development Team <naemon-dev@monitoring-lists.org>
 Build-Depends: debhelper (>= 9), fakeroot, make, apache2
 Standards-Version: 3.7.3
-Homepage: http://www.naemon.org
+Homepage: https://www.naemon.io
 Bugs: https://github.com/naemon/naemon/issues
 Vcs-Browser: https://github.com/naemon
 Vcs-Git: git://github.com:naemon/naemon.git
@@ -40,7 +40,7 @@ Description: A host/service/network monitoring and management system
  Naemon was written in C and is designed to be easy to understand and modify
  to fit your own needs.
  .
- Upstream URL: http://www.naemon.org/
+ Upstream URL: https://www.naemon.io/
 
 Package: naemon-thruk
 Architecture: any
