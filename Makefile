@@ -77,7 +77,7 @@ releaseversion: versionprecheck
 		fi;
 	@echo ""
 	@echo "******************"
-	@echo "do not forget about naemon.org: _config.yml and documentation/usersguide/whatsnew.md"
+	@echo "do not forget about naemon.io: _config.yml and documentation/usersguide/whatsnew.md"
 	@echo "******************"
 
 version: releaseversion
