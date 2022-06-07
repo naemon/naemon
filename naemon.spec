@@ -86,6 +86,7 @@ mkdir -p -m 0755 /etc/thruk/
 [ ! -e %{_sysconfdir}/%{name}/menu_local.conf ]  || sed -e 's%/usr/share/naemon/%/usr/share/thruk/%g' -i %{_sysconfdir}/%{name}/menu_local.conf
 [ ! -e %{_sysconfdir}/%{name}/menu_local.conf ]  || %{__mv} %{_sysconfdir}/%{name}/menu_local.conf  /etc/thruk/menu_local.conf
 [ ! -e %{_sysconfdir}/%{name}/htpasswd ]         || %{__mv} %{_sysconfdir}/%{name}/htpasswd         /etc/thruk/htpasswd
+[ -e %{_sysconfdir}/%{name}/conf.d/thruk_templates.cfg ] || ln -s /usr/share/thruk/support/thruk_templates.cfg %{_sysconfdir}/%{name}/conf.d/thruk_templates.cfg
 
 # add apache user to group naemon so thruk can access the livestatus socket
 if /usr/bin/id %{apacheuser} &>/dev/null; then
@@ -125,6 +126,7 @@ case "$*" in
   0)
     # POSTUN
     rm -f %{_sysconfdir}/%{apachedir}/conf-enabled/naemon.conf
+    rm -f %{_sysconfdir}/%{name}/conf.d/thruk_templates.cfg
     ;;
   1)
     # POSTUPDATE

@@ -30,6 +30,7 @@ case "$1" in
         [ ! -e /etc/naemon/menu_local.conf ]  || sed -e 's%/usr/share/naemon/%/usr/share/thruk/%g' -i /etc/naemon/menu_local.conf
         [ ! -e /etc/naemon/menu_local.conf ]  || mv /etc/naemon/menu_local.conf  /etc/thruk/menu_local.conf
         [ ! -e /etc/naemon/htpasswd ]         || mv /etc/naemon/htpasswd         /etc/thruk/htpasswd
+        [ -e /etc/naemon/conf.d/thruk_templates.cfg ] || ln -s /usr/share/thruk/support/thruk_templates.cfg /etc/naemon/conf.d/thruk_templates.cfg
 
         if $CONFIGURE_APACHE; then
             # enable naemon redirect
