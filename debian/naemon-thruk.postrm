@@ -22,6 +22,7 @@ set -e
 case "$1" in
     remove)
         rm -f /etc/apache2/conf-enabled/naemon.conf
+        rm -f /etc/naemon/conf.d/thruk_templates.cfg
     ;;
     upgrade)
     ;;
