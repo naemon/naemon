@@ -10,7 +10,7 @@
 
 Summary: Open Source Host, Service And Network Monitoring Program
 Name: naemon
-Version: 1.4.3
+Version: 1.4.4
 Release: 0
 License: GPL-2.0-only
 BuildArch: noarch
@@ -27,7 +27,7 @@ BuildRequires: httpd
 %endif
 Requires: %{name}-core            >= %{version}
 Requires: %{name}-livestatus      >= %{version}
-Requires: %{name}-vimvault        >= 1.4.2
+Requires: %{name}-vimvault        >= %{version}
 Requires: %{name}-thruk           = %{version}
 
 # do not generate debug packages
