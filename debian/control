@@ -13,14 +13,11 @@ Package: naemon
 Architecture: any
 Depends: adduser,
          coreutils (>= 4.5.3),
-         lsb-base (>= 3.0-6),
          naemon-core (>= ${binary:Version}),
          naemon-livestatus (>= ${binary:Version}),
          naemon-vimvault (>= ${binary:Version}),
          naemon-thruk (= ${binary:Version}),
-         ${misc:Depends},
-         ${perl:Depends},
-         ${shlibs:Depends}
+         ${misc:Depends}
 Recommends: nagios-plugins
 Description: A host/service/network monitoring and management system
  Naemon is a monitoring and management system for hosts, services and
@@ -44,7 +41,7 @@ Description: A host/service/network monitoring and management system
 
 Package: naemon-thruk
 Architecture: any
-Depends: thruk, ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
+Depends: thruk, ${misc:Depends}
 Description: Thruk is a web gui for Naemon
  Naemon is a monitoring and management system for hosts, services and
  networks.
