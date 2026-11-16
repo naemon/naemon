@@ -1,4 +1,4 @@
-VERSION=1.5.1
+VERSION=1.6.0
 
 .PHONY: thruk
 
@@ -77,7 +77,7 @@ releaseversion: versionprecheck
 		fi;
 	@echo ""
 	@echo "******************"
-	@echo "do not forget about naemon.io: _config.yml and documentation/usersguide/whatsnew.md"
+	@echo "do not forget about naemon.io: src/.env and src/documentation/usersguide/whatsnew.md and src/news/... "
 	@echo "******************"
 
 version: releaseversion
